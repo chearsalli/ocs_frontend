@@ -1,0 +1,38 @@
+{
+  "Alert": {
+    "description": "Auto imported from components/Alert.vue"
+  },
+  "CircSpinner": {
+    "description": "Auto imported from components/CircSpinner.vue"
+  },
+  "DataTable": {
+    "description": "Auto imported from components/DataTable.vue"
+  },
+  "Drawer": {
+    "description": "Auto imported from components/Drawer.vue"
+  },
+  "Loader": {
+    "description": "Auto imported from components/Loader.vue"
+  },
+  "Modal": {
+    "description": "Auto imported from components/Modal.vue"
+  },
+  "NavBar": {
+    "description": "Auto imported from components/NavBar.vue"
+  },
+  "NuxtLogo": {
+    "description": "Auto imported from components/NuxtLogo.vue"
+  },
+  "PersonForm": {
+    "description": "Auto imported from components/PersonForm.vue"
+  },
+  "ToggleSwitch": {
+    "description": "Auto imported from components/ToggleSwitch.vue"
+  },
+  "Tutorial": {
+    "description": "Auto imported from components/Tutorial.vue"
+  },
+  "ActivitylogTimeline": {
+    "description": "Auto imported from components/activitylogTimeline.vue"
+  }
+}

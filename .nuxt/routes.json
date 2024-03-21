@@ -1,0 +1,44 @@
+[
+  {
+    "name": "ocs_staff",
+    "path": "/ocs_staff",
+    "component": "/home/nad/frontend-template/pages/ocs_staff/index.vue",
+    "chunkName": "pages/ocs_staff/index",
+    "_name": "_049077a1"
+  },
+  {
+    "name": "personal-info",
+    "path": "/personal-info",
+    "component": "/home/nad/frontend-template/pages/personal-info/index.vue",
+    "chunkName": "pages/personal-info/index",
+    "_name": "_d2b99188"
+  },
+  {
+    "name": "request",
+    "path": "/request",
+    "component": "/home/nad/frontend-template/pages/request/index.vue",
+    "chunkName": "pages/request/index",
+    "_name": "_4036ad30"
+  },
+  {
+    "name": "auth-callback",
+    "path": "/auth/callback",
+    "component": "/home/nad/frontend-template/pages/auth/callback.vue",
+    "chunkName": "pages/auth/callback",
+    "_name": "_2c9067aa"
+  },
+  {
+    "name": "auth-login",
+    "path": "/auth/login",
+    "component": "/home/nad/frontend-template/pages/auth/login.vue",
+    "chunkName": "pages/auth/login",
+    "_name": "_565b9154"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/home/nad/frontend-template/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_8ec77aa0"
+  }
+]
