@@ -13,7 +13,7 @@
               <span>Filter</span>
             </button>
             </div> -->
-
+         
             <div class="flex justify-end my-2">
               <button 
               class="bg-blue-700 hover:bg-grey text-small  text-grey-darkest text-white font-bold py-2 px-4 rounded inline-flex items-center"
@@ -23,7 +23,10 @@
               <span>Add</span>
             </button>
             </div>
-  
+            <!-- Search-bar -->
+            <div class="search-bar">
+              <input type="text" class="border bg-gray-100 p-3" v-model="searchQuery" @change="search()" placeholder="Search">
+            </div>
             <DataTable 
               :isLoading="dataLoading" 
               :isInitialLoad="initialLoad" 
@@ -117,10 +120,12 @@
     name: 'IndexPage',
     data() {
       return {
+        // tableData: [],
         requestViewDrawer: false,
         requestAddDrawer: false,
         editableForm: false,
         isModalOpen: false,
+        searchQuery: '',
         modal:{
           title:'',
           content:''
@@ -202,6 +207,9 @@
       });
     },
     computed: {
+      tableData() {
+    return []; // Or any other computation/logic for initializing tableData
+  },
       ...mapState({
         filterData: state => state.request.filters,
         tableData: state => state.request.data,
@@ -212,30 +220,37 @@
         tableFilterValues: state => state.request.filterValues,
       }),
       ...mapGetters({
-        getTableData: "request/getTableData"
+        getTableData: "ocs_view/getTableData"
       }),
     },
     methods: {
       ...mapMutations({
-        updateNumOfItems: 'request/UPDATE_NUM_OF_ITEMS',
-        updateFilterValues: 'request/UPDATE_FILTER_VALUES',
-        updateOrderValues: 'request/UPDATE_ORDER_VALUES',
-        setTableModule: 'request/SET_MODULE'
+        updateNumOfItems: 'ocs_view/UPDATE_NUM_OF_ITEMS',
+        updateFilterValues: 'ocs_view/UPDATE_FILTER_VALUES',
+        updateOrderValues: 'ocs_view/UPDATE_ORDER_VALUES',
+        setTableModule: 'ocs_view/SET_MODULE'
       }),
       ...mapActions({
-        getData: 'request/getDataList',
-        createData: 'request/create',
-        updateData: 'request/update',
-        getFilters: 'request/getFilters'
+        getData: 'ocs_view/getDataList',
+        createData: 'ocs_view/create',
+        updateData: 'ocs_view/update',
+        getFilters: 'ocs_view/getFilters'
       }),
       openDrawer(data) {
         this.showDrawer = true
         this.drawerData = data
       },
+      search(value){
+        console.log(value)
+      },
       handleConfirmation(action){
         this.isModalOpen = true
         this.modal.title = 'Confirm action'
         this.modal.content = `Are you sure you want to ${action} this item?`
+      },
+      fetchData(){
+
+
       },
       fetchTableData(page) { // reusable function for getting the data to be displayed in txn history
         this.getData({
@@ -246,16 +261,13 @@
               with_parent_name: true,
               fields:[
                 'id',
-                'user_request_id',
-                'ocs_service_id',
                 'transaction_no',
-                'copies_req',
-                'date_created',
+                'name',
+                'request',
+                'target_date',
+                'remaining',
+                'committed by',
                 'status',
-                'req_type',
-                'transaction_id',
-                'or_number',
-                'is_verified',
                 'is_active'
               ]
           }
@@ -265,6 +277,12 @@
         this.$refs.viewRequest.clickSave()
         this.isModalOpen = false
       },
+      // search(){
+      //   this.updateFilterValues({
+      //     search : this.searchQuery
+      //   })
+      //   this.fetchTableData(1)
+      // },
       updateDrawer(index){
         this.requestViewDrawer = !this.requestViewDrawer
         if(index) {

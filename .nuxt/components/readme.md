@@ -10,6 +10,7 @@ You can directly use them in pages and other components without the need to impo
 - `<CircSpinner>` | `<circ-spinner>` (components/CircSpinner.vue)
 - `<DataTable>` | `<data-table>` (components/DataTable.vue)
 - `<Drawer>` | `<drawer>` (components/Drawer.vue)
+- `<Filters>` | `<filters>` (components/Filters.vue)
 - `<Loader>` | `<loader>` (components/Loader.vue)
 - `<Modal>` | `<modal>` (components/Modal.vue)
 - `<NavBar>` | `<nav-bar>` (components/NavBar.vue)

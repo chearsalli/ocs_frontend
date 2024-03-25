@@ -21,7 +21,7 @@ export const actions = {
         try {
             let tableParams = Object.assign(payload.data, state.filterValues)
             tableParams = Object.assign(tableParams, state.order)
-            const data = await this.$axios.$get(`/request`, {params: tableParams})
+            const data = await this.$axios.$get(`/ocs_view`, {params: tableParams})
             await commit('GET_DATA_LIST_SUCCESS', data.request)
         } catch (error) {
             if(error.response.status===422){  
@@ -45,7 +45,7 @@ export const actions = {
     create ({ commit }, data) {
         commit('CREATE_DATA_REQUEST')
    
-        return this.$axios.$post('/request', data)
+        return this.$axios.$post('/ocs_view', data)
         .then(function (response) {
             commit('alert/SUCCESS', 'Successfully created', { root: true })
             commit('CREATE_DATA_SUCCESS', response.data)
@@ -59,7 +59,7 @@ export const actions = {
     update ({ commit }, data) {
         commit('UPDATE_DATA_REQUEST')
        
-        return this.$axios.$put(`/request${data.id}`, data)
+        return this.$axios.$put(`/ocs_view${data.id}`, data)
         .then(function (response) {
             commit('alert/SUCCESS', 'Successfully updated', { root: true })
             commit('UPDATE_DATA_SUCCESS', response.data)
@@ -73,7 +73,7 @@ export const actions = {
     async getFilters({ commit }, payload) {
         commit('GET_DATA_REQUEST')
         try {
-            const data = await this.$axios.$get(`/request`, {params: payload.data})
+            const data = await this.$axios.$get(`/ocs_view`, {params: payload.data})
             await commit('GET_FILTER_SUCCESS', {key: payload.data.column_name, filter:data.courses})
         } catch (error) {
             if(error.response.status===422){  
@@ -157,15 +157,14 @@ export const getters = {
         if(state.data.data){
             let coursesData = state.data.data.map((item) => {
                 const temp = {
-                    user_request_id: item. user_request_id,
-                    ocs_service_id: item.ocs_service_id,
                     transaction_no: item.transaction_no,
-                    copies_req: item.copies_req,
+                    name: item.name,
+                    request: item.request,
+                    target_date: item.target_date,
                     date_created: item.date_created,
+                    remaining: item.remaining,
+                    committed_by: item.committed_by,
                     status: item.status,
-                    req_type: item.req_type,
-                    transaction_id: item.transaction_id,
-                    or_number: item.or_number,
                     action: '',
                     details: item
                 };

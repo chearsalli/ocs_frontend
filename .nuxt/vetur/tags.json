@@ -11,6 +11,9 @@
   "Drawer": {
     "description": "Auto imported from components/Drawer.vue"
   },
+  "Filters": {
+    "description": "Auto imported from components/Filters.vue"
+  },
   "Loader": {
     "description": "Auto imported from components/Loader.vue"
   },

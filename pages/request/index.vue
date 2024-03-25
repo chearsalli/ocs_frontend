@@ -23,11 +23,15 @@
               <span>Add</span>
             </button>
             </div>
-  
+
+            <!-- Search-bar -->
+            <div class="search-bar">
+              <input type="text" class="border bg-gray-100 p-3" v-model="searchQuery" @change="search()" placeholder="Search">
+            </div>
             <DataTable 
               :isLoading="dataLoading" 
               :isInitialLoad="initialLoad" 
-              :tableFilterData="filterData" 
+              :tableFilterData="tableFilter" 
               :tableHeaders="headers" 
               :tableData="tableData.data" 
               :tableOptions="options" 
@@ -122,6 +126,7 @@
         requestAddDrawer: false,
         editableForm: false,
         isModalOpen: false,
+        searchQuery: '',
         modal:{
           title:'',
           content:''
@@ -187,6 +192,20 @@
             name: "action",
             sortable: false,
             label: "Action"
+          }
+        ],
+        tableFilter: [
+          {
+            field: 'search',
+            name: 'search',
+            type: 'input',
+            label: 'Search'
+          },
+          {
+            field: 'search',
+            name: 'search',
+            type: 'input',
+            label: 'Search'
           }
         ],
         // index: null,
@@ -276,6 +295,12 @@
         this.$refs.viewRequest.clickSave()
         this.isModalOpen = false
       },
+      search(){
+        this.updateFilterValues({
+          search : this.searchQuery
+        })
+        this.fetchTableData(1)
+      },
       updateDrawer(index){
         this.requestViewDrawer = !this.requestViewDrawer
         if(index) {
@@ -354,3 +379,46 @@
   }
 
   </script> 
+  <style scoped>
+  .search-bar {
+    margin-bottom: 20px;
+  }
+  
+  .search-bar input[type="text"] {
+    width: 25%;
+    padding: 10px;
+    border: 1px solid maroon;
+    border-radius: 5px;
+    font-size: 18px;
+  }
+  
+  .search-bar input[type="text"]::placeholder {
+    color: maroon;
+    opacity: 0.5;
+    font-size: 18px;
+  }
+  
+  /* table headers design */
+  .table-auto thead tr {
+      background-color: #8d1436;
+      color: white;
+  }
+  
+  /* table rows */
+  .table-auto tbody tr {
+      background-color: white;
+      color: black;
+      
+      
+  }
+  
+  /* table cells */
+  .table-auto td {
+      padding: 5px;
+  }
+  
+  /*hover effect */
+  .table-auto tbody tr:hover {
+      background-color: #e3e3ee; 
+  }
+  </style>
