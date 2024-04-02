@@ -379,46 +379,5 @@
   }
 
   </script> 
-  <style scoped>
-  .search-bar {
-    margin-bottom: 20px;
-  }
+
   
-  .search-bar input[type="text"] {
-    width: 25%;
-    padding: 10px;
-    border: 1px solid maroon;
-    border-radius: 5px;
-    font-size: 18px;
-  }
-  
-  .search-bar input[type="text"]::placeholder {
-    color: maroon;
-    opacity: 0.5;
-    font-size: 18px;
-  }
-  
-  /* table headers design */
-  .table-auto thead tr {
-      background-color: #8d1436;
-      color: white;
-  }
-  
-  /* table rows */
-  .table-auto tbody tr {
-      background-color: white;
-      color: black;
-      
-      
-  }
-  
-  /* table cells */
-  .table-auto td {
-      padding: 5px;
-  }
-  
-  /*hover effect */
-  .table-auto tbody tr:hover {
-      background-color: #e3e3ee; 
-  }
-  </style>

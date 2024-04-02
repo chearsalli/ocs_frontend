@@ -1,4 +1,4 @@
-<template>
+'<template>
 
   
     <div class="relative overflow-x-hidden items-top justify-center min-h-screen h-full bg-gray-100 pt-10">
@@ -26,11 +26,12 @@
             <!-- Search-bar -->
             <div class="search-bar">
               <input type="text" class="border bg-gray-100 p-3" v-model="searchQuery" @change="search()" placeholder="Search">
+
             </div>
             <DataTable 
               :isLoading="dataLoading" 
               :isInitialLoad="initialLoad" 
-              :tableFilterData="filterData" 
+              :tableFilterData="tableFilter" 
               :tableHeaders="headers" 
               :tableData="tableData.data" 
               :tableOptions="options" 
@@ -53,6 +54,8 @@
                 <font-awesome-icon v-if="index.index.is_verified" :icon="['fas', 'check']"  class="icon alt text-green-500"/>
                 <font-awesome-icon v-else :icon="['fas', 'x']"  class="icon alt text-red-500"/>
               </template>
+
+              
             </DataTable>
           </div>
       </div>
@@ -120,7 +123,7 @@
     name: 'IndexPage',
     data() {
       return {
-        // tableData: [],
+        
         requestViewDrawer: false,
         requestAddDrawer: false,
         editableForm: false,
@@ -142,7 +145,7 @@
             label: "Name"
           },
           {
-            name: "Request",
+            name: "req_type",
             sortable: true,
             label: "Request"
           },
@@ -162,26 +165,26 @@
             label: "Committed by"
           },
           {
-            name: "Status",
+            name: "status",
             sortable: true,
             label: "Status"
           },
          
-        //   {
-        //     name: "active",
-        //     sortable: false,
-        //     label: "Active"
-        //   },
-        //   {
-        //     name: "verified",
-        //     sortable: false,
-        //     label: "Verifed"
-        //   },
-        //   {
-        //     name: "action",
-        //     sortable: false,
-        //     label: "Action"
-        //   }
+          ],
+        tableFilter: [
+          {
+            field: 'search',
+            name: 'search',
+            type: 'input',
+            label: 'Search'
+          },
+          {
+            field: 'search',
+            name: 'search',
+            type: 'input',
+            label: 'Search'
+          }
+        
         ],
         // index: null,
         options: {
@@ -207,50 +210,41 @@
       });
     },
     computed: {
-      tableData() {
-    return []; // Or any other computation/logic for initializing tableData
-  },
+  
       ...mapState({
-        filterData: state => state.request.filters,
-        tableData: state => state.request.data,
-        pagination: state => state.request.data,
-        dataLoading: state => state.request.loading,
-        initialLoad: state => state.request.initialLoad,
-        coursesData: state => state.request.data,
-        tableFilterValues: state => state.request.filterValues,
+        filterData: state => state.ocs_staff.filters,
+        tableData: state => state.ocs_staff.data,
+        pagination: state => state.ocs_staff.data,
+        dataLoading: state => state.ocs_staff.loading,
+        initialLoad: state => state.ocs_staff.initialLoad,
+        coursesData: state => state.ocs_staff.data,
+        tableFilterValues: state => state.ocs_staff.filterValues,
       }),
       ...mapGetters({
-        getTableData: "ocs_view/getTableData"
+        getTableData: "ocs_staff/getTableData"
       }),
     },
     methods: {
       ...mapMutations({
-        updateNumOfItems: 'ocs_view/UPDATE_NUM_OF_ITEMS',
-        updateFilterValues: 'ocs_view/UPDATE_FILTER_VALUES',
-        updateOrderValues: 'ocs_view/UPDATE_ORDER_VALUES',
-        setTableModule: 'ocs_view/SET_MODULE'
+        updateNumOfItems: 'ocs_staff/UPDATE_NUM_OF_ITEMS',
+        updateFilterValues: 'ocs_staff/UPDATE_FILTER_VALUES',
+        updateOrderValues: 'ocs_staff/UPDATE_ORDER_VALUES',
+        setTableModule: 'ocs_staff/SET_MODULE'
       }),
       ...mapActions({
-        getData: 'ocs_view/getDataList',
-        createData: 'ocs_view/create',
-        updateData: 'ocs_view/update',
-        getFilters: 'ocs_view/getFilters'
+        getData: 'ocs_staff/getDataList',
+        createData: 'ocs_staff/create',
+        updateData: 'ocs_staff/update',
+        getFilters: 'ocs_staff/getFilters'
       }),
       openDrawer(data) {
         this.showDrawer = true
         this.drawerData = data
       },
-      search(value){
-        console.log(value)
-      },
       handleConfirmation(action){
         this.isModalOpen = true
         this.modal.title = 'Confirm action'
         this.modal.content = `Are you sure you want to ${action} this item?`
-      },
-      fetchData(){
-
-
       },
       fetchTableData(page) { // reusable function for getting the data to be displayed in txn history
         this.getData({
@@ -259,6 +253,7 @@
               page,
               items: this.options.numOfItems,
               with_parent_name: true,
+              with_user: true,
               fields:[
                 'id',
                 'transaction_no',
@@ -277,12 +272,12 @@
         this.$refs.viewRequest.clickSave()
         this.isModalOpen = false
       },
-      // search(){
-      //   this.updateFilterValues({
-      //     search : this.searchQuery
-      //   })
-      //   this.fetchTableData(1)
-      // },
+      search(){
+        this.updateFilterValues({
+          search : this.searchQuery
+        })
+        this.fetchTableData(1)
+      },
       updateDrawer(index){
         this.requestViewDrawer = !this.requestViewDrawer
         if(index) {
@@ -292,17 +287,13 @@
         }
         this.$refs.viewRequest.setDefault({
           id: index.index.id,
-          user_request_id: index.index.user_request_id,
-          ocs_service_id: index.index.ocs_service_id,
           transaction_no: index.index.transaction_no,
-          copies_req: index.index.copies_req,
-          date_created: index.index.date_created,
+          name: index.index.name,
+          request: index.index.request,
+          target_date: index.index. target_date,
+          remaining: index.index.remaining,
+          committed_by: index.index.committed_by,
           status: index.index.status,
-          req_type: index.index.req_type,
-          transaction_id: index.index.transaction_id,
-          or_number: index.index.or_number,
-          is_verified: index.index.is_verified,
-          is_active: index.index.is_active,
         })
         this.editableForm = false
       },
@@ -341,17 +332,15 @@
         this.requestAddDrawer = true
         this.$refs.addRequest.setDefault({
           id: null,
-          user_request_id: '',
-          ocs_service_id: '',
-          transaction_no: '' ,
-          copies_req: '',
-          date_created: '',
+         transaction_no: '',
+          name: '',
+          request: '' ,
+          target_date: '',
+          remaining: '',
+          committed_by: '',
           status: '',
-          req_type: '',
-          transaction_id: '',
-          or_number: '',
-          is_active: 1,
-          is_verified: 0
+          // is_active: 1,
+          // is_verified: 0
         })
       },
       handleMakeEditable(){
@@ -361,3 +350,47 @@
   }
 
   </script> 
+
+<style scoped>
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-bar input[type="text"] {
+  width: 25%;
+  padding: 10px;
+  border: 1px solid maroon;
+  border-radius: 5px;
+  font-size: 18px;
+}
+
+.search-bar input[type="text"]::placeholder {
+  color: maroon;
+  opacity: 0.5;
+  font-size: 18px;
+}
+
+/* table headers design */
+.table-auto thead tr {
+    background-color: #8d1436;
+    color: white;
+}
+
+/* table rows */
+.table-auto tbody tr {
+    background-color: white;
+    color: black;
+    
+    
+}
+
+/* table cells */
+.table-auto td {
+    padding: 5px;
+}
+
+/*hover effect */
+.table-auto tbody tr:hover {
+    background-color: #e3e3ee; 
+}
+</style>

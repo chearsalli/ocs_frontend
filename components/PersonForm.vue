@@ -243,10 +243,10 @@
     </div>
 
     <div class="w-full mb-5">
-      <activitylogTimeline 
+      <!-- <activitylogTimeline 
       v-if="!editable"
         :activityLogData="tableData" 
-      />
+      /> -->
     </div>
 <div class="mb-5 p-5"></div>
   </div>

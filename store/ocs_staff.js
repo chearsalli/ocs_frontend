@@ -100,6 +100,9 @@ export const mutations = {
     GET_DATA_LIST_REQUEST (state) {
         state.loading = true
     },
+    GET_DATA_FAILED (state) {
+        state.loading = false
+    },
     GET_DATA_LIST_SUCCESS(state, data) {
         state.data = data
         state.loading = false
