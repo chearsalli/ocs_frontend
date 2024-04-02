@@ -54,7 +54,7 @@
                 <font-awesome-icon v-if="index.index.is_verified" :icon="['fas', 'check']"  class="icon alt text-green-500"/>
                 <font-awesome-icon v-else :icon="['fas', 'x']"  class="icon alt text-red-500"/>
               </template>
-
+                
               
             </DataTable>
           </div>
@@ -150,12 +150,12 @@
             label: "Request"
           },
           {
-            name: "Target_date",
+            name: "target_date",
             sortable: true,
             label: "Target Date"
           },
           {
-            name: "remaining",
+            name: "remaining_day",
             sortable: true,
             label: "Remaining"
           },
@@ -254,13 +254,14 @@
               items: this.options.numOfItems,
               with_parent_name: true,
               with_user: true,
+              with_calculate: true,
               fields:[
                 'id',
                 'transaction_no',
                 'name',
                 'request',
                 'target_date',
-                'remaining',
+                'remaining_day',
                 'committed by',
                 'status',
                 'is_active'

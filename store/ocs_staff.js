@@ -165,7 +165,7 @@ export const getters = {
                     request: item.request,
                     target_date: item.target_date,
                     date_created: item.date_created,
-                    remaining: item.remaining,
+                    remaining_day: item.remaining_day,
                     committed_by: item.committed_by,
                     status: item.status,
                     action: '',
