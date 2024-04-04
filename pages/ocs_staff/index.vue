@@ -25,7 +25,7 @@
             </div>
             <!-- Search-bar -->
             <div class="search-bar">
-              <input type="text" class="border bg-gray-100 p-3" v-model="searchQuery" @change="search()" placeholder="Search">
+              <input type="text" class="border bg-gray-100 p-3" v-model="searchQuery" @change="search()" placeholder="Transaction No./Name">
 
             </div>
             <DataTable 
@@ -155,7 +155,7 @@
             label: "Target Date"
           },
           {
-            name: "remaining_day",
+            name: "remaining_days",
             sortable: true,
             label: "Remaining"
           },
@@ -254,14 +254,14 @@
               items: this.options.numOfItems,
               with_parent_name: true,
               with_user: true,
-              with_calculate: true,
+              with_calculation: true,
               fields:[
                 'id',
                 'transaction_no',
                 'name',
                 'request',
                 'target_date',
-                'remaining_day',
+                'remaining_days',
                 'committed by',
                 'status',
                 'is_active'
