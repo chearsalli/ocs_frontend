@@ -24,10 +24,22 @@
             </button>
             </div>
             <!-- Search-bar -->
-            <div class="search-bar">
-              <input type="text" class="border bg-gray-100 p-3" v-model="searchQuery" @change="search()" placeholder="Transaction No./Name">
-
+            <!-- <div class="search-bar">
+              
+              <input type="text" class="border-8 border-green-800 bg-gray-100 p-3 pl-10 " v-model="searchQuery" @change="search()" placeholder="Transaction No./Name">
+              
+            </div> -->
+            
+            <!-- Search-bar -->
+            <div class="search-bar relative">
+            <!-- Search icon -->
+            <svg class="absolute inset-y-0 left-0 w-8 h-8 text-gray-500 ml-3 mt-3 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <!-- Search input -->
+            <input type="text" class="border-8 border-green-800 bg-gray-100 p-3 pl-10 rounded-xl" v-model="searchQuery" @change="search()" placeholder="Transaction No./Name">
             </div>
+            
             <DataTable 
               :isLoading="dataLoading" 
               :isInitialLoad="initialLoad" 
@@ -158,6 +170,12 @@
             name: "remaining_days",
             sortable: true,
             label: "Remaining"
+          },
+        
+          {
+            name: "processing_fee",
+            sortable: true,
+            label: "Processing Fee"
           },
           {
             name: "committed_by",
@@ -352,7 +370,7 @@
 
   </script> 
 
-<style scoped>
+<!-- <style scoped>
 .search-bar {
   margin-bottom: 20px;
 }
@@ -371,27 +389,5 @@
   font-size: 18px;
 }
 
-/* table headers design */
-.table-auto thead tr {
-    background-color: #8d1436;
-    color: white;
-}
 
-/* table rows */
-.table-auto tbody tr {
-    background-color: white;
-    color: black;
-    
-    
-}
-
-/* table cells */
-.table-auto td {
-    padding: 5px;
-}
-
-/*hover effect */
-.table-auto tbody tr:hover {
-    background-color: #e3e3ee; 
-}
-</style>
+</style> -->

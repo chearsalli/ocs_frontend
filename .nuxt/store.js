@@ -21,6 +21,7 @@ let store = {};
 
   resolveStoreModules(require('../store/activitylogs.js'), 'activitylogs.js')
   resolveStoreModules(require('../store/alert.js'), 'alert.js')
+  resolveStoreModules(require('../store/cashier.js'), 'cashier.js')
   resolveStoreModules(require('../store/ocs_staff.js'), 'ocs_staff.js')
   resolveStoreModules(require('../store/request.js'), 'request.js')
 
@@ -31,6 +32,7 @@ let store = {};
     module.hot.accept([
       '../store/activitylogs.js',
       '../store/alert.js',
+      '../store/cashier.js',
       '../store/index.js',
       '../store/ocs_staff.js',
       '../store/request.js',

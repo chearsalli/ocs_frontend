@@ -20,7 +20,7 @@
                 <div class="font-bold">Loading...</div>
             </div> -->
             <div v-if="!isInitialLoad" class="bg-white overflow-auto shadow-xl sm:rounded-lg mb-4">
-                <table class="table-auto w-full items-center text-center">
+                <table class="table-auto w-full items-center text-center rounded-full">
                     <thead>
                         <tr class="font-bold">
                             <td v-for="(header, headerIndex) in tableHeaders" :key="headerIndex" scope="col" class="px-6 py-3" @click="sort(header)">

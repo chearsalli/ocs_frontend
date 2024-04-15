@@ -3,14 +3,16 @@
   
     <div class="relative overflow-x-hidden items-top justify-center min-h-screen h-full bg-gray-100 pt-10">
       <div class="py-12 px-14">
-        <h2 class="text-4xl dark:text-white">Request</h2>
+        <h2 class="text-4xl dark:text-white">Student</h2>
           <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
+
             <!-- <div class="flex justify-end my-2">
               <button
               class="bg-blue-700 hover:bg-grey text-small  text-grey-darkest text-white font-bold py-2 px-4 rounded inline-flex items-center"
+              @click="openRequestAddDrawer()"
               >
               <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" class="mr-2 fill-blue-500" fill="#fffff"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill="#ffffff"/></svg>
-              <span>Filter</span>
+              <span>Request</span>
             </button>
             </div> -->
 
@@ -19,15 +21,15 @@
               class="bg-blue-700 hover:bg-grey text-small  text-grey-darkest text-white font-bold py-2 px-4 rounded inline-flex items-center"
               @click="openRequestAddDrawer()"
               >
-              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" class="mr-2 fill-blue-500" fill="#fffff"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill="#ffffff"/></svg>
-              <span>Add</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" hei  ght="11" viewBox="0 0 24 24" class="mr-2 fill-blue-500" fill="#fffff"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill="#ffffff"/></svg>
+              <span>Add Request</span>
             </button>
             </div>
 
             <!-- Search-bar -->
-            <div class="search-bar">
+            <!-- <div class="search-bar">
               <input type="text" class="border bg-gray-100 p-3" v-model="searchQuery" @change="search()" placeholder="Search">
-            </div>
+            </div> -->
             <DataTable 
               :isLoading="dataLoading" 
               :isInitialLoad="initialLoad" 
@@ -55,6 +57,10 @@
                 <font-awesome-icon v-if="index.index.is_verified" :icon="['fas', 'check']"  class="icon alt text-green-500"/>
                 <font-awesome-icon v-else :icon="['fas', 'x']"  class="icon alt text-red-500"/>
               </template>
+
+              <!-- <template #status="index">
+        <td :class="getStatusClass(index.index.status)">{{ index.index.status }}</td>
+    </template> -->
             </DataTable>
           </div>
       </div>
@@ -95,6 +101,7 @@
       </Drawer>
 
       
+      
 
     <Modal
       :isOpen="isModalOpen"
@@ -133,14 +140,9 @@
         },
         headers: [
           {
-            name: "user_request_id",
+            name: "req_type",
             sortable: true,
-            label: "User Request Id"
-          },
-          {
-            name: "ocs_service_id",
-            sortable: true,
-            label: "OCS Request Id"
+            label: "Summary"
           },
           {
             name: "transaction_no",
@@ -148,46 +150,31 @@
             label: "Transaction Number"
           },
           {
-            name: "copies_req",
+            name: "processing_fee",
             sortable: true,
-            label: "Copies Request"
+            label: "Processing Fee"
           },
           {
-            name: "date_created",
+            name: "current_office",
             sortable: true,
-            label: "Date Created"
+            label: "Current Office"
           },
           {
             name: "status",
             sortable: true,
             label: "Status"
           },
-          {
-            name: "req_type",
-            sortable: true,
-            label: "Request Type"
-          },
-          {
-            name: "transaction_id",
-            sortable: true,
-            label: "Transaction Id"
-          },
-
-          {
-            name: "or_number",
-            sortable: true,
-            label: "Official Receipt Number"
-          },
-          {
-            name: "active",
-            sortable: false,
-            label: "Active"
-          },
-          {
-            name: "verified",
-            sortable: false,
-            label: "Verifed"
-          },
+          
+          // {
+          //   name: "active",
+          //   sortable: false,
+          //   label: "Active"
+          // },
+          // {
+          //   name: "verified",
+          //   sortable: false,
+          //   label: "Verifed"
+          // },
           {
             name: "action",
             sortable: false,
@@ -274,17 +261,14 @@
               page,
               items: this.options.numOfItems,
               with_parent_name: true,
+              with_processing_fee: true,
               fields:[
                 'id',
-                'user_request_id',
-                'ocs_service_id',
-                'transaction_no',
-                'copies_req',
-                'date_created',
-                'status',
                 'req_type',
-                'transaction_id',
-                'or_number',
+                'transaction_no',
+                'processing_fee',
+                'current_office',
+                'status',
                 'is_verified',
                 'is_active'
               ]
@@ -310,15 +294,12 @@
         }
         this.$refs.viewRequest.setDefault({
           id: index.index.id,
-          user_request_id: index.index.user_request_id,
-          ocs_service_id: index.index.ocs_service_id,
-          transaction_no: index.index.transaction_no,
-          copies_req: index.index.copies_req,
-          date_created: index.index.date_created,
-          status: index.index.status,
           req_type: index.index.req_type,
-          transaction_id: index.index.transaction_id,
-          or_number: index.index.or_number,
+          transaction_no: index.index.transaction_no,
+          processing_fee: index.index.processing_fee,
+          current_office: index.index.current_office,
+          status: index.index.status,
+
           is_verified: index.index.is_verified,
           is_active: index.index.is_active,
         })
@@ -359,22 +340,18 @@
         this.requestAddDrawer = true
         this.$refs.addRequest.setDefault({
           id: null,
-          user_request_id: '',
-          ocs_service_id: '',
-          transaction_no: '' ,
-          copies_req: '',
+          req_type: '',
           date_created: '',
           status: '',
-          req_type: '',
-          transaction_id: '',
-          or_number: '',
           is_active: 1,
           is_verified: 0
         })
       },
       handleMakeEditable(){
         this.editableForm = !this.editableForm
-      }
+      },
+
+      
     },
   }
 

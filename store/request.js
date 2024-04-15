@@ -157,15 +157,11 @@ export const getters = {
         if(state.data.data){
             let coursesData = state.data.data.map((item) => {
                 const temp = {
-                    user_request_id: item. user_request_id,
-                    ocs_service_id: item.ocs_service_id,
-                    transaction_no: item.transaction_no,
-                    copies_req: item.copies_req,
-                    date_created: item.date_created,
-                    status: item.status,
                     req_type: item.req_type,
-                    transaction_id: item.transaction_id,
-                    or_number: item.or_number,
+                    transaction_no: item.transaction_no,
+                    processing_fee: item.processing_fee,
+                    current_office: item.current_office,
+                    status: item.status,
                     action: '',
                     details: item
                 };

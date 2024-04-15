@@ -1,5 +1,12 @@
 [
   {
+    "name": "cashier",
+    "path": "/cashier",
+    "component": "/home/nad/frontend-template/pages/cashier/index.vue",
+    "chunkName": "pages/cashier/index",
+    "_name": "_5ffa7464"
+  },
+  {
     "name": "ocs_staff",
     "path": "/ocs_staff",
     "component": "/home/nad/frontend-template/pages/ocs_staff/index.vue",
@@ -14,11 +21,11 @@
     "_name": "_d2b99188"
   },
   {
-    "name": "request",
-    "path": "/request",
-    "component": "/home/nad/frontend-template/pages/request/index.vue",
-    "chunkName": "pages/request/index",
-    "_name": "_4036ad30"
+    "name": "student",
+    "path": "/student",
+    "component": "/home/nad/frontend-template/pages/student/index.vue",
+    "chunkName": "pages/student/index",
+    "_name": "_09a795dc"
   },
   {
     "name": "auth-callback",

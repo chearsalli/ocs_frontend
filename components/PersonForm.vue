@@ -105,7 +105,7 @@
         >
       </div>
 
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="trans_num">
           Transaction Number
         </label>
@@ -115,7 +115,7 @@
         :disabled="!editable"
         type="text"
         >
-      </div> -->
+      </div>
 
       <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="copy">
@@ -148,23 +148,27 @@
           type="date"
           >
         </div>
+
+        
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="status">
               Status
           </label>
-          <select 
+          
+          <input 
             v-model="input.status"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-            :disabled="!editable"
+            readonly
+            placeholder="Pending"
            label="Please select"
           >
              <!-- <option disabled value="">Please select</option> -->
-             <option class="py-2 px-3 text-gray-700">Pending</option>
+             <!-- <option class="py-2 px-3 text-gray-700">Pending</option>
              <option class="py-2 px-3 text-gray-700">Paid</option>
              <option class="py-2 px-3 text-gray-700">Completed</option>
              <option class="py-2 px-3 text-gray-700">Failed</option>
-             <option class="py-2 px-3 text-gray-700">Cancelled</option>
-          </select>
+             <option class="py-2 px-3 text-gray-700">Cancelled</option> -->
+       
         </div>
 
         <div class="mb-4">
@@ -187,17 +191,7 @@
         </select>
         </div>
 
-        <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="trans_id">
-          Transaction Id
-        </label>
-        <input 
-        v-model="input.transaction_id"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-        :disabled="!editable"
-        type="text"
-        >
-      </div>
+      
 
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="or_num">
@@ -210,6 +204,20 @@
         type="text"
         >
       </div>
+      
+
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="trans_id">
+          Transaction Id
+        </label>
+        <input 
+        v-model="input.transaction_id"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
+        :disabled="!editable"
+        type="text"
+        >
+      </div>
+
 
       <div class="flex content-end">
         <button 
@@ -272,11 +280,11 @@ export default {
                 ocs_service_id: "",
                 transaction_no: "",
                 copies_req: "",
-                date_created: "",
-                status: "",
+                date_created: new Date().toISOString().split('T')[0], // Set default value to current date
+                status: "Pending",
                 req_type: "",
-                transaction_id: "",
                 or_number: "",
+                transaction_id: "",
                 is_active: 1,
                 is_verified: 0,
                 id: null,
@@ -345,8 +353,25 @@ export default {
             getRequestByID: "request/getDataById"
         })
     },
+
+    watch: {
+        
+        editable(newVal) {
+            if (newVal) {
+                this.$nextTick(() => {
+                    this.input.date_created = this.$refs.datePicker.value;
+                });
+            }
+        }
+    },
     methods: {
         clickSave() {
+          // check if the user inputs the date
+          if (!this.input.date_created) {
+        // If not, set it to the current date
+        this.input.date_created = new Date().toISOString().split('T')[0];
+    }
+            
             this.$emit("onSave", this.input);
         },
         closeDrawer() {
@@ -363,7 +388,7 @@ export default {
             this.input.date_created = data.date_created;
             this.input.status= data.status;
             this.input.req_type = data.req_type;
-            this.input.transaction_id= data.transaction_id;
+            this.input.transaction_id = data.transaction_id;
             this.input.or_number = data.or_number;
             this.clickMakeEditable()
           }else{
@@ -379,8 +404,8 @@ export default {
             this.input.date_created = data.date_created;
             this.input.status= data.status;
             this.input.req_type = data.req_type;
-            this.input.transaction_id= data.transaction_id;
             this.input.or_number = data.or_number;
+            this.input.transaction_id = data.transaction_id;
             this.input.is_verified = data.is_verified
             this.input.is_active = data.is_active
             this.fetchTableData(1);

@@ -16,6 +16,7 @@ You can directly use them in pages and other components without the need to impo
 - `<NavBar>` | `<nav-bar>` (components/NavBar.vue)
 - `<NuxtLogo>` | `<nuxt-logo>` (components/NuxtLogo.vue)
 - `<PersonForm>` | `<person-form>` (components/PersonForm.vue)
+- `<RequestForm>` | `<request-form>` (components/RequestForm.vue)
 - `<ToggleSwitch>` | `<toggle-switch>` (components/ToggleSwitch.vue)
 - `<Tutorial>` | `<tutorial>` (components/Tutorial.vue)
 - `<ActivitylogTimeline>` | `<activitylog-timeline>` (components/activitylogTimeline.vue)
