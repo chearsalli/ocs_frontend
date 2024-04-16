@@ -261,7 +261,7 @@
               items: this.options.numOfItems,
               with_parent_name: true,
               with_user: true,
-            //    with_fund_code_id: true,
+              with_fund_codes: true,
               
               fields:[
                 'id',

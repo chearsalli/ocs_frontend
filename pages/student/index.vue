@@ -16,6 +16,11 @@
             </button>
             </div> -->
 
+
+
+            
+
+
             <div class="flex justify-end my-2">
               <button 
               class="bg-blue-700 hover:bg-grey text-small  text-grey-darkest text-white font-bold py-2 px-4 rounded inline-flex items-center"
@@ -43,12 +48,22 @@
               @onUpdateSorting="handleSortingUpdate"
               
             >
-              <template #action="index">
-                <button class="bg-green-500 text-white p-2 rounded mb-2 inline-flex items-center" @click="updateDrawer(index)" >
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M22.764 20.476l-4.24-4.24a.81.81 0 0 0-1.144 0l-.218.219-1.465-1.465.192-.193a8.303 8.303 0 1 0-1.092 1.092l.193-.192 1.465 1.465-.219.218a.81.81 0 0 0 0 1.145l4.24 4.238a.808.808 0 0 0 1.143 0l1.145-1.143a.811.811 0 0 0 0-1.144zM9.496 16.8a7.241 7.241 0 0 1-5.155-2.137 7.299 7.299 0 1 1 10.775-.505L14.09 15.18a7.274 7.274 0 0 1-4.593 1.62zm11.552 5.121l-3.97-3.968.874-.873 3.97 3.968zM10 9h3v1h-3v3H9v-3H6V9h3V6h1z"></path><path fill="none" d="M0 0h24v24H0z"></path></g></svg>
-                  View
-                </button>
-              </template>
+            
+
+               <template #action="index">
+            
+                  <div class="flex">
+                    <button class="bg-green-500 text-white p-2 rounded mr-2 flex items-center justify-center w-8 h-8"  @click="updateDrawer(index)">
+                    <i class="fas fa-eye text-xl"></i> 
+                    </button>
+
+                    <button class="bg-red-500 text-white p-2 rounded flex items-center justify-center w-8 h-8 " @click="handleDelete(index)">
+                    <i class="fas fa-trash-alt text-xl"></i> 
+                    </button>
+
+                   </div>
+              </template> 
+             
               <template #active="index">
                 <font-awesome-icon v-if="index.index.is_active" :icon="['fas', 'check']"  class="icon alt text-green-500"/>
                 <font-awesome-icon v-else :icon="['fas', 'x']"  class="icon alt text-red-500"/>
@@ -58,13 +73,12 @@
                 <font-awesome-icon v-else :icon="['fas', 'x']"  class="icon alt text-red-500"/>
               </template>
 
-              <!-- <template #status="index">
-        <td :class="getStatusClass(index.index.status)">{{ index.index.status }}</td>
-    </template> -->
+              
+             
             </DataTable>
           </div>
       </div>
-  
+ 
       <Drawer 
         :isOpen="requestAddDrawer"
         width="w-1/2" 
@@ -87,7 +101,7 @@
         @close="requestViewDrawer = false" 
       >
         <template #content>
-          <h1 class="mb-4 w-full">Request Detail</h1>
+          <h1 class="mb-4 w-full">Request Details</h1>
               <PersonForm
                 ref="viewRequest"
                 formMethod = 'Edit'
@@ -125,7 +139,15 @@
   
   <script>
   import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
+  // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+  import '@fortawesome/fontawesome-free/css/all.css'
+
+
   export default {
+  //   components: {
+  //   FontAwesomeIcon
+  // },
+
     name: 'IndexPage',
     data() {
       return {
@@ -353,6 +375,8 @@
 
       
     },
+
+    
   }
 
   </script> 

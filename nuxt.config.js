@@ -57,9 +57,10 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    // '@nuxtjs/fontawesome'
   ],
-
+  
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
     withCredentials: true,

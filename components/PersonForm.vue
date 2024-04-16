@@ -149,7 +149,7 @@
           >
         </div>
 
-        
+
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="status">
               Status
@@ -280,7 +280,7 @@ export default {
                 ocs_service_id: "",
                 transaction_no: "",
                 copies_req: "",
-                date_created: new Date().toISOString().split('T')[0], // Set default value to current date
+                date_created: new Date().toISOString().split('T')[0], // default value to current date
                 status: "Pending",
                 req_type: "",
                 or_number: "",
