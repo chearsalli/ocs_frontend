@@ -38,14 +38,14 @@
             </svg>
             <!-- Search input -->
             <input type="text" class="border-8 border-green-800 bg-gray-100 p-3 pl-10 rounded-xl" v-model="searchQuery" @change="search()" placeholder="Transaction No./Name">
-            </div>
+          </div>
             
             <DataTable 
               :isLoading="dataLoading" 
               :isInitialLoad="initialLoad" 
               :tableFilterData="tableFilter" 
               :tableHeaders="headers" 
-              :tableData="tableData.data" 
+              :tableData="getTableData" 
               :tableOptions="options" 
               :pagination=pagination
               @onUpdateOptions="handleOptionsUpdate" 

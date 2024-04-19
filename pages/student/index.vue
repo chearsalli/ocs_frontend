@@ -169,7 +169,7 @@
           {
             name: "transaction_no",
             sortable: true,
-            label: "Transaction Number"
+            label: "Transaction No"
           },
           {
             name: "processing_fee",

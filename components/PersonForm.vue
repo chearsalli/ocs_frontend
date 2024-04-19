@@ -57,55 +57,10 @@
     </div>
 
     <div class="max-w-xs mt-2"> 
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="user_req_id">
-          User Request Id
-        </label>
-        <input 
-          v-model="input.user_request_id"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-          :disabled="!editable"
-          type="text"
-        >
-      </div>
       
       
+
       <!-- <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="sex">
-             Sex
-          </label> -->
-          <!-- <input 
-          v-model="input.sex"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-          :disabled="!editable"
-          type="text"
-          > -->
-        <!-- <select 
-        v-model="input.sex"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-        :disabled="!editable"
-        label="Please select" -->
-        <!-- > -->
-             <!-- <option disabled value="">Please select</option> -->
-             <!-- <option class="py-2 px-3 text-gray-700">Male</option>
-             <option class="py-2 px-3 text-gray-700">Female</option>
-             <option class="py-2 px-3 text-gray-700">Prefer not to say</option>
-        </select>
-        </div> -->
-
-        <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="ocs_req_id">
-          Ocs Request Id
-        </label>
-        <input 
-        v-model="input.ocs_service_id"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-        :disabled="!editable"
-        type="text"
-        >
-      </div>
-
-      <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="trans_num">
           Transaction Number
         </label>
@@ -115,7 +70,30 @@
         :disabled="!editable"
         type="text"
         >
-      </div>
+      </div> -->
+
+
+      <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="req_type">
+             Select Service:
+          </label>
+          
+        <select 
+        v-model="input.req_type"
+        class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
+        :disabled="!editable"
+        label="Please select"
+        >
+             <!-- <option disabled value="">Please select</option> -->
+             <option class="py-2 px-3 text-gray-700">Copy of Grades</option>
+             <option class="py-2 px-3 text-gray-700">Copy of Registration</option>
+             <option class="py-2 px-3 text-gray-700">TOR</option>
+             <option class="py-2 px-3 text-gray-700">Binding Fee</option>
+             <option class="py-2 px-3 text-gray-700">Graduation Fee</option>
+             <option class="py-2 px-3 text-gray-700">Other</option>
+        </select>
+        </div>
+
 
       <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="copy">
@@ -124,7 +102,7 @@
           
         <select 
         v-model="input.copies_req"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
+        class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
         :disabled="!editable"
         label="Please select"
         >
@@ -143,7 +121,7 @@
           </label>
           <input 
           v-model="input.date_created"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+          class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
           :disabled="!editable"
           type="date"
           >
@@ -152,48 +130,30 @@
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="status">
-              Status
-          </label>
-          
-          <input 
-            v-model="input.status"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-            readonly
-            placeholder="Pending"
-           label="Please select"
-          >
-             <!-- <option disabled value="">Please select</option> -->
-             <!-- <option class="py-2 px-3 text-gray-700">Pending</option>
-             <option class="py-2 px-3 text-gray-700">Paid</option>
-             <option class="py-2 px-3 text-gray-700">Completed</option>
-             <option class="py-2 px-3 text-gray-700">Failed</option>
-             <option class="py-2 px-3 text-gray-700">Cancelled</option> -->
-       
-        </div>
-
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="req_type">
-             Request Type
+             Status
           </label>
           
         <select 
-        v-model="input.req_type"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
+        v-model="input.status"
+        class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
         :disabled="!editable"
         label="Please select"
         >
              <!-- <option disabled value="">Please select</option> -->
-             <option class="py-2 px-3 text-gray-700">Copy of Grades</option>
-             <option class="py-2 px-3 text-gray-700">Copy of Registration</option>
-             <option class="py-2 px-3 text-gray-700">TOR</option>
-             <option class="py-2 px-3 text-gray-700">Certificate of Graduation</option>
+             <option class="py-2 px-3 text-gray-700">Pending</option>
+             <option class="py-2 px-3 text-gray-700">Paid</option>
+             <option class="py-2 px-3 text-gray-700">Request</option>
+             <option class="py-2 px-3 text-gray-700">Cancelled</option>
+             <option class="py-2 px-3 text-gray-700">Released</option>
              <option class="py-2 px-3 text-gray-700">Other</option>
         </select>
         </div>
 
+       
+
       
 
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="or_num">
           Official Receipt
         </label>
@@ -203,7 +163,7 @@
         :disabled="!editable"
         type="text"
         >
-      </div>
+      </div> -->
       
 
       <div class="mb-4">
@@ -281,7 +241,7 @@ export default {
                 transaction_no: "",
                 copies_req: "",
                 date_created: new Date().toISOString().split('T')[0], // default value to current date
-                status: "Pending",
+                status: "",
                 req_type: "",
                 or_number: "",
                 transaction_id: "",
