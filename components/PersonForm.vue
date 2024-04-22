@@ -166,17 +166,6 @@
       </div> -->
       
 
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="trans_id">
-          Transaction Id
-        </label>
-        <input 
-        v-model="input.transaction_id"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-        :disabled="!editable"
-        type="text"
-        >
-      </div>
 
 
       <div class="flex content-end">
@@ -236,7 +225,7 @@ export default {
     data() {
         return {
             input: {
-                user_request_id: "",
+               
                 ocs_service_id: "",
                 transaction_no: "",
                 copies_req: "",
@@ -244,7 +233,6 @@ export default {
                 status: "",
                 req_type: "",
                 or_number: "",
-                transaction_id: "",
                 is_active: 1,
                 is_verified: 0,
                 id: null,
@@ -341,14 +329,13 @@ export default {
         resetData() {
           const data = this.getRequestByID(this.input.id) 
           if(data){
-            this.input.user_request_id = data.user_request_id;
+          
             this.input.ocs_service_id = data.ocs_service_id;
             this.input.transaction_no = data.transaction_no;
             this.input.copies_req= data.copies_req;
             this.input.date_created = data.date_created;
             this.input.status= data.status;
             this.input.req_type = data.req_type;
-            this.input.transaction_id = data.transaction_id;
             this.input.or_number = data.or_number;
             this.clickMakeEditable()
           }else{
@@ -357,7 +344,6 @@ export default {
         },
         setDefault(data) {
             this.input.id = data.id;
-            this.input.user_request_id = data.user_request_id;
             this.input.ocs_service_id = data.ocs_service_id;
             this.input.transaction_no = data.transaction_no;
             this.input.copies_req= data.copies_req;
@@ -365,7 +351,6 @@ export default {
             this.input.status= data.status;
             this.input.req_type = data.req_type;
             this.input.or_number = data.or_number;
-            this.input.transaction_id = data.transaction_id;
             this.input.is_verified = data.is_verified
             this.input.is_active = data.is_active
             this.fetchTableData(1);
