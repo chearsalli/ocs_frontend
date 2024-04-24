@@ -79,12 +79,13 @@
           </label>
           
         <select 
-        v-model="input.req_type"
+        v-model="input.req_type" 
         class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
         :disabled="!editable"
         label="Please select"
-        >
-             <!-- <option disabled value="">Please select</option> -->
+       >
+            
+     
              <option class="py-2 px-3 text-gray-700">Copy of Grades</option>
              <option class="py-2 px-3 text-gray-700">Copy of Registration</option>
              <option class="py-2 px-3 text-gray-700">TOR</option>
@@ -94,6 +95,7 @@
         </select>
         </div>
 
+       
 
       <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="copy">
@@ -149,22 +151,7 @@
         </select>
         </div>
 
-       
-
-      
-
-      <!-- <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="or_num">
-          Official Receipt
-        </label>
-        <input 
-        v-model="input.or_number"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-        :disabled="!editable"
-        type="text"
-        >
-      </div> -->
-      
+    
 
 
 
@@ -175,7 +162,7 @@
             type="button"
             @click="clickSave()"
           >
-          Save
+          Request
         </button>
         <button 
           v-if="editable"
@@ -224,6 +211,8 @@ export default {
     },
     data() {
         return {
+          
+          
             input: {
                
                 ocs_service_id: "",
@@ -236,7 +225,9 @@ export default {
                 is_active: 1,
                 is_verified: 0,
                 id: null,
-                action: "update"
+                action: "update",
+            
+            
             },
             requestViewDrawer: false,
             requestAddDrawer: false,
@@ -313,6 +304,8 @@ export default {
         }
     },
     methods: {
+
+ 
         clickSave() {
           // check if the user inputs the date
           if (!this.input.date_created) {

@@ -3,7 +3,7 @@
   
     <div class="relative overflow-x-hidden items-top justify-center min-h-screen h-full bg-gray-100 pt-10">
       <div class="py-12 px-14">
-        <h2 class="text-4xl dark:text-white">Student</h2>
+        
           <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
 
             <!-- <div class="flex justify-end my-2">

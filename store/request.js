@@ -159,7 +159,7 @@ export const getters = {
                 const temp = {
                     req_type: item.req_type,
                     transaction_no: item.transaction_no,
-                    processing_fee: item.processing_fee,
+                    processing_fee: "PhP" + " " + item.processing_fee + '.00',
                     current_office: item.current_office,
                     status: item.status,
                     action: '',

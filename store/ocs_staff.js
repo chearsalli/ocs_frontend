@@ -165,10 +165,10 @@ export const getters = {
                     request: item.request,
                     target_date: item.target_date,
                     date_created: item.date_created,
-                    remaining_days: item.remaining_days + " " + 'day/s',
+                    remaining_days: item.remaining_days + " " + 'Business' + " " + 'days',
                     committed_by: item.committed_by,
                     status: item.status,
-                    processing_fee: item.processing_fee,
+                    processing_fee: "PhP" + " " + item.processing_fee + ".00",
                     req_type: item.req_type,
                     action: '',
                     details: item

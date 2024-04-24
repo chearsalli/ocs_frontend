@@ -3,7 +3,7 @@
   
     <div class="relative overflow-x-hidden items-top justify-center min-h-screen h-full bg-gray-100 pt-10">
       <div class="py-12 px-14">
-        <h2 class="text-4xl dark:text-white">Cashier</h2>
+        
           <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
             <!-- <div class="flex justify-end my-2">
               <button
@@ -14,7 +14,7 @@
             </button>
             </div> -->
          
-            <div class="flex justify-end my-2">
+            <!-- <div class="flex justify-end my-2">
               <button 
               class="bg-blue-700 hover:bg-grey text-small  text-grey-darkest text-white font-bold py-2 px-4 rounded inline-flex items-center"
               @click="openRequestAddDrawer()"
@@ -22,7 +22,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" class="mr-2 fill-blue-500" fill="#fffff"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill="#ffffff"/></svg>
               <span>Add</span>
             </button>
-            </div>
+            </div> -->
             <!-- Search-bar -->
             <!-- <div class="search-bar">
               
@@ -30,6 +30,7 @@
               
             </div> -->
             
+            <br>
             <!-- Search-bar -->
             <div class="search-bar relative">
             <!-- Search icon -->

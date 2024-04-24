@@ -34,8 +34,17 @@
                   alt="User Picture" /> -->
               </div>
               <h1 v-if="$auth.user" class="font-semibold text-lg hidden md:flex items-center">
-                {{ $auth.user.name }}
+              <template v-if="$route.path === '/ocs_staff' ">
+                <span style="color: #08543c; font-size: 1.2em;">OCS STAFF</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $auth.user.name }}
+              </template>
+              <template v-else-if="$route.path === '/student'">
+              <span style="color: #08543c; font-size: 1.2em;">STUDENT</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $auth.user.name }}
+              </template>
+              <template v-else-if="$route.path === '/cashier'">
+              <span style="color: #08543c; font-size: 1.2em;">CASHIER</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $auth.user.name }}
+              </template>
               </h1>
+             
             </div>
           </NuxtLink>
           <div class="relative inline-block">
@@ -124,7 +133,8 @@
                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
             </svg>
           </span>
-          <NuxtLink to='/ocs_staff'>OCS Staff</NuxtLink>
+          <NuxtLink to='/ocs_staff' @click="handleTabClick('ocsStaff')">OCS Staff</NuxtLink>
+
         </span>
         <span
           class="flex items-center p-4 hover:bg-gray-300 hover:text-red-700"
@@ -180,6 +190,7 @@
 
       data() {
           return {
+              activeTab: '', 
               isOpen: false,
               isSettingOpen: false,
               isFacultyOpen: false,
@@ -250,6 +261,9 @@
           });
       },
       methods: {
+            handleTabClick(tabName) {
+            this.activeTab = tabName; // Set active tab
+        },
           ...mapActions({
               getAdminTag: "maTable/checkTags"
           }),
