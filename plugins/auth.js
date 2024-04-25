@@ -5,21 +5,21 @@ export default ({ app, store, redirect }) => {
       
         console.log(to)
       const urlList = [
-        //   {
-        //       name: 'faculty-mentor-assignments',
-        //       permissionType: 'role',
-        //       permission: 'faculty'
-        //   },
-        //   {
-        //       name: 'faculty-my-advisees',
-        //       permissionType: 'role',
-        //       permission: 'faculty'
-        //   },
-        //   {
-        //       name: 'admin-mentor-assignment-unit',
-        //       permissionType: 'role',
-        //       permission: 'admin'
-        //   },
+          // {
+          //     name: 'request',
+          //     permissionType: 'role',
+          //     permission: 'student'
+          // },
+          // {
+          //     name: 'cashier',
+          //     permissionType: 'role',
+          //     permission: 'cashier'
+          // },
+          // {
+          //     name: 'ocs_view',
+          //     permissionType: 'role',
+          //     permission: 'service provider'
+          // },
         //   {
         //     name: 'admin-mentor-assignment-college',
         //     permissionType: 'role',

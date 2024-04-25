@@ -35,6 +35,9 @@
   "Tutorial": {
     "description": "Auto imported from components/Tutorial.vue"
   },
+  "ViewRequest": {
+    "description": "Auto imported from components/ViewRequest.vue"
+  },
   "ActivitylogTimeline": {
     "description": "Auto imported from components/activitylogTimeline.vue"
   }

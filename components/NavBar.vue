@@ -33,7 +33,8 @@
                   class="h-8 w-auto"
                   alt="User Picture" /> -->
               </div>
-              <h1 v-if="$auth.user" class="font-semibold text-lg hidden md:flex items-center">
+              <!-- <h1 v-if="$auth.user" class="font-semibold text-lg hidden md:flex items-center" > -->
+                <h1 class="font-semibold text-lg hidden md:flex items-center" v-if="$auth.user">
               <template v-if="$route.path === '/ocs_staff' ">
                 <span style="color: #08543c; font-size: 1.2em;">OCS STAFF</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $auth.user.name }}
               </template>
@@ -78,104 +79,50 @@
             ></div>
         </div>
       </transition>
-      <aside
-        class="transform top-16 left-0 w-64 bg-white fixed h-full shadow-md overflow-auto ease-in-out transition-all duration-300 z-10"
-        :class="isOpen ? 'translate-x-0' : '-translate-x-full'">
-        <span
-          class="flex items-center p-4 hover:bg-gray-300 hover:text-red-700"
-          @click="isOpen = false"
-          ><span class="mr-2">
-            <svg
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-              class="w-6 h-6">
-              <path
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+      <aside class="transform top-16 left-0 w-64 bg-white fixed h-full shadow-md overflow-auto ease-in-out transition-all duration-300 z-10" :class="isOpen ? 'translate-x-0' : '-translate-x-full'">
+        <!-- Dashboard Tab -->
+        <span v-if="showDashboardTab" class="flex items-center p-4 hover:bg-gray-300 hover:text-red-700" @click="isOpen = false">
+          <span class="mr-2">
+            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6">
+              <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
             </svg>
           </span>
-          <NuxtLink to='/'>Dashboard</NuxtLink>
+          <NuxtLink to="/">Dashboard</NuxtLink>
         </span>
-        <span
-          class="flex items-center p-4 hover:bg-gray-300 hover:text-red-700"
-          @click="isOpen = false"
-          ><span class="mr-2">
-            <svg
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-              class="w-6 h-6">
-              <path
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+        <!-- Cashier Tab -->
+        <span v-if="showCashierTab" class="flex items-center p-4 hover:bg-gray-300 hover:text-red-700" @click="isOpen = false">
+          <span class="mr-2">
+            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6">
+              <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
             </svg>
           </span>
-          <NuxtLink to='/cashier'>Cashier</NuxtLink>
+          <NuxtLink to="/cashier">Cashier</NuxtLink>
         </span>
-        <span
-          class="flex items-center p-4 hover:bg-gray-300 hover:text-red-700"
-          @click="isOpen = false"
-          ><span class="mr-2">
-            <svg
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-              class="w-6 h-6">
-              <path
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+
+        <!-- Service Provider Tab -->
+        <span v-if="showServiceProviderTab" class="flex items-center p-4 hover:bg-gray-300 hover:text-red-700" @click="isOpen = false">
+          <span class="mr-2">
+            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6">
+              <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
             </svg>
           </span>
-          <NuxtLink to='/ocs_staff' @click="handleTabClick('ocsStaff')">OCS Staff</NuxtLink>
+          <NuxtLink to='/ocs_staff'>Service Provider</NuxtLink>
 
         </span>
-        <span
-          class="flex items-center p-4 hover:bg-gray-300 hover:text-red-700"
-          @click="isOpen = false"
-          ><span class="mr-2">
-            <svg
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-              class="w-6 h-6">
-              <path
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-            </svg>
-          </span>
 
-          <NuxtLink to='/student'>Student</NuxtLink>
-        </span>
-        <span
-          class="flex items-center p-4 hover:bg-gray-300 hover:text-red-700"
-          @click="isOpen = false"
-          ><span class="mr-2">
-            <svg
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-              class="w-6 h-6">
-              <path
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+        <!-- Student Tab -->
+        <span v-if="showStudentTab" class="flex items-center p-4 hover:bg-gray-300 hover:text-red-700" @click="isOpen = false">
+          <span class="mr-2">
+            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6">
+              <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
             </svg>
           </span>
-          <NuxtLink to='/facilities'>Facilities</NuxtLink>
+          <NuxtLink to="/student">Student</NuxtLink>
         </span>
+      </aside>
+        
           <!-- END DASHBOARD -->
 
-      </aside>
         <Alert/>
     </nav>
   </div>
@@ -205,6 +152,28 @@
         if(this.isAdmin) {this.getAdminTag()}
       },
       computed: {
+
+        showDashboardTab() {
+      // 
+      return this.$auth.loggedIn && 
+         this.$auth.user && 
+         (this.$auth.user.roles.some(role => role.name === 'Student') || 
+          this.$auth.user.roles.some(role => role.name === 'Cashier') || 
+          this.$auth.user.roles.some(role => role.name === 'Service Provider'));
+    },
+    showCashierTab() {
+      return this.userHasRole('cashier');
+    },
+    showServiceProviderTab() {
+      console.log("User Roles:", this.$auth.user.roles);
+  return this.$auth.loggedIn && this.$auth.user && this.$auth.user.roles.some(role => role.name === 'Service Provider');
+},
+showStudentTab() {
+  console.log("User Roles:", this.$auth.user.roles);
+  return this.$auth.loggedIn && this.$auth.user && this.$auth.user.roles.some(role => role.name === 'Student');
+}
+
+  
           // ...mapState({
           //     adminTags: state => state.maTable.adminTags
           // }),
@@ -260,7 +229,16 @@
                   this.isOpen = false;
           });
       },
+      
       methods: {
+        userHasRole(role) {
+  // Implement logic to check if the user has the specified role
+  if (this.$auth.user && this.$auth.user.roles) {
+    return this.$auth.user.roles.some(r => r.name.toLowerCase() === role.toLowerCase());
+  }
+  return false;
+},
+
             handleTabClick(tabName) {
             this.activeTab = tabName; // Set active tab
         },

@@ -18,4 +18,5 @@ You can directly use them in pages and other components without the need to impo
 - `<PersonForm>` | `<person-form>` (components/PersonForm.vue)
 - `<ToggleSwitch>` | `<toggle-switch>` (components/ToggleSwitch.vue)
 - `<Tutorial>` | `<tutorial>` (components/Tutorial.vue)
+- `<ViewRequest>` | `<view-request>` (components/ViewRequest.vue)
 - `<ActivitylogTimeline>` | `<activitylog-timeline>` (components/activitylogTimeline.vue)

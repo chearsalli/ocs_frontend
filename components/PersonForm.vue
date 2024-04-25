@@ -97,59 +97,16 @@
 
        
 
-      <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="copy">
-             Copies Required
-          </label>
-          
-        <select 
-        v-model="input.copies_req"
-        class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-        :disabled="!editable"
-        label="Please select"
-        >
-             <!-- <option disabled value="">Please select</option> -->
-             <option class="py-2 px-3 text-gray-700">1</option>
-             <option class="py-2 px-3 text-gray-700">2</option>
-             <option class="py-2 px-3 text-gray-700">3</option>
-             <option class="py-2 px-3 text-gray-700">4</option>
-             <option class="py-2 px-3 text-gray-700">5</option>
-        </select>
-        </div>
-
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="date">
-             Date Created
-          </label>
-          <input 
-          v-model="input.date_created"
-          class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-          :disabled="!editable"
-          type="date"
-          >
-        </div>
-
-
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="status">
-             Status
-          </label>
-          
-        <select 
-        v-model="input.status"
-        class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-        :disabled="!editable"
-        label="Please select"
-        >
-             <!-- <option disabled value="">Please select</option> -->
-             <option class="py-2 px-3 text-gray-700">Pending</option>
-             <option class="py-2 px-3 text-gray-700">Paid</option>
-             <option class="py-2 px-3 text-gray-700">Request</option>
-             <option class="py-2 px-3 text-gray-700">Cancelled</option>
-             <option class="py-2 px-3 text-gray-700">Released</option>
-             <option class="py-2 px-3 text-gray-700">Other</option>
-        </select>
-        </div>
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="copy">
+        Number of Copies:
+    </label>
+    <div class="flex items-center">
+       
+        <input v-model="input.copies_req" class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full  w-16 py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline text-center" :disabled="!editable" type="number">
+       
+    </div>
+</div>
 
     
 
@@ -158,19 +115,19 @@
       <div class="flex content-end">
         <button 
             v-if="editable"
-            class="mr-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+            class="mr-1 bg-yellow-500 text-black mr-2 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
             type="button"
             @click="clickSave()"
           >
-          Request
+          REQUEST
         </button>
         <button 
           v-if="editable"
-          class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+          class="bg-red-500  text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
           type="button"
           @click="resetData()"
         >
-          Cancel
+          CANCEL
         </button>
       </div>
     </div>
@@ -218,7 +175,7 @@ export default {
                 ocs_service_id: "",
                 transaction_no: "",
                 copies_req: "",
-                date_created: new Date().toISOString().split('T')[0], // default value to current date
+                // date_created: new Date().toISOString().split('T')[0], // default value to current date
                 status: "",
                 req_type: "",
                 or_number: "",
@@ -295,23 +252,23 @@ export default {
 
     watch: {
         
-        editable(newVal) {
-            if (newVal) {
-                this.$nextTick(() => {
-                    this.input.date_created = this.$refs.datePicker.value;
-                });
-            }
-        }
+        // editable(newVal) {
+        //     if (newVal) {
+        //         this.$nextTick(() => {
+        //             this.input.date_created = this.$refs.datePicker.value;
+        //         });
+        //     }
+        // }
     },
     methods: {
 
  
         clickSave() {
           // check if the user inputs the date
-          if (!this.input.date_created) {
-        // If not, set it to the current date
-        this.input.date_created = new Date().toISOString().split('T')[0];
-    }
+    //       if (!this.input.date_created) {
+    //     // If not, set it to the current date
+    //     this.input.date_created = new Date().toISOString().split('T')[0];
+    // }
             
             this.$emit("onSave", this.input);
         },

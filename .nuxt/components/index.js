@@ -10,6 +10,7 @@ export { default as NuxtLogo } from '../../components/NuxtLogo.vue'
 export { default as PersonForm } from '../../components/PersonForm.vue'
 export { default as ToggleSwitch } from '../../components/ToggleSwitch.vue'
 export { default as Tutorial } from '../../components/Tutorial.vue'
+export { default as ViewRequest } from '../../components/ViewRequest.vue'
 export { default as ActivitylogTimeline } from '../../components/activitylogTimeline.vue'
 
 // nuxt/nuxt.js#8607

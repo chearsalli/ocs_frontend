@@ -49,12 +49,13 @@
               
             >
             
-
+            
                <template #action="index">
             
                   <div class="flex">
-                    <button class="bg-green-500 text-white p-2 rounded mr-2 flex items-center justify-center w-8 h-8"  @click="updateDrawer(index)">
+                    <button class="bg-green-500 text-white p-2 rounded mr-2 flex items-center justify-center w-8 h-8"   @click="toggleRequestViewDrawer(index)">
                     <i class="fas fa-eye text-xl"></i> 
+                    
                     </button>
 
                     <button class="bg-red-500 text-white p-2 rounded flex items-center justify-center w-8 h-8 " @click="handleDelete(index)">
@@ -62,6 +63,7 @@
                     </button>
 
                    </div>
+                 
               </template> 
              
               <template #active="index">
@@ -141,11 +143,13 @@
   import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
   // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import '@fortawesome/fontawesome-free/css/all.css'
+  // import ViewRequest from '~/components/ViewRequest.vue';
+
 
 
   export default {
   //   components: {
-  //   FontAwesomeIcon
+  //     ViewRequest
   // },
 
     name: 'IndexPage',
@@ -255,6 +259,10 @@
       }),
     },
     methods: {
+      toggleRequestViewDrawer(index) {
+      this.requestViewDrawer = !this.requestViewDrawer;
+      this.index = index.index;
+    },
       ...mapMutations({
         updateNumOfItems: 'request/UPDATE_NUM_OF_ITEMS',
         updateFilterValues: 'request/UPDATE_FILTER_VALUES',
@@ -307,6 +315,7 @@
         })
         this.fetchTableData(1)
       },
+      
       updateDrawer(index){
         this.requestViewDrawer = !this.requestViewDrawer
         if(index) {
@@ -314,6 +323,8 @@
         } else {
           this.index = null
         }
+
+        
         this.$refs.viewRequest.setDefault({
           id: index.index.id,
           req_type: index.index.req_type,
@@ -327,6 +338,8 @@
         })
         this.editableForm = false
       },
+
+      
       handleOptionsUpdate(options) {
           this.options.numOfItems = options.numOfItems
           this.updateFilterValues(options.filters)
@@ -363,7 +376,7 @@
         this.$refs.addRequest.setDefault({
           id: null,
           req_type: '',
-          date_created: '',
+          // date_created: '',
           status: '',
           is_active: 1,
           is_verified: 0
