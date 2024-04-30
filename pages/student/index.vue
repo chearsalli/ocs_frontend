@@ -112,54 +112,60 @@
         </template>
       </Drawer>
 
-      
-     
 
-    <Modal
-      :isOpen="isModalOpen"
-      iconType="warning"
-    >
-      <template slot="title">
-        {{ modal.title }}
-      </template>
-      <template slot="content">
-        {{ modal.content }}
-      </template>
-      <template slot="footer">
-        <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" @click="confirmAction()">Confirm</button>
-        <button type="button"  class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" @click="isModalOpen=false">Cancel</button>
-      </template>
-    </Modal>
-      
-    </div>
-    
+  <Modal :isOpen="isModalOpen" iconType="warning">
+  <template #title>
+    <h1 class="text-lg font-bold">{{ modal.title }}</h1> 
   </template>
+  
+  <template #content v-if="selectedRow && selectedRow.index">
+    <div>
+  
+      <p class="mt-4"><strong class="font-bold text-maroon text-lg">Requested Document:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.req_type }}</span></p>
+      <p class="mt-1"><strong class="font-bold text-maroon text-lg">Status:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.status }}</span></p>
+      <p class="mt-1"><strong class="font-bold text-maroon text-lg">Transaction No:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.transaction_no }}</span></p>
+      <p class="mt-1"><strong class="font-bold text-maroon text-lg">Date Created:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.date_created }}</span></p>
+      <p class="mt-1"><strong class="font-bold text-maroon text-lg">Processing Fee:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.processing_fee }}</span></p>
+      <p class="mt-1"><strong class="font-bold text-maroon text-lg">Committed by:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.committed_by }}</span></p>
+    </div>
+  </template>
+  
+  <template #footer>
+    <button @click="closeModal">Close</button>
+  </template>
+</Modal>
+
+
+  </div>
+</template>
   
   <script>
   import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
   // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import '@fortawesome/fontawesome-free/css/all.css'
+  import Modal from '@/components/Modal.vue';
   
 
 
 
   export default {
-  //   components: {
-  //     DetailsModal
-  // },
+    components: {
+      Modal,
+  },
 
     name: 'IndexPage',
     data() {
       return {
-       
+        selectedRow: {},
         requestViewDrawer: false,
         requestAddDrawer: false,
         editableForm: false,
         isModalOpen: false,
         searchQuery: '',
         modal:{
-          title:'',
-          content:''
+          title:'REQUEST DETAILS ',
+          content:'',
+          description:''
         },
         headers: [
           {
@@ -259,46 +265,46 @@
 
       openModal() {
     this.isModalVisible = true;
-  },
-  closeModal() {
-    this.isModalVisible = false;
-  },
-      async viewRow(index) {
-    try {
-        // Retrieve the data object for the selected row
-        
-        const rowData = this.tableData.data;
-        
-        // Log the rowData to check its structure and content
-        console.log('Row data:', rowData);
-        
-        // Check if rowData[index] exists and has the 'id' property
-        if (rowData[index] && rowData[index].id) {
-            // If yes, retrieve the ID of the selected row
-            const rowId = rowData[index].id;
-            
-            // Log the rowId to verify its value
-            console.log('Row ID:', rowId);
-            
-            // Make an API request to fetch detailed information for the selected row
-            const response = await this.$axios.get(`/api/get-details/${rowId}`);
-            
-            // Display the fetched data (e.g., show in a modal)
-            console.log('Detailed information for row:', response.data);
-        } else {
-            // If rowData[index] or rowData[index].id is undefined, log an error
-            console.error('Error: Row data or row ID is undefined');
-        }
-    } catch (error) {
-        console.error('Error fetching row details:', error);
-    }
 
-  },
+    //   openModal(rowData) {
+    //     console.log('Row data:', rowData); 
+    //     this.modal.title = 'Request Details'; 
+    //     this.modal.description = ''; 
   
-   
+  
+    //     if (rowData && rowData.req_type && rowData.status && rowData.transaction_no && rowData.date_created && rowData.processing_fee && rowData.committed_by) {
+    //         this.modal.description = `
+    //         <p><strong>Requested Document:</strong> ${rowData.req_type}</p>
+    //         <p><strong>Status:</strong> ${rowData.status}</p>
+    //         <p><strong>Transaction No:</strong> ${rowData.transaction_no}</p>
+    //         <p><strong>Date Created:</strong> ${rowData.date_created}</p>
+    //         <p><strong>Processing Fee:</strong> ${rowData.processing_fee}</p>
+    //         <p><strong>Committed by:</strong> ${rowData.committed_by}</p>
+    // `;
+    //     } else {
+  
+    //       this.modal.description = 'No details available for this request.';
+    //     }
+  
+    //       this.isModalOpen = true; // Open the modal
+        },
+
+  
+       closeModal() {
+          this.isModalOpen = false;
+        },
 
 
-
+      viewRow(rowData) {
+        try {
+          console.log('Selected row data:', rowData);
+          this.selectedRow = rowData; // Assign the entire rowData object
+          console.log('SelectedRow:', this.selectedRow); 
+          this.isModalOpen = true; 
+        } catch (error) {
+          console.error('Error fetching row details:', error);
+        }
+      },
 
       toggleRequestViewDrawer(index) {
       this.requestViewDrawer = !this.requestViewDrawer;

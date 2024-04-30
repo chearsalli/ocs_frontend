@@ -72,7 +72,7 @@
       watch: {
           isOpen: {
               immediate: true,
-              handler(isOpen) {
+              handler(isOpen) { 
                   if (process.client) {
                       if (isOpen) {
                           document.body.style.setProperty("overflow", "hidden");
