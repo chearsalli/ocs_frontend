@@ -50,21 +50,17 @@
             >
             
             
-               <template #action="index">
-            
-                  <div class="flex">
-                    <button class="bg-green-500 text-white p-2 rounded mr-2 flex items-center justify-center w-8 h-8"   @click="toggleRequestViewDrawer(index)">
-                    <i class="fas fa-eye text-xl"></i> 
-                    
-                    </button>
+            <template #action="index">
+    <div class="flex">
+        <button class="bg-green-500 text-white p-2 rounded mr-2 flex items-center justify-center w-8 h-8" @click="viewRow(index)">
+            <i class="fas fa-eye text-xl"></i> 
+        </button>
+        <button class="bg-red-500 text-white p-2 rounded flex items-center justify-center w-8 h-8 " @click="handleDelete(index)">
+            <i class="fas fa-trash-alt text-xl"></i> 
+        </button>
+    </div>
+</template>
 
-                    <button class="bg-red-500 text-white p-2 rounded flex items-center justify-center w-8 h-8 " @click="handleDelete(index)">
-                    <i class="fas fa-trash-alt text-xl"></i> 
-                    </button>
-
-                   </div>
-                 
-              </template> 
              
               <template #active="index">
                 <font-awesome-icon v-if="index.index.is_active" :icon="['fas', 'check']"  class="icon alt text-green-500"/>
@@ -117,7 +113,7 @@
       </Drawer>
 
       
-      
+     
 
     <Modal
       :isOpen="isModalOpen"
@@ -143,18 +139,19 @@
   import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
   // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import '@fortawesome/fontawesome-free/css/all.css'
-  // import ViewRequest from '~/components/ViewRequest.vue';
+  
 
 
 
   export default {
   //   components: {
-  //     ViewRequest
+  //     DetailsModal
   // },
 
     name: 'IndexPage',
     data() {
       return {
+       
         requestViewDrawer: false,
         requestAddDrawer: false,
         editableForm: false,
@@ -259,6 +256,50 @@
       }),
     },
     methods: {
+
+      openModal() {
+    this.isModalVisible = true;
+  },
+  closeModal() {
+    this.isModalVisible = false;
+  },
+      async viewRow(index) {
+    try {
+        // Retrieve the data object for the selected row
+        
+        const rowData = this.tableData.data;
+        
+        // Log the rowData to check its structure and content
+        console.log('Row data:', rowData);
+        
+        // Check if rowData[index] exists and has the 'id' property
+        if (rowData[index] && rowData[index].id) {
+            // If yes, retrieve the ID of the selected row
+            const rowId = rowData[index].id;
+            
+            // Log the rowId to verify its value
+            console.log('Row ID:', rowId);
+            
+            // Make an API request to fetch detailed information for the selected row
+            const response = await this.$axios.get(`/api/get-details/${rowId}`);
+            
+            // Display the fetched data (e.g., show in a modal)
+            console.log('Detailed information for row:', response.data);
+        } else {
+            // If rowData[index] or rowData[index].id is undefined, log an error
+            console.error('Error: Row data or row ID is undefined');
+        }
+    } catch (error) {
+        console.error('Error fetching row details:', error);
+    }
+
+  },
+  
+   
+
+
+
+
       toggleRequestViewDrawer(index) {
       this.requestViewDrawer = !this.requestViewDrawer;
       this.index = index.index;

@@ -56,13 +56,13 @@
 
             <template #action="index">
     <div class="flex">
-        <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="updateDrawer(index)">
-             ACCEPT
-        </button>
+      <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="acceptRequest(index)">
+    ACCEPT
+</button>
 
-        <button class="bg-red-900 text-white font-semibold py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="handleDelete(index)">
-             DENY
-        </button>
+<button class="bg-red-900 text-white font-semibold py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="denyRequest(index)">
+    DENY
+</button>
     </div>
 </template>
 
@@ -259,6 +259,40 @@
       }),
     },
     methods: {
+      async acceptRequest(index) {
+    try {
+        const requestData = this.tableData[index];
+        console.log('Request Data:', requestData); 
+        
+        await this.$store.dispatch('ocs_staff/update', requestData);
+       
+        await this.getDataList();
+        
+        console.log('Request accepted successfully');
+    } catch (error) {
+        console.error('Error accepting request:', error);
+        
+    }
+},
+
+async denyRequest(index) {
+    try {
+        const requestData = this.tableData[index]; 
+        
+        await this.$store.dispatch('ocs_staff/update', requestData);
+        
+        await this.getDataList();
+        
+        console.log('Request denied successfully');
+    } catch (error) {
+        console.error('Error denying request:', error);
+        
+    }
+},
+
+
+
+
       ...mapMutations({
         updateNumOfItems: 'ocs_staff/UPDATE_NUM_OF_ITEMS',
         updateFilterValues: 'ocs_staff/UPDATE_FILTER_VALUES',

@@ -117,7 +117,7 @@
               <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
             </svg>
           </span>
-          <NuxtLink to="/student">Student</NuxtLink>
+          <NuxtLink to="/student">Client</NuxtLink>
         </span>
       </aside>
         
@@ -153,25 +153,46 @@
       },
       computed: {
 
+//         showDashboardTab() {
+//       // 
+//       return this.$auth.loggedIn && 
+//          this.$auth.user && 
+//          (this.$auth.user.roles.some(role => role.name === 'Student') || 
+//           this.$auth.user.roles.some(role => role.name === 'Cashier') || 
+//           this.$auth.user.roles.some(role => role.name === 'Service Provider'));
+//     },
+//     showCashierTab() {
+//       return this.userHasRole('cashier');
+//     },
+//     showServiceProviderTab() {
+//       console.log("User Roles:", this.$auth.user.roles);
+//   return this.$auth.loggedIn && this.$auth.user && this.$auth.user.roles.some(role => role.name === 'Service Provider');
+// },
+// showStudentTab() {
+//   console.log("User Roles:", this.$auth.user.roles);
+//   return this.$auth.loggedIn && this.$auth.user && this.$auth.user.roles.some(role => role.name === 'Student');
+// }
+
         showDashboardTab() {
-      // 
-      return this.$auth.loggedIn && 
-         this.$auth.user && 
-         (this.$auth.user.roles.some(role => role.name === 'Student') || 
-          this.$auth.user.roles.some(role => role.name === 'Cashier') || 
-          this.$auth.user.roles.some(role => role.name === 'Service Provider'));
-    },
-    showCashierTab() {
-      return this.userHasRole('cashier');
-    },
-    showServiceProviderTab() {
-      console.log("User Roles:", this.$auth.user.roles);
-  return this.$auth.loggedIn && this.$auth.user && this.$auth.user.roles.some(role => role.name === 'Service Provider');
-},
-showStudentTab() {
-  console.log("User Roles:", this.$auth.user.roles);
-  return this.$auth.loggedIn && this.$auth.user && this.$auth.user.roles.some(role => role.name === 'Student');
-}
+    
+          return this.$auth.loggedIn;
+        },
+
+        showCashierTab() {
+    
+          return this.$auth.user && this.$auth.user.roles.some(role => role.name === 'Cashier');
+        },
+
+        showServiceProviderTab() {
+    
+          return this.$auth.user && this.$auth.user.roles.some(role => role.name === 'Service Provider');
+        },
+
+        showStudentTab() {
+           // Show the student tab for all logged-in users without the 'cashier' or 'service provider' role
+          return this.$auth.loggedIn && !this.$auth.user.roles.some(role => role.name === 'Cashier') && !this.$auth.user.roles.some(role => role.name === 'Service Provider');
+        }
+
 
   
           // ...mapState({

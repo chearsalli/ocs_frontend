@@ -41,6 +41,9 @@ export const actions = {
             }
             commit('GET_DATA_FAILED', error)
         }
+
+       
+        
     },
     create ({ commit }, data) {
         commit('CREATE_DATA_REQUEST')
@@ -56,20 +59,40 @@ export const actions = {
             return error.response
         })
     },
-    update ({ commit }, data) {
-        commit('UPDATE_DATA_REQUEST')
+    // update ({ commit }, data) {
+    //     commit('UPDATE_DATA_REQUEST')
        
-        return this.$axios.$put(`/ocs_view${data.id}`, data)
-        .then(function (response) {
-            commit('alert/SUCCESS', 'Successfully updated', { root: true })
-            commit('UPDATE_DATA_SUCCESS', response.data)
-        })
-        .catch((error) => {
-            commit('alert/ERROR', 'Validation Error', { root: true })
-            commit('UPDATE_DATA_FAILED', error)
-            return error.response
-        })
+    //     return this.$axios.$put(`/ocs_view${data.id}`, data)
+    //     .then(function (response) {
+    //         commit('alert/SUCCESS', 'Successfully updated', { root: true })
+    //         commit('UPDATE_DATA_SUCCESS', response.data)
+    //     })
+    //     .catch((error) => {
+    //         commit('alert/ERROR', 'Validation Error', { root: true })
+    //         commit('UPDATE_DATA_FAILED', error)
+    //         return error.response
+    //     })
+    // },
+
+    update({ commit }, data) {
+        console.log("Request Data:", data); // Check if data object is received correctly
+        commit('UPDATE_DATA_REQUEST');
+       
+        return this.$axios.$put(`/ocs_view/${data.id}`, data)
+            .then(function (response) {
+                console.log("Update Response:", response); // Check the response from the API
+                commit('alert/SUCCESS', 'Successfully updated', { root: true });
+                commit('UPDATE_DATA_SUCCESS', response.data);
+            })
+            .catch((error) => {
+                console.error('Update Error:', error); // Log any errors that occur
+                commit('alert/ERROR', 'Validation Error', { root: true });
+                commit('UPDATE_DATA_FAILED', error);
+                return error.response;
+            });
     },
+    
+    
     async getFilters({ commit }, payload) {
         commit('GET_DATA_REQUEST')
         try {
@@ -92,6 +115,30 @@ export const actions = {
                 await commit('alert/ERROR', errMessage, { root: true })
             }
             commit('GET_DATA_FAILED', error)
+        }
+    },
+
+    async acceptServiceRequest({ commit }, requestId) {
+        commit('ACCEPT_REQUEST_REQUEST');
+        try {
+            // Make API call to update status of service request to "Accepted"
+            await this.$axios.$put(`/ocs_view/${requestId}/accept`);
+            commit('ACCEPT_REQUEST_SUCCESS', requestId);
+        } catch (error) {
+            commit('ACCEPT_REQUEST_FAILED', error);
+            throw error;
+        }
+    },
+
+    async denyServiceRequest({ commit }, requestId) {
+        commit('DENY_REQUEST_REQUEST');
+        try {
+            // Make API call to update status of service request to "Denied"
+            await this.$axios.$put(`/ocs_view/${requestId}/deny`);
+            commit('DENY_REQUEST_SUCCESS', requestId);
+        } catch (error) {
+            commit('DENY_REQUEST_FAILED', error);
+            throw error;
         }
     },
 }
