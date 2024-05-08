@@ -39,7 +39,7 @@
                 <span style="color: #08543c; font-size: 1.2em;">OCS STAFF</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $auth.user.name }}
               </template>
               <template v-else-if="$route.path === '/student'">
-              <span style="color: #08543c; font-size: 1.2em;">STUDENT</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $auth.user.name }}
+              <span style="color: #08543c; font-size: 1.2em;">CLIENT</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $auth.user.name }}
               </template>
               <template v-else-if="$route.path === '/cashier'">
               <span style="color: #08543c; font-size: 1.2em;">CASHIER</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $auth.user.name }}

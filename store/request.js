@@ -1,4 +1,6 @@
 import Vue from "vue"
+
+
 // import * as Vue from 'vue'
 
 
@@ -16,6 +18,7 @@ export const state = () => ({
 })
 
 export const actions = {
+
     async getDataList ({ state, commit }, payload) {
         commit('GET_DATA_LIST_REQUEST')
         try {
@@ -94,7 +97,19 @@ export const actions = {
             commit('GET_DATA_FAILED', error)
         }
     },
-}
+
+    async deleteData({ commit }, id) {
+        commit('DELETE_DATA_REQUEST');
+        try {
+            await this.$axios.$delete(`/request/${id}`); 
+            commit('DELETE_DATA_SUCCESS');
+        } catch (error) {
+            commit('DELETE_DATA_FAILED', error);
+            console.error('Error deleting data:', error);
+        }
+        
+    },
+}  
 
 export const mutations = {
     GET_DATA_LIST_REQUEST (state) {
@@ -139,6 +154,16 @@ export const mutations = {
     },
     UPDATE_DATA_FAILED (state, error) {
         state.loading = false
+    },
+    DELETE_DATA_REQUEST(state) {
+        state.loading = true;
+    },
+    DELETE_DATA_SUCCESS(state) {
+        state.loading = false;
+    },
+    DELETE_DATA_FAILED(state, error) {
+        state.loading = false;
+        
     },
    
 }

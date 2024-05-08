@@ -46,6 +46,7 @@
               @onUpdateOptions="handleOptionsUpdate" 
               @onUpdatePage="handlePagination"
               @onUpdateSorting="handleSortingUpdate"
+              @onDelete="handleDelete" 
               
             >
             
@@ -55,7 +56,7 @@
         <button class="bg-green-500 text-white p-2 rounded mr-2 flex items-center justify-center w-8 h-8" @click="viewRow(index)">
             <i class="fas fa-eye text-xl"></i> 
         </button>
-        <button class="bg-red-500 text-white p-2 rounded flex items-center justify-center w-8 h-8 " @click="handleDelete(index)">
+        <button class="bg-red-500 text-white p-2 rounded flex items-center justify-center w-8 h-8 " @click="handleDelete(index.id)">
             <i class="fas fa-trash-alt text-xl"></i> 
         </button>
     </div>
@@ -141,7 +142,6 @@
   
   <script>
   import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
-  // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import '@fortawesome/fontawesome-free/css/all.css'
   import Modal from '@/components/Modal.vue';
   
@@ -262,31 +262,32 @@
       }),
     },
     methods: {
+//       async handleDelete(index) {
+//     try {
+//         const requestId = index.id; 
+//         await this.$axios.delete(`/request/${requestId}`); 
+//         this.fetchTableData(); 
+//         console.log('Request deleted successfully');
+//     } catch (error) {
+//         console.error('Error deleting request:', error);
+//     }
+// },
+
+...mapActions('request', ['deleteData']),
+    async handleDelete(id) {
+      try {
+        await this.deleteData(id);
+        console.log('Request deleted successfully');
+      } catch (error) {
+        console.error('Error deleting request:', error);
+      }
+    
+  },
+
 
       openModal() {
     this.isModalVisible = true;
 
-    //   openModal(rowData) {
-    //     console.log('Row data:', rowData); 
-    //     this.modal.title = 'Request Details'; 
-    //     this.modal.description = ''; 
-  
-  
-    //     if (rowData && rowData.req_type && rowData.status && rowData.transaction_no && rowData.date_created && rowData.processing_fee && rowData.committed_by) {
-    //         this.modal.description = `
-    //         <p><strong>Requested Document:</strong> ${rowData.req_type}</p>
-    //         <p><strong>Status:</strong> ${rowData.status}</p>
-    //         <p><strong>Transaction No:</strong> ${rowData.transaction_no}</p>
-    //         <p><strong>Date Created:</strong> ${rowData.date_created}</p>
-    //         <p><strong>Processing Fee:</strong> ${rowData.processing_fee}</p>
-    //         <p><strong>Committed by:</strong> ${rowData.committed_by}</p>
-    // `;
-    //     } else {
-  
-    //       this.modal.description = 'No details available for this request.';
-    //     }
-  
-    //       this.isModalOpen = true; // Open the modal
         },
 
   

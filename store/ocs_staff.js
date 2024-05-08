@@ -1,4 +1,6 @@
 import Vue from "vue"
+// import axios from 'axios';
+
 // import * as Vue from 'vue'
 
 
@@ -59,38 +61,23 @@ export const actions = {
             return error.response
         })
     },
-    // update ({ commit }, data) {
-    //     commit('UPDATE_DATA_REQUEST')
-       
-    //     return this.$axios.$put(`/ocs_view${data.id}`, data)
-    //     .then(function (response) {
-    //         commit('alert/SUCCESS', 'Successfully updated', { root: true })
-    //         commit('UPDATE_DATA_SUCCESS', response.data)
-    //     })
-    //     .catch((error) => {
-    //         commit('alert/ERROR', 'Validation Error', { root: true })
-    //         commit('UPDATE_DATA_FAILED', error)
-    //         return error.response
-    //     })
-    // },
 
-    update({ commit }, data) {
-        console.log("Request Data:", data); // Check if data object is received correctly
-        commit('UPDATE_DATA_REQUEST');
+    update ({ commit }, data) {
+        commit('UPDATE_DATA_REQUEST')
        
-        return this.$axios.$put(`/ocs_view/${data.id}`, data)
-            .then(function (response) {
-                console.log("Update Response:", response); // Check the response from the API
-                commit('alert/SUCCESS', 'Successfully updated', { root: true });
-                commit('UPDATE_DATA_SUCCESS', response.data);
-            })
-            .catch((error) => {
-                console.error('Update Error:', error); // Log any errors that occur
-                commit('alert/ERROR', 'Validation Error', { root: true });
-                commit('UPDATE_DATA_FAILED', error);
-                return error.response;
-            });
+        return this.$axios.$put(`/ocs_view${data.id}`, data)
+        .then(function (response) {
+            commit('alert/SUCCESS', 'Successfully updated', { root: true })
+            commit('UPDATE_DATA_SUCCESS', response.data)
+        })
+        .catch((error) => {
+            commit('alert/ERROR', 'Validation Error', { root: true })
+            commit('UPDATE_DATA_FAILED', error)
+            return error.response
+        })
     },
+
+    
     
     
     async getFilters({ commit }, payload) {
@@ -118,24 +105,25 @@ export const actions = {
         }
     },
 
-    async acceptServiceRequest({ commit }, requestId) {
+
+    async acceptRequest({ commit }, requestData) {
         commit('ACCEPT_REQUEST_REQUEST');
         try {
-            // Make API call to update status of service request to "Accepted"
-            await this.$axios.$put(`/ocs_view/${requestId}/accept`);
-            commit('ACCEPT_REQUEST_SUCCESS', requestId);
+            await this.$axios.$put(`/accept-update-ocs_view/${requestData}`);
+            commit('ACCEPT_REQUEST_SUCCESS', requestData);
         } catch (error) {
             commit('ACCEPT_REQUEST_FAILED', error);
             throw error;
         }
     },
-
-    async denyServiceRequest({ commit }, requestId) {
+     
+ 
+    async denyRequest({ commit }, requestData) {
         commit('DENY_REQUEST_REQUEST');
         try {
-            // Make API call to update status of service request to "Denied"
-            await this.$axios.$put(`/ocs_view/${requestId}/deny`);
-            commit('DENY_REQUEST_SUCCESS', requestId);
+           
+            await this.$axios.$put(`/deny-update-ocs_view/${requestData}`);
+            commit('DENY_REQUEST_SUCCESS', requestData);
         } catch (error) {
             commit('DENY_REQUEST_FAILED', error);
             throw error;
@@ -190,6 +178,30 @@ export const mutations = {
     UPDATE_DATA_FAILED (state, error) {
         state.loading = false
     },
+    ACCEPT_REQUEST_REQUEST(state) {
+        state.loading = true;
+    },
+    ACCEPT_REQUEST_SUCCESS(state) {
+        state.loading = false;
+        
+    },
+    ACCEPT_REQUEST_FAILED(state) {
+        state.loading = false;
+        
+    },
+
+    DENY_REQUEST_REQUEST(state) {
+        state.loading = true;
+    },
+    DENY_REQUEST_SUCCESS(state) {
+        state.loading = false;
+        
+    },
+    DENY_REQUEST_FAILED(state) {
+        state.loading = false;
+      
+    },
+   
    
 }
 
@@ -207,6 +219,7 @@ export const getters = {
         if(state.data.data){
             let coursesData = state.data.data.map((item) => {
                 const temp = {
+                    id: item.id,
                     transaction_no: item.transaction_no,
                     name: item.name,
                     request: item.request,

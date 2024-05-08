@@ -56,11 +56,11 @@
 
             <template #action="index">
     <div class="flex">
-      <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="acceptRequest(index)">
+      <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="Requestaccept(index)">
     ACCEPT
 </button>
 
-<button class="bg-red-900 text-white font-semibold py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="denyRequest(index)">
+<button class="bg-red-900 text-white font-semibold py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="Requestdeny(index)">
     DENY
 </button>
     </div>
@@ -130,7 +130,7 @@
         {{ modal.content }}
       </template>
       <template slot="footer">
-        <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" @click="confirmAction()">Confirm</button>
+        <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" @click="confirmAction(actionconfirm)">Confirm</button>
         <button type="button"  class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" @click="isModalOpen=false">Cancel</button>
       </template>
     </Modal>
@@ -141,6 +141,8 @@
   
   <script>
   import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
+//  import axios from 'vuex'
+
   export default {
     name: 'IndexPage',
     data() {
@@ -150,12 +152,24 @@
         requestAddDrawer: false,
         editableForm: false,
         isModalOpen: false,
+        selectedid: '',
+        actionconfirm: '',
         searchQuery: '',
         modal:{
           title:'',
           content:''
         },
         headers: [
+        {
+            name: "id",
+            sortable: true,
+            label: "id"
+          },
+          {
+            name: "transaction_no",
+            sortable: true,
+            label: "Transaction No."
+          },
           {
             name: "transaction_no",
             sortable: true,
@@ -259,38 +273,42 @@
       }),
     },
     methods: {
-      async acceptRequest(index) {
-    try {
-        const requestData = this.tableData[index];
-        console.log('Request Data:', requestData); 
-        
-        await this.$store.dispatch('ocs_staff/update', requestData);
-       
-        await this.getDataList();
-        
-        console.log('Request accepted successfully');
-    } catch (error) {
-        console.error('Error accepting request:', error);
-        
-    }
-},
 
-async denyRequest(index) {
-    try {
-        const requestData = this.tableData[index]; 
-        
-        await this.$store.dispatch('ocs_staff/update', requestData);
-        
-        await this.getDataList();
-        
-        console.log('Request denied successfully');
-    } catch (error) {
-        console.error('Error denying request:', error);
-        
-    }
+
+
+Requestaccept(index) {
+
+            this.isModalOpen = true;
+            this.modal.title = 'Confirm this Request';
+            this.modal.content = 'This will accept this request permanently. You cannot undo this action.';
+            this.selectedid = index.index.id;
+            this.actionconfirm = 'accept'; 
+
 },
 
 
+ Requestdeny(index) {
+
+            this.isModalOpen = true;
+            this.modal.title = 'Deny this Request';
+            this.modal.content = 'This will deny this request permanently. You cannot undo this action.';
+            this.selectedid = index.index.id;
+            this.actionconfirm = 'deny'; 
+},
+ 
+confirmAction(actionconfirm){
+     
+        if (actionconfirm === 'accept') {
+      this.acceptRequest(this.selectedid);
+      console.log('Request Accepted');
+    } else if (actionconfirm === 'deny') {
+      this.denyRequest(this.selectedid);
+      console.log('Request Denied');
+    }
+    this.isModalOpen = false;
+  
+
+      },
 
 
       ...mapMutations({
@@ -303,7 +321,9 @@ async denyRequest(index) {
         getData: 'ocs_staff/getDataList',
         createData: 'ocs_staff/create',
         updateData: 'ocs_staff/update',
-        getFilters: 'ocs_staff/getFilters'
+        getFilters: 'ocs_staff/getFilters',
+        acceptRequest: 'ocs_staff/acceptRequest',
+        denyRequest: 'ocs_staff/denyRequest',
       }),
       openDrawer(data) {
         this.showDrawer = true
@@ -337,10 +357,7 @@ async denyRequest(index) {
           }
         })
       },
-      confirmAction(){
-        this.$refs.viewRequest.clickSave()
-        this.isModalOpen = false
-      },
+      
       search(){
         this.updateFilterValues({
           search : this.searchQuery
