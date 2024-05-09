@@ -165,11 +165,11 @@
             sortable: true,
             label: "id"
           },
-          {
-            name: "transaction_no",
-            sortable: true,
-            label: "Transaction No."
-          },
+          // {
+          //   name: "transaction_no",
+          //   sortable: true,
+          //   label: "Transaction No."
+          // },
           {
             name: "transaction_no",
             sortable: true,
@@ -283,6 +283,7 @@ Requestaccept(index) {
             this.modal.content = 'This will accept this request permanently. You cannot undo this action.';
             this.selectedid = index.index.id;
             this.actionconfirm = 'accept'; 
+            
 
 },
 
@@ -306,7 +307,7 @@ confirmAction(actionconfirm){
       console.log('Request Denied');
     }
     this.isModalOpen = false;
-  
+    this.fetchTableData(1);
 
       },
 

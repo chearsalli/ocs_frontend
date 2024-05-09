@@ -57,7 +57,7 @@
             <i class="fas fa-eye text-xl"></i> 
         </button>
         <button class="bg-red-500 text-white p-2 rounded flex items-center justify-center w-8 h-8 " @click="handleDelete(index.id)">
-            <i class="fas fa-trash-alt text-xl"></i> 
+            <i class="fa fa-times text-xl"></i> 
         </button>
     </div>
 </template>
@@ -262,27 +262,18 @@
       }),
     },
     methods: {
-//       async handleDelete(index) {
-//     try {
-//         const requestId = index.id; 
-//         await this.$axios.delete(`/request/${requestId}`); 
-//         this.fetchTableData(); 
-//         console.log('Request deleted successfully');
-//     } catch (error) {
-//         console.error('Error deleting request:', error);
-//     }
-// },
-
-...mapActions('request', ['deleteData']),
-    async handleDelete(id) {
-      try {
-        await this.deleteData(id);
+      async handleDelete(index) {
+    try {
+        const requestId = index.id; 
+        await this.$axios.delete(`/request/${requestId}`); 
+        this.fetchTableData(); 
         console.log('Request deleted successfully');
-      } catch (error) {
+    } catch (error) {
         console.error('Error deleting request:', error);
-      }
-    
-  },
+    }
+},
+
+
 
 
       openModal() {

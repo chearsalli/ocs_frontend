@@ -58,9 +58,12 @@
             
             <template #action="index">
     <div class="flex">
-        <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="updateDrawer(index)">
+        <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="Paymentaccept(index)">
              PAID
         </button>
+        <!-- <button class="bg-red-900 text-white font-semibold py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="Paymentdeny(index)">
+    DENY
+</button> -->
     </div>
 </template>   
               <!-- <template #action="index">
@@ -131,7 +134,7 @@
         {{ modal.content }}
       </template>
       <template slot="footer">
-        <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" @click="confirmAction()">Confirm</button>
+        <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" @click="confirmAction(actionconfirm)">Confirm</button>
         <button type="button"  class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" @click="isModalOpen=false">Cancel</button>
       </template>
     </Modal>
@@ -151,6 +154,8 @@
         requestAddDrawer: false,
         editableForm: false,
         isModalOpen: false,
+        selectedid: '',
+        actionconfirm: '',
         searchQuery: '',
         modal:{
           title:'',
@@ -158,6 +163,12 @@
         },
         headers: [
           {
+            name: "id",
+            sortable: true,
+            label: "Id"
+          },
+          {
+            
             name: "transaction_no",
             sortable: true,
             label: "Transaction No."
@@ -243,6 +254,34 @@
       }),
     },
     methods: {
+
+...mapActions(['acceptPayment']),
+
+Paymentaccept(index) {
+    this.isModalOpen = true;
+    this.modal.title = 'Confirm Payment';
+    this.modal.content = 'Are you sure you want to mark this request as paid?';
+    this.selectedIndex = index;
+},
+
+confirmAction() {
+    
+    this.isModalOpen = false;
+    const index = this.selectedIndex;
+
+   
+    this.acceptPayment(index.index.id)
+        .then(() => {
+            console.log('Payment Accepted');
+            this.fetchTableData(1);
+        })
+        .catch(error => {
+            console.error('Error accepting payment:', error);
+        });
+},
+
+
+
       ...mapMutations({
         updateNumOfItems: 'cashier/UPDATE_NUM_OF_ITEMS',
         updateFilterValues: 'cashier/UPDATE_FILTER_VALUES',
@@ -253,7 +292,9 @@
         getData: 'cashier/getDataList',
         createData: 'cashier/create',
         updateData: 'cashier/update',
-        getFilters: 'cashier/getFilters'
+        getFilters: 'cashier/getFilters',
+        acceptPayment: 'cashier/acceptPayment',
+        denyPayment: 'cashier/denyPayment',
       }),
       openDrawer(data) {
         this.showDrawer = true
@@ -287,10 +328,10 @@
           }
         })
       },
-      confirmAction(){
-        this.$refs.viewRequest.clickSave()
-        this.isModalOpen = false
-      },
+      // confirmAction(){
+      //   this.$refs.viewRequest.clickSave()
+      //   this.isModalOpen = false
+      // },
       search(){
         this.updateFilterValues({
           search : this.searchQuery

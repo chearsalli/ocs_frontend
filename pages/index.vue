@@ -7,7 +7,7 @@
           Hi, {{ $auth.user.name }}!
         </h2>
         <p class="mt-3 text-gray-600">
-          Welcome to the new UPLB Master Data Management System! <br/> <br/> 
+          Welcome to the UPLB Service Request and Payment Verification System! <br/> <br/> 
           Please be informed that this system is still under continuous development.
           So if you encounter any problems, errors, or bugs please send us an email at dx.uplb@up.edu.ph to alert us about its existence. <br/> <br/> 
           The following are the modules that are currently working: Persons and Organization Master data.

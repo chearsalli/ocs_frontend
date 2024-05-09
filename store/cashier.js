@@ -94,6 +94,30 @@ export const actions = {
             commit('GET_DATA_FAILED', error)
         }
     },
+
+    async acceptPayment({ commit }, requestData) {
+        commit('ACCEPT_REQUEST_PAYMENT');
+        try {
+            await this.$axios.$put(`/accept-update-cashier/${requestData}`);
+            commit('ACCEPT_PAYMENT_SUCCESS', requestData);
+        } catch (error) {
+            commit('ACCEPT_PAYMENT_FAILED', error);
+            throw error;
+        }
+    },
+
+
+    // async denyPayment({ commit }, requestData) {
+    //     commit('DENY_REQUEST_PAYMENT');
+    //     try {
+           
+    //         await this.$axios.$put(`/deny-update-cashier/${requestData}`);
+    //         commit('DENY_PAYMENT_SUCCESS', requestData);
+    //     } catch (error) {
+    //         commit('DENY_PAYMENT_FAILED', error);
+    //         throw error;
+    //     }
+    // },
 }
 
 export const mutations = {
@@ -143,7 +167,29 @@ export const mutations = {
     UPDATE_DATA_FAILED (state, error) {
         state.loading = false
     },
-   
+    ACCEPT_REQUEST_PAYMENT(state) {
+        state.loading = true;
+    },
+    ACCEPT_PAYMENT_SUCCESS(state) {
+        state.loading = false;
+        
+    },
+    ACCEPT_PAYMENT_FAILED(state) {
+        state.loading = false;
+        
+    },
+
+    DENY_REQUEST_PAYMENT(state) {
+        state.loading = true;
+    },
+    DENY_PAYMENT_SUCCESS(state) {
+        state.loading = false;
+        
+    },
+    DENY_PAYMENT_FAILED(state) {
+        state.loading = false;
+      
+    },
 }
 
 
@@ -160,6 +206,7 @@ export const getters = {
         if(state.data.data){
             let coursesData = state.data.data.map((item) => {
                 const temp = {
+                    id: item.id,
                     transaction_no: item.transaction_no,
                     name: item.name,
                     request: item.request,
