@@ -28,6 +28,8 @@
     "@vuesimple/vs-pagination": "^1.4.13",
     "core-js": "^3.19.3",
     "dotenv": "^16.0.3",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "moment": "^2.29.4",
     "nuxt": "^2.17.3",
     "vs-pagination": "^1.0.1",

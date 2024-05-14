@@ -29,6 +29,9 @@
   "PersonForm": {
     "description": "Auto imported from components/PersonForm.vue"
   },
+  "Receipt": {
+    "description": "Auto imported from components/Receipt.vue"
+  },
   "ToggleSwitch": {
     "description": "Auto imported from components/ToggleSwitch.vue"
   },
