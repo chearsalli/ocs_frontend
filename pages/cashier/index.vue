@@ -67,12 +67,7 @@
       </button>
   </div>
 </template>   
-            <!-- <template #action="index">
-              <button class="bg-green-500 text-white p-2 rounded mb-2 inline-flex items-center" @click="updateDrawer(index)" >
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M22.764 20.476l-4.24-4.24a.81.81 0 0 0-1.144 0l-.218.219-1.465-1.465.192-.193a8.303 8.303 0 1 0-1.092 1.092l.193-.192 1.465 1.465-.219.218a.81.81 0 0 0 0 1.145l4.24 4.238a.808.808 0 0 0 1.143 0l1.145-1.143a.811.811 0 0 0 0-1.144zM9.496 16.8a7.241 7.241 0 0 1-5.155-2.137 7.299 7.299 0 1 1 10.775-.505L14.09 15.18a7.274 7.274 0 0 1-4.593 1.62zm11.552 5.121l-3.97-3.968.874-.873 3.97 3.968zM10 9h3v1h-3v3H9v-3H6V9h3V6h1z"></path><path fill="none" d="M0 0h24v24H0z"></path></g></svg>
-                View
-              </button>
-            </template> -->
+            
             <template #active="index">
               <font-awesome-icon v-if="index.index.is_active" :icon="['fas', 'check']"  class="icon alt text-green-500"/>
               <font-awesome-icon v-else :icon="['fas', 'x']"  class="icon alt text-red-500"/>
@@ -123,35 +118,28 @@
     </Drawer>
 
     
+     <!-- Modal for Paid button -->
+  <Modal :isOpen="isPaidModalOpen" iconType="warning" :lastORNumber="lastORNumber">
+    <template #title>
+      <h1 class="text-lg font-bold">Confirm Payment</h1> 
+      
+    </template>
 
-    <!-- <Modal :isOpen="isModalOpen" iconType="warning">
-<template #title>
-  <h1 class="text-lg font-bold">{{ modal.title }}</h1> 
-</template>
-
-<template #content v-if="selectedRow && selectedRow.index">
-  <div>
-
-    <p class="mt-4"><strong class="font-bold text-maroon text-lg">Requested Document:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.req_type }}</span></p>
-    <p class="mt-1"><strong class="font-bold text-maroon text-lg">Status:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.status }}</span></p>
-    <p class="mt-1"><strong class="font-bold text-maroon text-lg">Transaction No:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.transaction_no }}</span></p>
-    <p class="mt-1"><strong class="font-bold text-maroon text-lg">Date Created:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.date_created }}</span></p>
-    <p class="mt-1"><strong class="font-bold text-maroon text-lg">Requestor:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.name }}</span></p>
-    <p class="mt-1"><strong class="font-bold text-maroon text-lg">Committed by:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.committed_by }}</span></p>
-  </div>
-</template>
-
-<template #footer>
-  
-  <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="closeModal">
-        Close
+    <template #content>
+      <p>Are you sure you want to mark this request as paid?</p>
+      <br>
+      <h1 class="text-sm">Last OR Number: <span style="color: maroon;">{{ lastORNumber }}</span></h1>
+    </template>
+    
+    <template #footer>
+      <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="confirmAction">
+        Confirm
       </button>
-  <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap">
-        Print
+      <button class="bg-red-900 text-yellow-400 font-semibold mr-2 py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="closePaidModal">
+        Cancel
       </button>
-</template>
-</Modal>
-     -->
+    </template>
+  </Modal>
 
      <Modal :isOpen="isModalOpen" iconType="warning">
 <template #title>
@@ -163,15 +151,16 @@
     <!-- Receipt content -->
     <div class="receipt-container max-w-md mx-auto p-4 border border-gray-300">
       <div class="text-center mb-4">
-        <h1 class="text-xl font-bold">Receipt</h1>
+        
       </div>
       <div class="receipt-details">
-
+        
           <p class="mt-4"><strong class="font-bold text-maroon text-lg">Requested Document:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.req_type }}</span></p>
           <p class="mt-1"><strong class="font-bold text-maroon text-lg">Status:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.status }}</span></p>
           <p class="mt-1"><strong class="font-bold text-maroon text-lg">Transaction No:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.transaction_no }}</span></p>
           <p class="mt-1"><strong class="font-bold text-maroon text-lg">Date Created:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.date_created }}</span></p>
           <p class="mt-1"><strong class="font-bold text-maroon text-lg">Requestor:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.name }}</span></p>
+          <p class="mt-1"><strong class="font-bold text-maroon text-lg">Fund Code:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.fund_code_id }}</span></p>
           <p class="mt-1"><strong class="font-bold text-maroon text-lg">Committed by:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.committed_by }}</span></p>
             
       </div>
@@ -180,7 +169,7 @@
 </template>
 
 <template #footer>
-  <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="closeModal">
+  <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="closeViewModal">
     Close
   </button>
   <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="printReceipt">
@@ -191,6 +180,7 @@
 
   </div>
   
+  
 </template>
 
 
@@ -200,18 +190,27 @@ import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
 import '@fortawesome/fontawesome-free/css/all.css'
 // import axios from 'axios';
 import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 export default {
   name: 'IndexPage',
+  
+  props: {
+    lastORNumber: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
-      
+      isPaidModalOpen: false,
       requestViewDrawer: false,
       requestAddDrawer: false,
       editableForm: false,
       isModalOpen: false,
       selectedid: '',
       actionconfirm: '',
+      // lastORNumber: '',
       searchQuery: '',
       modal:{
         title:'',
@@ -304,92 +303,202 @@ export default {
       initialLoad: state => state.cashier.initialLoad,
       coursesData: state => state.cashier.data,
       tableFilterValues: state => state.cashier.filterValues,
+      lastORNumber: state => state.cashier.lastORNumber,
+  
     }),
     ...mapGetters({
       getTableData: "cashier/getTableData"
     }),
   },
-  methods: {
-//     async printReceipt() {
-//   try {
-//       // Make a POST request to the backend endpoint
-//       const response = await axios.post('/generate-receipt', {
-//           requested_document: this.selectedRow.index.req_type,
-//           status: this.selectedRow.index.status,
-//           transaction_no: this.selectedRow.index.transaction_no,
-//           date_created: this.selectedRow.index.date_created,
-//           requestor: this.selectedRow.index.name,
-//           committed_by: this.selectedRow.index.committed_by,
-//       }, {
-//           responseType: 'blob',
-//       });
 
-//       const blob = new Blob([response.data], { type: 'application/pdf' });
-//       const url = window.URL.createObjectURL(blob);
-
-//       window.open(url);
-
-//   } catch (error) {
-//       console.error('Error printing receipt:', error);
-//   }
-// },
-
-printReceipt() {
-    
-    // eslint-disable-next-line new-cap
-    const pdf = new jsPDF(); 
-
-    // content for the receipt
-    const receiptContent = `
-      Receipt
-      ----------
-      Requested Document: ${this.selectedRow.index.req_type}
-      Status: ${this.selectedRow.index.status}
-      Transaction No: ${this.selectedRow.index.transaction_no}
-      Date Created: ${this.selectedRow.index.date_created}
-      Requestor: ${this.selectedRow.index.name}
-      Committed by: ${this.selectedRow.index.committed_by}
-    `;
-
-    
-    pdf.text(receiptContent, 10, 10);
-
-    
-    const pdfBlob = pdf.output('blob');
-
-    
-    const url = URL.createObjectURL(pdfBlob);
-    window.open(url);
-  
+ 
+  mounted() {
+  this.fetchLastORNumber();
 },
 
-...mapActions(['acceptPayment']),
+  
+  methods: {
+    
+    
+    openPaidModal() {
+      this.isPaidModalOpen = true;
+    },
+    closePaidModal() {
+      this.isPaidModalOpen = false;
+    },
+    closeViewModal() {
+      this.isModalOpen = false;
+    },
+     async lastOR() {
+        await this.$store.dispatch('fetchLastORNumber');
+        // Now you can access this.$store.state.lastORNumber
+    },
+    
+    
+    ...mapActions(['markAsPaid']),
 
 Paymentaccept(index) {
-  this.isModalOpen = true;
+  this.isPaidModalOpen = true;
   this.modal.title = 'Confirm Payment';
   this.modal.content = 'Are you sure you want to mark this request as paid?';
   this.selectedIndex = index;
+
+  
 },
+
 
 confirmAction() {
+  this.isPaidModalOpen = false;
+  const requestId = this.selectedIndex.index.id;
   
-  this.isModalOpen = false;
-  const index = this.selectedIndex;
+  this.markAsPaid(requestId)
+    .then(() => {
+      console.log('Request marked as paid successfully');
+      this.isModalOpen = false;
+      this.fetchTableData(1);
+    })
+    .catch(error => {
+      console.error('Error marking request as paid:', error);
+    });
+},
 
- 
-  this.acceptPayment(index.index.id)
-      .then(() => {
-          console.log('Payment Accepted');
-          this.fetchTableData(1);
-      })
-      .catch(error => {
-          console.error('Error accepting payment:', error);
-      });
+
+    markAsPaid(id) {
+    this.$store.dispatch('markAsPaid', { request_id: id })
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+            console.error(error);
+        });
 },
 closeModal() {
-        this.isModalOpen = false;
+        this.isPaidModalOpen = false;
       },
+
+    printReceipt() {
+      // eslint-disable-next-line new-cap
+      const doc = new jsPDF();
+
+      // Get current date
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
+      // Adding the header
+  doc.setFontSize(16);
+  doc.text('Republic of the Philippines', 105, 20, { align: 'center' });
+  doc.setFont('helvetica', 'bold');
+  doc.text('UNIVERSITY OF THE PHILIPPINES LOS BAÑOS', 105, 30, { align: 'center' });
+  doc.setFont('helvetica', 'normal');
+  doc.text('College, Los Baños, Laguna', 105, 40, { align: 'center' });
+
+  doc.setFontSize(16);
+  doc.setFont('helvetica', 'bold');
+  doc.text('OFFICIAL RECEIPT', 105, 60, { align: 'center' });
+
+ 
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'normal');
+  doc.text(`Fund: ${this.selectedRow.index.fund_code_id}`, 20, 80);
+  doc.text(`No: ${this.selectedRow.index.or_number}`, 160, 80);
+
+  
+  doc.text('Payor:', 20, 90);
+  doc.text(`Date: ${formattedDate}`, 160, 90);
+
+  
+  const tableColumns = ['Nature of collection', 'Account Code', 'Amount'];
+  const tableRows = [
+    ['Nature 1', 'Code 1', `${this.selectedRow.index.processing_fee}`],
+   
+  ];
+
+  doc.autoTable({
+    startY: 100,
+    head: [tableColumns],
+    body: tableRows,
+    styles: { cellPadding: 3, fontSize: 10 },
+    headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255] },
+  });
+
+  
+  const finalY = doc.lastAutoTable.finalY + 10;
+  doc.text(`Total Amount: ${this.selectedRow.index.processing_fee}`, 150, finalY);  
+
+  // Adding Amount in words
+  doc.text('Amount in words:', 20, finalY + 10);
+
+ // Adding Mode of Payment
+const modeOfPaymentY = finalY + 30;
+doc.setFont('helvetica', 'bold');
+doc.text('Mode of Payment:', 20, modeOfPaymentY);
+
+const checkboxY = modeOfPaymentY + 5;
+const checkboxSize = 4;
+
+const startX = 80; 
+const spaceBetweenOptions = 30; 
+
+// Draw checkboxes
+doc.rect(startX - checkboxSize - 5, checkboxY - checkboxSize / 2, checkboxSize, checkboxSize);
+doc.rect(startX + spaceBetweenOptions - checkboxSize - 5, checkboxY - checkboxSize / 2, checkboxSize, checkboxSize); 
+doc.rect(startX + 2 * spaceBetweenOptions - checkboxSize - 5, checkboxY - checkboxSize / 2, checkboxSize, checkboxSize); 
+
+doc.text('Cash', startX - checkboxSize, modeOfPaymentY + 5); 
+doc.text('Check', startX + spaceBetweenOptions - checkboxSize, modeOfPaymentY + 5); 
+doc.text('Bank', startX + 2 * spaceBetweenOptions - checkboxSize, modeOfPaymentY + 5); 
+
+
+
+
+
+  
+  const draweeTableColumns = ['Drawee', 'Bank Number', 'Date'];
+  const draweeTableRows = [
+    ['Bank 1', '123456', '2024-05-13'],
+    ['', '', ''],
+    ['', '', ''], 
+  ];
+
+  doc.autoTable({
+    startY: checkboxY + 20,
+    head: [draweeTableColumns],
+    body: draweeTableRows,
+    styles: { cellPadding: 3, fontSize: 10 },
+    headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255] },
+    didDrawCell: (data) => {
+      if (data.section === 'body' && data.row.index < draweeTableRows.length - 1) {
+        const { cell } = data;
+        const xPos = cell.x;
+        const yPos = cell.y + cell.height;
+        const cellWidth = cell.width;
+        
+        doc.line(xPos, yPos, xPos + cellWidth, yPos);
+      }
+    },
+  });
+
+  
+
+const receivedTextY = doc.lastAutoTable.finalY + 10;
+const receivedTextX = 125; // Adjust the x-coordinate to move it to the right
+doc.text('Received the amount stated above.', receivedTextX, receivedTextY);
+
+// Add signature line
+const signatureLineY = receivedTextY + 5;
+const signatureLineX = 50; // Adjust the x-coordinate to move it to the right
+doc.line(signatureLineX, signatureLineY, 100, signatureLineY);
+
+
+  // Add "Collecting Officer" text
+  const officerTextY = signatureLineY + 10;
+  doc.text('Collecting Officer', 105, officerTextY, { align: 'center' });
+  // Save the PDF
+  const docBlob = doc.output('blob');
+  const url = URL.createObjectURL(docBlob);
+  window.open(url);
+}, 
+
+
 
 viewRow(rowData) {
       try {
@@ -416,6 +525,8 @@ viewRow(rowData) {
       getFilters: 'cashier/getFilters',
       acceptPayment: 'cashier/acceptPayment',
       denyPayment: 'cashier/denyPayment',
+      markAsPaid: 'cashier/markAsPaid',
+      fetchLastORNumber: 'cashier/fetchLastORNumber',
     }),
     openDrawer(data) {
       this.showDrawer = true
@@ -435,6 +546,7 @@ viewRow(rowData) {
             with_parent_name: true,
             with_user: true,
             with_fund_codes: true,
+            // with_calculation: true,
             
             fields:[
               'id',
