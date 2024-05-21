@@ -27,6 +27,7 @@ export default {
   plugins: [
     '~/plugins/vs-pagination',
     '~/plugins/auth',
+    '~/plugins/vue-html2pdf.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

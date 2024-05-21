@@ -336,7 +336,6 @@ export default {
     },
      async lastOR() {
         await this.$store.dispatch('fetchLastORNumber');
-        // Now you can access this.$store.state.lastORNumber
     },
     
     
@@ -656,5 +655,3 @@ viewRow(rowData) {
 }
 
 </script> 
-
-

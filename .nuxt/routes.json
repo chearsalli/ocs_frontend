@@ -3,42 +3,49 @@
     "name": "cashier",
     "path": "/cashier",
     "component": "/home/nad/frontend-template/pages/cashier/index.vue",
-    "chunkName": "pages/cashier/index"
+    "chunkName": "pages/cashier/index",
+    "_name": "_5ffa7464"
   },
   {
     "name": "ocs_staff",
     "path": "/ocs_staff",
     "component": "/home/nad/frontend-template/pages/ocs_staff/index.vue",
-    "chunkName": "pages/ocs_staff/index"
+    "chunkName": "pages/ocs_staff/index",
+    "_name": "_049077a1"
   },
   {
     "name": "personal-info",
     "path": "/personal-info",
     "component": "/home/nad/frontend-template/pages/personal-info/index.vue",
-    "chunkName": "pages/personal-info/index"
+    "chunkName": "pages/personal-info/index",
+    "_name": "_d2b99188"
   },
   {
     "name": "student",
     "path": "/student",
     "component": "/home/nad/frontend-template/pages/student/index.vue",
-    "chunkName": "pages/student/index"
+    "chunkName": "pages/student/index",
+    "_name": "_09a795dc"
   },
   {
     "name": "auth-callback",
     "path": "/auth/callback",
     "component": "/home/nad/frontend-template/pages/auth/callback.vue",
-    "chunkName": "pages/auth/callback"
+    "chunkName": "pages/auth/callback",
+    "_name": "_2c9067aa"
   },
   {
     "name": "auth-login",
     "path": "/auth/login",
     "component": "/home/nad/frontend-template/pages/auth/login.vue",
-    "chunkName": "pages/auth/login"
+    "chunkName": "pages/auth/login",
+    "_name": "_565b9154"
   },
   {
     "name": "index",
     "path": "/",
     "component": "/home/nad/frontend-template/pages/index.vue",
-    "chunkName": "pages/index"
+    "chunkName": "pages/index",
+    "_name": "_8ec77aa0"
   }
 ]

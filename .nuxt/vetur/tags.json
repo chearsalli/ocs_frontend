@@ -26,6 +26,9 @@
   "NuxtLogo": {
     "description": "Auto imported from components/NuxtLogo.vue"
   },
+  "PdfReceiptComponent": {
+    "description": "Auto imported from components/PdfReceiptComponent.vue"
+  },
   "PersonForm": {
     "description": "Auto imported from components/PersonForm.vue"
   },

@@ -15,6 +15,7 @@ You can directly use them in pages and other components without the need to impo
 - `<Modal>` | `<modal>` (components/Modal.vue)
 - `<NavBar>` | `<nav-bar>` (components/NavBar.vue)
 - `<NuxtLogo>` | `<nuxt-logo>` (components/NuxtLogo.vue)
+- `<PdfReceiptComponent>` | `<pdf-receipt-component>` (components/PdfReceiptComponent.vue)
 - `<PersonForm>` | `<person-form>` (components/PersonForm.vue)
 - `<Receipt>` | `<receipt>` (components/Receipt.vue)
 - `<ToggleSwitch>` | `<toggle-switch>` (components/ToggleSwitch.vue)
