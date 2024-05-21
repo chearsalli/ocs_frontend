@@ -32,6 +32,7 @@
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
     "moment": "^2.29.4",
+    "number-to-words": "^1.2.4",
     "nuxt": "^2.17.3",
     "vs-pagination": "^1.0.1",
     "vue": "^2.6.14",

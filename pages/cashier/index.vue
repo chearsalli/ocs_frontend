@@ -65,6 +65,8 @@
         VIEW
           <!-- <i class="fas fa-eye text-xl"></i>  -->
       </button>
+
+      
   </div>
 </template>   
             
@@ -126,7 +128,7 @@
     </template>
 
     <template #content>
-      <p>Are you sure you want to mark this request as paid?</p>
+      <h1 class="text-base">Are you sure you want to mark this request as paid?</h1>
       <br>
       <h1 class="text-sm">Last OR Number: <span style="color: maroon;">{{ lastORNumber }}</span></h1>
     </template>
@@ -191,6 +193,9 @@ import '@fortawesome/fontawesome-free/css/all.css'
 // import axios from 'axios';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+const converter = require('number-to-words');
+
+
 
 export default {
   name: 'IndexPage',
@@ -376,6 +381,7 @@ closeModal() {
         this.isPaidModalOpen = false;
       },
 
+      
     printReceipt() {
       // eslint-disable-next-line new-cap
       const doc = new jsPDF();
@@ -412,6 +418,9 @@ closeModal() {
    
   ];
 
+ 
+
+
   doc.autoTable({
     startY: 100,
     head: [tableColumns],
@@ -420,12 +429,19 @@ closeModal() {
     headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255] },
   });
 
-  
-  const finalY = doc.lastAutoTable.finalY + 10;
-  doc.text(`Total Amount: ${this.selectedRow.index.processing_fee}`, 150, finalY);  
+ 
+  const totalAmount = this.selectedRow.index.processing_fee;
 
-  // Adding Amount in words
-  doc.text('Amount in words:', 20, finalY + 10);
+  const finalY = doc.lastAutoTable.finalY + 10;
+  doc.text(`Total Amount: ${totalAmount}`, 150, finalY);  
+
+   // Adding Amount in words
+  const totalAmountWords = converter.toWords(totalAmount);
+  const capitalizedTotalAmountWords = totalAmountWords
+    .split(' ') 
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+    .join(' '); 
+  doc.text(`Amount in words: ${capitalizedTotalAmountWords}`, 20, finalY + 10); 
 
  // Adding Mode of Payment
 const modeOfPaymentY = finalY + 30;
@@ -446,9 +462,6 @@ doc.rect(startX + 2 * spaceBetweenOptions - checkboxSize - 5, checkboxY - checkb
 doc.text('Cash', startX - checkboxSize, modeOfPaymentY + 5); 
 doc.text('Check', startX + spaceBetweenOptions - checkboxSize, modeOfPaymentY + 5); 
 doc.text('Bank', startX + 2 * spaceBetweenOptions - checkboxSize, modeOfPaymentY + 5); 
-
-
-
 
 
   
@@ -497,6 +510,9 @@ doc.line(signatureLineX, signatureLineY, 100, signatureLineY);
   const url = URL.createObjectURL(docBlob);
   window.open(url);
 }, 
+
+
+
 
 
 

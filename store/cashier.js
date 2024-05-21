@@ -221,7 +221,7 @@ export const mutations = {
         state.loading = false;
     },
     SET_LAST_OR_NUMBER(state, lastORNumber) {
-        console.log("Setting last OR number:", lastORNumber); // Log the last OR number being set
+        // console.log("Setting last OR number:", lastORNumber); // Log the last OR number being set
         state.lastORNumber = lastORNumber;
       },
 
