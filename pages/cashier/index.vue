@@ -121,7 +121,7 @@
 
     
      <!-- Modal for Paid button -->
-  <Modal :isOpen="isPaidModalOpen" iconType="warning" :lastORNumber="lastORNumber">
+  <Modal :isOpen="isPaidModalOpen" iconType="warning" :lastORNumber="lastORNumber" >
     <template #title>
       <h1 class="text-lg font-bold">Confirm Payment</h1> 
       
@@ -145,9 +145,11 @@
 
      <Modal :isOpen="isModalOpen" iconType="warning">
 <template #title>
-  <h1 class="text-lg font-bold">{{ modal.title }}</h1> 
+  <h1 class="text-lg font-bold">Request</h1> 
 </template>
 
+      
+    
 <template #content v-if="selectedRow && selectedRow.index">
   <div>
     <!-- Receipt content -->
@@ -174,9 +176,14 @@
   <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="closeViewModal">
     Close
   </button>
-  <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="printReceipt">
+  <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="generatePdf">
     Print
   </button>
+
+  <PdfReceiptComponent ref="pdfComponent" :selectedRow="selectedRow" @generatePdf="generatePdf" />
+  <!-- <PdfReceiptComponent ref="pdfComponent" :selectedRow="selectedRow"></PdfReceiptComponent> -->
+
+
 </template>
 </Modal>
 
@@ -191,14 +198,20 @@
 import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
 import '@fortawesome/fontawesome-free/css/all.css'
 // import axios from 'axios';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
-const converter = require('number-to-words');
+// import jsPDF from 'jspdf';
+// import 'jspdf-autotable';
+// const converter = require('number-to-words');
+import PdfReceiptComponent from '@/components/PdfReceiptComponent.vue';
 
 
 
 export default {
   name: 'IndexPage',
+
+  components: {
+    PdfReceiptComponent
+   
+  },
   
   props: {
     lastORNumber: {
@@ -214,6 +227,7 @@ export default {
       editableForm: false,
       isModalOpen: false,
       selectedid: '',
+      selectedRow: {},
       actionconfirm: '',
       // lastORNumber: '',
       searchQuery: '',
@@ -324,7 +338,14 @@ export default {
   
   methods: {
     
-    
+    // generatePdf() {
+    //   this.$refs.pdfComponent.generatePdf();
+    // },
+    generatePdf() {
+      
+        this.$refs.pdfComponent.generatePdf();
+     
+    },
     openPaidModal() {
       this.isPaidModalOpen = true;
     },
@@ -376,139 +397,15 @@ confirmAction() {
             console.error(error);
         });
 },
-closeModal() {
+    closeModal() {
         this.isPaidModalOpen = false;
       },
 
       
     printReceipt() {
-      // eslint-disable-next-line new-cap
-      const doc = new jsPDF();
-
-      // Get current date
-  const currentDate = new Date();
-  const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
-      // Adding the header
-  doc.setFontSize(16);
-  doc.text('Republic of the Philippines', 105, 20, { align: 'center' });
-  doc.setFont('helvetica', 'bold');
-  doc.text('UNIVERSITY OF THE PHILIPPINES LOS BAÑOS', 105, 30, { align: 'center' });
-  doc.setFont('helvetica', 'normal');
-  doc.text('College, Los Baños, Laguna', 105, 40, { align: 'center' });
-
-  doc.setFontSize(16);
-  doc.setFont('helvetica', 'bold');
-  doc.text('OFFICIAL RECEIPT', 105, 60, { align: 'center' });
-
- 
-  doc.setFontSize(12);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`Fund: ${this.selectedRow.index.fund_code_id}`, 20, 80);
-  doc.text(`No: ${this.selectedRow.index.or_number}`, 160, 80);
-
-  
-  doc.text('Payor:', 20, 90);
-  doc.text(`Date: ${formattedDate}`, 160, 90);
-
-  
-  const tableColumns = ['Nature of collection', 'Account Code', 'Amount'];
-  const tableRows = [
-    ['Nature 1', 'Code 1', `${this.selectedRow.index.processing_fee}`],
-   
-  ];
-
- 
-
-
-  doc.autoTable({
-    startY: 100,
-    head: [tableColumns],
-    body: tableRows,
-    styles: { cellPadding: 3, fontSize: 10 },
-    headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255] },
-  });
-
- 
-  const totalAmount = this.selectedRow.index.processing_fee;
-
-  const finalY = doc.lastAutoTable.finalY + 10;
-  doc.text(`Total Amount: ${totalAmount}`, 150, finalY);  
-
-   // Adding Amount in words
-  const totalAmountWords = converter.toWords(totalAmount);
-  const capitalizedTotalAmountWords = totalAmountWords
-    .split(' ') 
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
-    .join(' '); 
-  doc.text(`Amount in words: ${capitalizedTotalAmountWords}`, 20, finalY + 10); 
-
- // Adding Mode of Payment
-const modeOfPaymentY = finalY + 30;
-doc.setFont('helvetica', 'bold');
-doc.text('Mode of Payment:', 20, modeOfPaymentY);
-
-const checkboxY = modeOfPaymentY + 5;
-const checkboxSize = 4;
-
-const startX = 80; 
-const spaceBetweenOptions = 30; 
-
-// Draw checkboxes
-doc.rect(startX - checkboxSize - 5, checkboxY - checkboxSize / 2, checkboxSize, checkboxSize);
-doc.rect(startX + spaceBetweenOptions - checkboxSize - 5, checkboxY - checkboxSize / 2, checkboxSize, checkboxSize); 
-doc.rect(startX + 2 * spaceBetweenOptions - checkboxSize - 5, checkboxY - checkboxSize / 2, checkboxSize, checkboxSize); 
-
-doc.text('Cash', startX - checkboxSize, modeOfPaymentY + 5); 
-doc.text('Check', startX + spaceBetweenOptions - checkboxSize, modeOfPaymentY + 5); 
-doc.text('Bank', startX + 2 * spaceBetweenOptions - checkboxSize, modeOfPaymentY + 5); 
-
-
-  
-  const draweeTableColumns = ['Drawee', 'Bank Number', 'Date'];
-  const draweeTableRows = [
-    ['Bank 1', '123456', '2024-05-13'],
-    ['', '', ''],
-    ['', '', ''], 
-  ];
-
-  doc.autoTable({
-    startY: checkboxY + 20,
-    head: [draweeTableColumns],
-    body: draweeTableRows,
-    styles: { cellPadding: 3, fontSize: 10 },
-    headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255] },
-    didDrawCell: (data) => {
-      if (data.section === 'body' && data.row.index < draweeTableRows.length - 1) {
-        const { cell } = data;
-        const xPos = cell.x;
-        const yPos = cell.y + cell.height;
-        const cellWidth = cell.width;
-        
-        doc.line(xPos, yPos, xPos + cellWidth, yPos);
-      }
+      
     },
-  });
-
-  
-
-const receivedTextY = doc.lastAutoTable.finalY + 10;
-const receivedTextX = 125; // Adjust the x-coordinate to move it to the right
-doc.text('Received the amount stated above.', receivedTextX, receivedTextY);
-
-// Add signature line
-const signatureLineY = receivedTextY + 5;
-const signatureLineX = 50; // Adjust the x-coordinate to move it to the right
-doc.line(signatureLineX, signatureLineY, 100, signatureLineY);
-
-
-  // Add "Collecting Officer" text
-  const officerTextY = signatureLineY + 10;
-  doc.text('Collecting Officer', 105, officerTextY, { align: 'center' });
-  // Save the PDF
-  const docBlob = doc.output('blob');
-  const url = URL.createObjectURL(docBlob);
-  window.open(url);
-}, 
+    
 
 
 
@@ -517,9 +414,9 @@ doc.line(signatureLineX, signatureLineY, 100, signatureLineY);
 
 viewRow(rowData) {
       try {
-        console.log('Selected row data:', rowData);
-        this.selectedRow = rowData; // Assign the entire rowData object
-        console.log('SelectedRow:', this.selectedRow); 
+        // console.log('Selected row data:', rowData);
+        this.selectedRow = rowData; 
+        // console.log('SelectedRow:', this.selectedRow); 
         this.isModalOpen = true; 
       } catch (error) {
         console.error('Error fetching row details:', error);

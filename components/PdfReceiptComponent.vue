@@ -1,120 +1,209 @@
 <template>
+  <div>
+    <vue-html2pdf
+    :show-layout="false"
+  :float-layout="true"
+  :enable-download="false"
+  :preview-modal="false"
+  filename="receipt"
+  :paginate-elements-by-height="1100"
+  :pdf-quality="2"
+  pdf-format="a4"
+  pdf-orientation="portrait"
+  pdf-content-width="800px"
+  :manual-pagination="false"
+  ref="html2Pdf"
+  
+  
+  >
+  <!-- @beforeDownload="beforeDownload($event)" -->
+  <template #pdf-content>
+    <div id="pdf-content" class="pdf-content">
+  <h2 style="text-align: center;">Republic of the Philippines</h2>
+  <h3 style="text-align: center;"><strong>UNIVERSITY OF THE PHILIPPINES LOS BAÑOS</strong></h3>
+  <p style="text-align: center;">College, Los Baños, Laguna</p>
+  <h3 style="text-align: center; margin-top: 40px;"><strong>OFFICIAL RECEIPT</strong></h3>
+
+  <!-- <div class="flex justify-between"> -->
+    <div class="flex justify-between" style="display: flex; justify-content: space-between;">
     <div>
-      <vue-html2pdf
-        ref="html2Pdf"
-        :show-layout="true"
-        :enable-download="true"
-        filename="receipt.pdf"
-        pdf-quality="2"
-        pdf-format="a4"
-      >
-        <template #pdf-content>
-          <div class="pdf-content">
-            <h2 style="text-align: center;">Republic of the Philippines</h2>
-            <h3 style="text-align: center;">UNIVERSITY OF THE PHILIPPINES LOS BAÑOS</h3>
-            <p style="text-align: center;">College, Los Baños, Laguna</p>
-            <h3 style="text-align: center; margin-top: 40px;">OFFICIAL RECEIPT</h3>
-  
-            <p>Fund: {{ selectedRow.index.fund_code_id }}</p>
-            <p style="text-align: right;">No: {{ selectedRow.index.or_number }}</p>
-            <p>Payor:</p>
-            <p style="text-align: right;">Date: {{ formattedDate }}</p>
-  
-            <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 20px;">
-              <thead>
-                <tr>
-                  <th>Nature of collection</th>
-                  <th>Account Code</th>
-                  <th>Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Nature 1</td>
-                  <td>Code 1</td>
-                  <td>{{ selectedRow.index.processing_fee }}</td>
-                </tr>
-              </tbody>
-            </table>
-  
-            <p style="text-align: right; margin-top: 20px;">Total Amount: {{ selectedRow.index.processing_fee }}</p>
-            <p>Amount in words: {{ amountInWords(selectedRow.index.processing_fee) }}</p>
-  
-            <p style="margin-top: 40px;"><strong>Mode of Payment:</strong></p>
-            <p>
-              <input type="checkbox"> Cash
-              <input type="checkbox"> Check
-              <input type="checkbox"> Bank
-            </p>
-  
-            <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 20px;">
-              <thead>
-                <tr>
-                  <th>Drawee</th>
-                  <th>Bank Number</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Bank 1</td>
-                  <td>123456</td>
-                  <td>2024-05-13</td>
-                </tr>
-                <tr>
-                  <td colspan="3">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td colspan="3">&nbsp;</td>
-                </tr>
-              </tbody>
-            </table>
-  
-            <p style="margin-top: 20px; text-align: right;">Received the amount stated above.</p>
-            <p style="margin-top: 40px;">____________________</p>
-            <p style="text-align: center;">Collecting Officer</p>
-          </div>
-        </template>
-      </vue-html2pdf>
+      <p>Fund: <span class="underline underline-offset-4">{{ selectedRow.index.fund_code_id }}</span></p>
+      <p>Payor: <span class="underline underline-offset-4">{{  selectedRow.index.name }}</span></p>
     </div>
-  </template>
+    <div>
+      <p class="text-right">No: <span class="underline underline-offset-4">{{ selectedRow.index.or_number }}</span></p>
+      <p class="text-right">Date: <span class="underline underline-offset-4">{{ formattedDate }}</span></p>
+    </div>
+  </div>
+
+  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; margin-top: 20px;">
+    <thead>
+      <tr>
+        <th style="font-weight: bold; text-decoration: underline;">Nature of collection</th>
+        <th style="font-weight: bold; text-decoration: underline;">Account Code</th>
+        <th style="font-weight: bold; text-decoration: underline;">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: center;">Nature 1</td>
+        <td style="text-align: center;">Code 1</td>
+        <td style="text-align: center;">{{ selectedRow.index.processing_fee }}</td>
+      </tr>
+
+      <tr style="height: 150px;"></tr>
+      <tr>
+        <td colspan="2" style="text-align: right; font-weight: bold;  padding-right: 60px;">TOTAL AMOUNT:</td>
+        <td style="text-align: center; text-decoration: underline;">{{ selectedRow.index.processing_fee }}</td>
+      </tr>
+
+      
+    </tbody>
+  </table>
+
   
-  <script>
- import VueHtml2pdf from 'vue-html2pdf';
-  import { toWords } from 'number-to-words';
+  <p><strong>Amount in words:</strong> <span style="text-decoration: underline;">{{ amountInWords(selectedRow.index.processing_fee) }}</span></p>
+
+
+<div class="mt-8 flex items-center">
+  <p class="mb-0 font-bold mr-4">Mode of Payment:</p>
+  <div class="flex items-center space-x-6">
+    <label class="flex items-center">
+      <input type="checkbox" class="mr-2">
+      <span>Cash</span>
+    </label>
+    <label class="flex items-center">
+      <input type="checkbox" class="mr-2">
+      <span>Check</span>
+    </label>
+    <label class="flex items-center">
+      <input type="checkbox" class="mr-2">
+      <span>ADA/Bank Payment</span>
+    </label>
+  </div>
+</div>
+
+
+<div class="mt-8 overflow-x-auto">
+  <table class="w-full border border-collapse border-gray-900">
+    <thead>
+      <tr class="bg-white">
+        <th class="font-bold py-2 px-4 border border-b-2 border-gray-800">Drawee</th>
+        <th class="font-bold py-2 px-4 border border-b-2 border-gray-800">Number</th>
+        <th class="font-bold py-2 px-4 border border-b-2 border-gray-800">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="py-4 px-4 border border-b-2 border-gray-700 text-center"></td>
+        <td class="py-4 px-4 border border-b-2 border-gray-700 text-center"></td>
+        <td class="py-4 px-4 border border-b-2 border-gray-700 text-center"></td>
+      </tr>
+      <tr>
+        <td class="py-4 px-4 border border-b-2 border-gray-700 text-center"></td>
+        <td class="py-4 px-4 border border-b-2 border-gray-700 text-center"></td>
+        <td class="py-4 px-4 border border-b-2 border-gray-700 text-center"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+  <p style="margin-top: 10px; text-align: right;">Received the amount stated above. &nbsp;</p>
+  <p class="ml-2" style="margin-top: 20px; text-align: right;">____________________ &nbsp; &nbsp; &nbsp;</p>
+  <p class="ml-1 font-bold" style="text-align: right;">Collecting Officer  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
+
   
-  export default {
-    components: {
-      VueHtml2pdf
-    },
-    props: {
-      selectedRow: {
-        type: Object,
-        required: true
-      }
-    },
-    computed: {
-      formattedDate() {
-        const date = new Date();
-        return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-      }
-    },
-    methods: {
-      printReceipt() {
-        this.$refs.html2Pdf.generatePdf();
-      },
-      amountInWords(amount) {
-        const words = toWords(amount);
-        return words.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-      }
+
+
+</div>
+</template>
+
+    </vue-html2pdf>
+    
+  <!-- <VueHtml2pdf :manual-pagination="false" paginate-elements-by-height /> -->
+  </div>
+</template>
+
+<script>
+import VueHtml2pdf from 'vue-html2pdf';
+import { toWords } from 'number-to-words';
+// import JsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
+import html2pdf from 'html2pdf.js';
+
+
+
+export default {
+  components: {
+    VueHtml2pdf
+  },
+
+  name: 'PdfReceiptComponent',
+  props: {
+    selectedRow: {
+      type: Object,
+      required: true
     }
-  };
-  </script>
-  
-  <style scoped>
-  .pdf-content {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+  },
+  computed: {
+    formattedDate() {
+      const date = new Date();
+      return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    }
+  },
+  methods: {
+    // async beforeDownload ({ html2pdf, options, pdfContent }) {
+    //       await html2pdf().set(options).from(pdfContent).toPdf().get('pdf').then((pdf) => {
+    //           const totalPages = pdf.internal.getNumberOfPages()
+    //           for (let i = 1; i <= totalPages; i++) {
+    //               pdf.setPage(i)
+    //               pdf.setFontSize(10)
+    //               pdf.setTextColor(150)
+    //               pdf.text('Page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() * 0.88), (pdf.internal.pageSize.getHeight() - 0.3))
+    //           } 
+    //       }).save()
+    //   },
+
+
+generatePdf() {
+      try {
+        const element = this.$refs.html2Pdf.$el.querySelector('#pdf-content');
+        const opt = {
+          margin: 0.5,
+          filename: 'receipt.pdf',
+          image: { type: 'jpeg', quality: 1.0 },
+          html2canvas: { scale: 5 },
+          jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+        };
+        html2pdf()
+          .set(opt)
+          .from(element)
+          .toPdf()
+          .get('pdf')
+          .then((pdf) => {
+            const url = pdf.output('bloburl');
+            window.open(url, '_blank');
+          });
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+      }
+    },
+    
+
+    amountInWords(amount) {
+      const words = toWords(amount);
+      return words.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    }
   }
-  </style>
-  
+};
+</script>
+
+<style scoped>
+.pdf-content {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+</style>
