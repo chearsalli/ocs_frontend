@@ -54,7 +54,7 @@
               @onUpdateSorting="handleSortingUpdate"
             >
 
-            <template #action="index">
+            <!-- <template #action="index">
     <div class="flex">
       <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="Requestaccept(index)">
     ACCEPT
@@ -64,7 +64,21 @@
     DENY
 </button>
     </div>
-</template>
+</template> -->
+
+<template #action="index">
+      <div class="flex">
+        <button v-if="index.index.status === 'Requested'" class="bg-green-900 text-yellow-400  font-semibold mr-2 py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="Requestaccept(index)">
+          Accept
+        </button>
+        <button v-if="index.index.status === 'Requested'" class="bg-red-900 text-white font-semibold py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="Requestdeny(index)">
+          Deny
+        </button>
+        <button v-if="index.index.status === 'Processing'" class="bg-blue-700 text-white font-semibold py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 120px;" @click="release(index)">
+          For Releasing
+        </button>
+      </div>
+    </template>
 
 
 
@@ -212,6 +226,7 @@
             label: "Status"
           },
 
+        
           {
             name: "action",
             sortable: true,
@@ -274,7 +289,16 @@
     },
     methods: {
 
+      release(index) {
 
+this.isModalOpen = true;
+this.modal.title = 'Release this Request';
+this.modal.content = 'This will release this request permanently. You cannot undo this action.';
+this.selectedid = index.index.id;
+this.actionconfirm = 'release'; 
+
+
+},
 
 Requestaccept(index) {
 
@@ -297,19 +321,49 @@ Requestaccept(index) {
             this.actionconfirm = 'deny'; 
 },
  
-confirmAction(actionconfirm){
+// confirmAction(actionconfirm){
      
-        if (actionconfirm === 'accept') {
+//         if (actionconfirm === 'accept') {
+//       this.acceptRequest(this.selectedid);
+//       console.log('Request Accepted');
+//     } else if (actionconfirm === 'deny') {
+//       this.denyRequest(this.selectedid);
+//       console.log('Request Denied');
+//     } else if (actionconfirm === 'release') {
+//       this.denyRequest(this.selectedid);
+//       console.log('Request Release');
+//     }
+//     this.isModalOpen = false;
+//     this.fetchTableData(1);
+
+//       },
+confirmAction(actionconfirm){
+try {
+    if (this.selectedid === null || this.selectedid === undefined) {
+      throw new Error('No request selected');
+    }
+
+    if (actionconfirm === 'accept') {
       this.acceptRequest(this.selectedid);
       console.log('Request Accepted');
     } else if (actionconfirm === 'deny') {
       this.denyRequest(this.selectedid);
       console.log('Request Denied');
+    } else if (actionconfirm === 'release') {
+      this.releaseRequest(this.selectedid);
+      console.log('Request Released');
+    } else {
+      console.log('Invalid action');
     }
+
     this.isModalOpen = false;
     this.fetchTableData(1);
+  } catch (error) {
+    console.error('Error handling action:', error);
+  }
 
-      },
+
+},
 
 
       ...mapMutations({
@@ -325,6 +379,7 @@ confirmAction(actionconfirm){
         getFilters: 'ocs_staff/getFilters',
         acceptRequest: 'ocs_staff/acceptRequest',
         denyRequest: 'ocs_staff/denyRequest',
+        releaseRequest: 'ocs_staff/releaseRequest',
       }),
       openDrawer(data) {
         this.showDrawer = true
@@ -381,6 +436,7 @@ confirmAction(actionconfirm){
           remaining: index.index.remaining,
           committed_by: index.index.committed_by,
           status: index.index.status,
+         
         })
         this.editableForm = false
       },

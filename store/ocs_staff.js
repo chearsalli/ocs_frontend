@@ -129,7 +129,19 @@ export const actions = {
             throw error;
         }
     },
+
+    async releaseRequest({ commit }, requestData) {
+        commit('RELEASE_REQUEST_REQUEST');
+        try {
+          await this.$axios.$put(`/release-update-ocs_view/${requestData}`);
+          commit('RELEASE_REQUEST_SUCCESS', requestData);
+        } catch (error) {
+          commit('RELEASE_REQUEST_FAILED', error);
+          throw error;
+        }
+    }
 }
+
 
 export const mutations = {
     GET_DATA_LIST_REQUEST (state) {
@@ -202,7 +214,16 @@ export const mutations = {
       
     },
    
-   
+    RELEASE_REQUEST_REQUEST(state) {
+        state.loading = true;
+    },
+    RELEASE_REQUEST_SUCCESS(state) {
+        state.loading = false;
+    },
+    RELEASE_REQUEST_FAILED(state) {
+        state.loading = false;
+        
+    },
 }
 
 

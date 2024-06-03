@@ -187,6 +187,7 @@ export const getters = {
                     processing_fee: "PhP" + " " + item.processing_fee + '.00',
                     current_office: item.current_office,
                     status: item.status,
+                    change_status: item. change_status,
                     action: '',
                     details: item
                 };

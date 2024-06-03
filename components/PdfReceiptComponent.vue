@@ -24,7 +24,7 @@
   <p style="text-align: center;">College, Los Baños, Laguna</p>
   <h3 style="text-align: center; margin-top: 40px;"><strong>OFFICIAL RECEIPT</strong></h3>
 
-  <!-- <div class="flex justify-between"> -->
+  
     <div class="flex justify-between" style="display: flex; justify-content: space-between;">
     <div>
       <p>Fund: <span class="underline underline-offset-4">{{ selectedRow.index.fund_code_id }}</span></p>
@@ -69,15 +69,15 @@
   <p class="mb-0 font-bold mr-4">Mode of Payment:</p>
   <div class="flex items-center space-x-6">
     <label class="flex items-center">
-      <input type="checkbox" class="mr-2">
+      <input type="checkbox" class="mr-2 mt-4">
       <span>Cash</span>
     </label>
     <label class="flex items-center">
-      <input type="checkbox" class="mr-2">
+      <input type="checkbox" class="mr-2 mt-4">
       <span>Check</span>
     </label>
     <label class="flex items-center">
-      <input type="checkbox" class="mr-2">
+      <input type="checkbox" class="mr-2 mt-4">
       <span>ADA/Bank Payment</span>
     </label>
   </div>

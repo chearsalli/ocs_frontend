@@ -110,7 +110,11 @@ export const actions = {
     async markAsPaid({ commit }, requestData) {
         commit('MARK_AS_PAID_REQUEST');
         try {
-            await this.$axios.$put(`/markAsPaid/${requestData}`);
+            await this.$axios.$put(`/markAsPaid/${requestData.request_id}
+            `, {
+                or_number: requestData.or_number
+                
+            });
             commit('MARK_AS_PAID_SUCCESS', requestData);
         } catch (error) {
             commit('MARK_AS_PAID_FAILURE', error);
@@ -118,14 +122,37 @@ export const actions = {
         }
     },
    
+    
+   
+
     async fetchLastORNumber({ commit }) {
         try {
-          const response = await this.$axios.$get('/lastORNumber');
-          commit('SET_LAST_OR_NUMBER', response.lastORNumber);
+            
+            const response = await this.$axios.$get('/lastORNumber');
+            commit('SET_LAST_OR_NUMBER', response.lastORNumber);
         } catch (error) {
-          console.error("Error fetching last OR number:", error); 
+            console.error("Error fetching last OR number:", error); 
         }
-      },
+    },
+
+  
+ 
+    async saveORNumber({ commit }, orNumber) {
+        try {
+            const orNumberString = String(orNumber);
+            const response = await this.$axios.$put('/save-or-number', { orNumber: orNumberString });
+            console.log(response.message)
+            commit('SAVE_OR_NUMBER', orNumber);
+    
+            return response 
+        } catch (error) {
+            console.error('Error:', error)
+            throw error 
+        }
+    },
+    
+      
+    
 
     // async denyPayment({ commit }, requestData) {
     //     commit('DENY_REQUEST_PAYMENT');
@@ -221,9 +248,12 @@ export const mutations = {
         state.loading = false;
     },
     SET_LAST_OR_NUMBER(state, lastORNumber) {
-        // console.log("Setting last OR number:", lastORNumber); // Log the last OR number being set
         state.lastORNumber = lastORNumber;
       },
+      SAVE_OR_NUMBER(state, orNumber) {
+        state.orNumber = orNumber;
+      },
+    
 
    
     
@@ -231,6 +261,7 @@ export const mutations = {
 
 
 export const getters = {
+    
     getNumOfItems(state) {
         return state.numOfItems
     },

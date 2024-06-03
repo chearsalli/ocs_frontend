@@ -193,7 +193,7 @@
             sortable: true,
             label: "Status"
           },
-          
+         
           // {
           //   name: "active",
           //   sortable: false,
@@ -371,6 +371,7 @@
           processing_fee: index.index.processing_fee,
           current_office: index.index.current_office,
           status: index.index.status,
+          
 
           is_verified: index.index.is_verified,
           is_active: index.index.is_active,
