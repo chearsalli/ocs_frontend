@@ -59,56 +59,36 @@
     <div class="max-w-xs mt-2"> 
       
       
-
-      <!-- <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="trans_num">
-          Transaction Number
+<!-- Select Service -->
+<div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="req_type">
+          Select Service:
         </label>
-        <input 
-        v-model="input.transaction_no"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-        :disabled="!editable"
-        type="text"
-        >
-      </div> -->
-
-
-      <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="req_type">
-             Select Service:
-          </label>
-          
-        <select 
-        v-model="input.req_type" 
-        class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
-        :disabled="!editable"
-        label="Please select"
-       >
-            
-     
-             <option class="py-2 px-3 text-gray-700">Copy of Grades</option>
-             <option class="py-2 px-3 text-gray-700">Copy of Registration</option>
-             <option class="py-2 px-3 text-gray-700">TOR</option>
-             <option class="py-2 px-3 text-gray-700">Binding Fee</option>
-             <option class="py-2 px-3 text-gray-700">Graduation Fee</option>
-             <option class="py-2 px-3 text-gray-700">Other</option>
+        <select v-model="input.req_type" @change="updateProcessingFee" class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" :disabled="!editable">
+          <option value="">Please select</option>
+          <option v-for="service in services" :key="service.id" :value="service.service_type">{{ service.service_type }}</option>
         </select>
+      </div>
+
+      <!-- Number of Copies -->
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="copy">
+          Number of Copies:
+        </label>
+        <div class="flex items-center">
+          <input v-model="input.copies_req" @input="updateProcessingFee" class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full w-16 py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline text-center" :disabled="!editable" type="number">
         </div>
+      </div>
 
-       
-
-        <div class="mb-4">
-    <label class="block text-gray-700 text-sm font-bold mb-2" for="copy">
-        Number of Copies:
-    </label>
-    <div class="flex items-center">
-       
-        <input v-model="input.copies_req" class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full  w-16 py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline text-center" :disabled="!editable" type="number">
-       
-    </div>
-</div>
-
-    
+      <!-- Total Processing Fee -->
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="tprofee">
+          Total Processing Fee:
+        </label>
+        <div class="flex items-center">
+          <input v-model="input.total_processing_fee" class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline text-center" type="text" readonly>
+        </div>
+      </div>
 
 
 
@@ -155,6 +135,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
+// import axios from 'axios';
 export default {
     props: {
         editable: {
@@ -168,21 +149,27 @@ export default {
     },
     data() {
         return {
-          
-          
+          formData: {
+            // req_type: '',
+            //     copies_req: '',
+            //     total_processing_fee: '',
+      },
+      services: [],
+      
+    
             input: {
                
-                ocs_service_id: "",
-                transaction_no: "",
-                copies_req: "",
-                // date_created: new Date().toISOString().split('T')[0], // default value to current date
-                status: "",
-                req_type: "",
-                or_number: "",
-                is_active: 1,
-                is_verified: 0,
-                id: null,
-                action: "update",
+                    req_type: '',
+                    copies_req: '',
+                    total_processing_fee: '',
+                    ocs_service_id: "",
+                    transaction_no: "",
+                    status: "",
+                    or_number: "",
+                    is_active: 1,
+                    is_verified: 0,
+                    id: null,
+                    action: "update",
             
             
             },
@@ -218,6 +205,8 @@ export default {
                 numOfItems: 5
             }
         };
+
+
     },
     async fetch() {
         await this.updateFilterValues({}); // set the filter values to nothing every time a txn history is rendered
@@ -234,6 +223,8 @@ export default {
             });
         });
     },
+
+    
     computed: {
         ...mapState({
             filterData: state => state.activitylogs.filters,
@@ -259,18 +250,39 @@ export default {
         //         });
         //     }
         // }
-    },
-    methods: {
 
- 
+       
+
+  
+    },
+
+    created() {
+        this.fetchServices(); 
+    },
+   
+    methods: {
+      async fetchServices() {
+            try {
+                const response = await fetch('http://localhost/api/services');
+                const data = await response.json();
+                this.services = data;
+            } catch (error) {
+                console.error('Error fetching services:', error);
+            }
+        },
+      
+        updateProcessingFee() {
+            const selectedService = this.services.find(service => service.service_type === this.input.req_type);
+            if (selectedService) {
+                const copies = parseInt(this.input.copies_req) || 0;
+                const processingFee = selectedService.processing_fee || 0;
+                this.input.total_processing_fee = (copies * processingFee).toFixed(2);
+            }
+        },
         clickSave() {
-          // check if the user inputs the date
-    //       if (!this.input.date_created) {
-    //     // If not, set it to the current date
-    //     this.input.date_created = new Date().toISOString().split('T')[0];
-    // }
-            
             this.$emit("onSave", this.input);
+            
+
         },
         closeDrawer() {
             this.$emit("onCancel", "");
@@ -287,6 +299,7 @@ export default {
             this.input.status= data.status;
             this.input.req_type = data.req_type;
             this.input.or_number = data.or_number;
+            this.input.total_processing_fee = data.total_processing_fee;
             this.clickMakeEditable()
           }else{
             this.closeDrawer()
@@ -409,6 +422,8 @@ export default {
         handleMakeEditable() {
             this.editableForm = true;
         }
+
+        
     }
 }
 </script>

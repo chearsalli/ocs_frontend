@@ -130,20 +130,18 @@
     <template #content>
       <h1 class="text-base">Are you sure you want to mark this request as paid?</h1>
       <br>
-      <!-- <h1 class="text-sm">Last OR Number: <span style="color: maroon;">{{ lastORNumber }}</span></h1> -->
+  
        <!-- Add the input field for OR Number -->
        <div class="mt-4 flex justify-between items-center">
     <label for="orNumber" class="block text-sm font-medium text-gray-700"> OR Number: {{ lastORNumber }}</label>
     <div class="relative">
-        <input
-            id="orNumber"
-            v-model="orNumber"
-            type="text"
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-900 focus:border-green-900 sm:text-sm" 
-        />
-        <!-- <button @click="ORNumber" class="absolute inset-y-0 right-0 px-3 focus:outline-none">
-            <i class="fas fa-save text-gray-500 hover:text-gray-700"></i>
-        </button> -->
+    <input
+  type="text"
+  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-900 focus:border-green-900 sm:text-sm"
+  v-model="cashierInput"
+  :placeholder="'Next OR: ' + nextORNumber"
+  
+/>
     </div>
 </div>
 
@@ -244,9 +242,13 @@ export default {
       isModalOpen: false,
       selectedid: '',
       orNumber: '',
+      cashierInput: '',
+      currentORNumber: '',
       selectedRow: {},
       actionconfirm: '',
       // lastORNumber: '',
+      cashierORNumbers: {}, // Object to store OR Numbers for each cashier
+    loggedInCashier: '', // Currently logged-in cashier
       searchQuery: '',
       modal:{
         title:'',
@@ -318,7 +320,10 @@ export default {
         numOfItems: 5
       }
     };
+    
   },
+ 
+
   async fetch () {
     await this.updateFilterValues({}) // set the filter values to nothing every time a txn history is rendered
     await this.fetchTableData(this.options.page)
@@ -349,6 +354,15 @@ export default {
       
   
     }),
+
+    nextORNumber() {
+  const nextNumber = parseInt(this.lastORNumber) + 1; 
+  return this.formatNumber(nextNumber, 7); 
+  
+
+  
+},
+
     ...mapGetters({
       getTableData: "cashier/getTableData"
     }),
@@ -361,8 +375,10 @@ export default {
 
   
   methods: {
-    
-  
+   
+    formatNumber(number, length) {
+      return number.toString().padStart(length, '0');
+    },
 
     async ORNumber() {
 
@@ -383,6 +399,8 @@ export default {
         console.error('Error saving OR number:', error);
       }
     },
+    
+
 
     
 
@@ -425,9 +443,13 @@ confirmAction() {
   this.isPaidModalOpen = false;
   const requestId = this.selectedIndex.index.id;
   
-  this.markAsPaid( {request_id: requestId, or_number: this.orNumber})
+  console.log('Cashier Input:', this.cashierInput);
+  this.markAsPaid( {request_id: requestId, or_number: this.cashierInput})
     .then(() => {
       console.log('Request marked as paid successfully');
+      this.cashierInput = '';
+      console.log('Cashier Input:', this.orNumber);
+      this.ORNumber();
       this.isModalOpen = false;
       this.fetchTableData(1);
     })
@@ -437,15 +459,7 @@ confirmAction() {
 },
 
 
-//     markAsPaid(id) {
-//     this.$store.dispatch('markAsPaid', { request_id: id, or_number: this.orNumber })
-//         .then(response => {
-//             console.log(response);
-//         })
-//         .catch(error => {
-//             console.error(error);
-//         });
-// },
+
     closeModal() {
         this.isPaidModalOpen = false;
       },

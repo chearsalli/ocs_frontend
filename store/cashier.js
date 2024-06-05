@@ -11,7 +11,7 @@ export const state = () => ({
     filters: {},
     filterValues: [],
     order:{},
-    lastORNumber: null
+    lastORNumber: null,
     // order_field: '',
     // order_type: ''
 })
@@ -107,13 +107,29 @@ export const actions = {
         }
     },
 
+    // async markAsPaid({ commit }, requestData) {
+    //     commit('MARK_AS_PAID_REQUEST');
+    //     try {
+    //         await this.$axios.$put(`/markAsPaid/${requestData.request_id}
+    //         `, {
+    //             or_number: requestData.or_number
+               
+                
+    //         });
+    //         commit('MARK_AS_PAID_SUCCESS', requestData);
+    //     } catch (error) {
+    //         commit('MARK_AS_PAID_FAILURE', error);
+    //         throw error;
+    //     }
+    // },
+   
     async markAsPaid({ commit }, requestData) {
         commit('MARK_AS_PAID_REQUEST');
         try {
-            await this.$axios.$put(`/markAsPaid/${requestData.request_id}
-            `, {
+            
+            await this.$axios.$put(`/markAsPaid/${requestData.request_id}`, {
+                id: requestData.request_id,
                 or_number: requestData.or_number
-                
             });
             commit('MARK_AS_PAID_SUCCESS', requestData);
         } catch (error) {
@@ -121,7 +137,6 @@ export const actions = {
             throw error;
         }
     },
-   
     
    
 
@@ -135,21 +150,23 @@ export const actions = {
         }
     },
 
+
+    
   
  
-    async saveORNumber({ commit }, orNumber) {
-        try {
-            const orNumberString = String(orNumber);
-            const response = await this.$axios.$put('/save-or-number', { orNumber: orNumberString });
-            console.log(response.message)
-            commit('SAVE_OR_NUMBER', orNumber);
+    // async saveORNumber({ commit }, orNumber) {
+    //     try {
+    //         const orNumberString = String(orNumber);
+    //         const response = await this.$axios.$put('/save-or-number', { orNumber: orNumberString });
+    //         console.log(response.message)
+    //         commit('SAVE_OR_NUMBER', orNumber);
     
-            return response 
-        } catch (error) {
-            console.error('Error:', error)
-            throw error 
-        }
-    },
+    //         return response 
+    //     } catch (error) {
+    //         console.error('Error:', error)
+    //         throw error 
+    //     }
+    // },
     
       
     
@@ -241,8 +258,9 @@ export const mutations = {
     MARK_AS_PAID_REQUEST(state) {
         state.loading = true;
     },
-    MARK_AS_PAID_SUCCESS(state) {
+    MARK_AS_PAID_SUCCESS(state, orNumber) {
         state.loading = false;
+        state.currentORNumber = orNumber;
     },
     MARK_AS_PAID_FAILURE(state) {
         state.loading = false;
@@ -250,9 +268,11 @@ export const mutations = {
     SET_LAST_OR_NUMBER(state, lastORNumber) {
         state.lastORNumber = lastORNumber;
       },
-      SAVE_OR_NUMBER(state, orNumber) {
+    SAVE_OR_NUMBER(state, orNumber) {
         state.orNumber = orNumber;
       },
+    
+   
     
 
    

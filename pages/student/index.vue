@@ -184,6 +184,11 @@
             label: "Processing Fee"
           },
           {
+            name: "total_processing_fee",
+            sortable: true,
+            label: "Total Processing Fee"
+          },
+          {
             name: "current_office",
             sortable: true,
             label: "Current Office"
@@ -336,6 +341,7 @@
                 'req_type',
                 'transaction_no',
                 'processing_fee',
+                'total_processing_fee',
                 'current_office',
                 'status',
                 'is_verified',
@@ -370,6 +376,7 @@
           transaction_no: index.index.transaction_no,
           processing_fee: index.index.processing_fee,
           current_office: index.index.current_office,
+          total_processing_fee: index.index.total_processing_fee,
           status: index.index.status,
           
 

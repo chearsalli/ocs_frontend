@@ -185,6 +185,7 @@ export const getters = {
                     req_type: item.req_type,
                     transaction_no: item.transaction_no,
                     processing_fee: "PhP" + " " + item.processing_fee + '.00',
+                    total_processing_fee: item.total_processing_fee,
                     current_office: item.current_office,
                     status: item.status,
                     change_status: item. change_status,
