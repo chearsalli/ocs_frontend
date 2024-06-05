@@ -139,7 +139,9 @@
   type="text"
   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-900 focus:border-green-900 sm:text-sm"
   v-model="cashierInput"
-  :placeholder="'Next OR: ' + nextORNumber"
+  :placeholder="nextORNumber"
+  @input="filterNumbers"
+        required
   
 />
     </div>
@@ -355,12 +357,14 @@ export default {
   
     }),
 
-    nextORNumber() {
-  const nextNumber = parseInt(this.lastORNumber) + 1; 
-  return this.formatNumber(nextNumber, 7); 
-  
 
-  
+nextORNumber() {
+  if (this.cashierInput === '') {
+    const nextNumber = parseInt(this.lastORNumber) + 1; 
+    return this.formatNumber(nextNumber, 7);
+  } else {
+    return this.cashierInput;
+  }
 },
 
     ...mapGetters({
@@ -375,30 +379,34 @@ export default {
 
   
   methods: {
+
+    filterNumbers(event) {
+      this.cashierInput = event.target.value.replace(/\D/g, '');
+    },
    
     formatNumber(number, length) {
       return number.toString().padStart(length, '0');
     },
 
-    async ORNumber() {
+    // async ORNumber() {
 
       
-      console.log("id:", this.selectedRow)
-      try {
+    //   console.log("id:", this.selectedRow)
+    //   try {
         
-        const orNumber = String(this.orNumber);
+    //     const orNumber = String(this.orNumber);
         
         
-        await this.$axios.$put('/save-or-number', { orNumber });
+    //     await this.$axios.$put('/save-or-number', { orNumber });
 
         
-        this.orNumber = '';
+    //     this.orNumber = '';
 
-        console.log('OR number saved successfully');
-      } catch (error) {
-        console.error('Error saving OR number:', error);
-      }
-    },
+    //     console.log('OR number saved successfully');
+    //   } catch (error) {
+    //     console.error('Error saving OR number:', error);
+    //   }
+    // },
     
 
 
@@ -425,15 +433,23 @@ export default {
     
     ...mapActions(['markAsPaid']),
 
-Paymentaccept(index) {
+async Paymentaccept(index) {
+  await this.fetchLastORNumber().then(()=>{
+    if(this.lastORNumber === null){
+      this.cashierInput = ''
+    }else{
+      this.cashierInput = this.formatNumber(parseInt(this.lastORNumber) + 1, 7);
+    }
+
+  })
   if(index.index.status === 'Paid'){
 
     return;
   }
-  this.isPaidModalOpen = true;
-  this.modal.title = 'Confirm Payment';
-  this.modal.content = 'Are you sure you want to mark this request as paid?';
-  this.selectedIndex = index;
+  this.isPaidModalOpen = await true;
+  this.modal.title = await 'Confirm Payment';
+  this.modal.content = await 'Are you sure you want to mark this request as paid?';
+  this.selectedIndex = await index;
 
   
 },
@@ -443,19 +459,20 @@ confirmAction() {
   this.isPaidModalOpen = false;
   const requestId = this.selectedIndex.index.id;
   
-  console.log('Cashier Input:', this.cashierInput);
+ 
   this.markAsPaid( {request_id: requestId, or_number: this.cashierInput})
     .then(() => {
       console.log('Request marked as paid successfully');
       this.cashierInput = '';
-      console.log('Cashier Input:', this.orNumber);
-      this.ORNumber();
+      // this.ORNumber();
       this.isModalOpen = false;
       this.fetchTableData(1);
     })
     .catch(error => {
       console.error('Error marking request as paid:', error);
     });
+
+  
 },
 
 
@@ -465,9 +482,6 @@ confirmAction() {
       },
 
       
-    printReceipt() {
-      
-    },
     
 
 viewRow(rowData) {
@@ -524,12 +538,14 @@ viewRow(rowData) {
               'name',
               'request',
               'fund_code_id',
+              'or_number',
               'last_action',
               'status',
               'is_active'
             ]
         }
       })
+    
     },
     // confirmAction(){
     //   this.$refs.viewRequest.clickSave()
