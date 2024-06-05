@@ -295,7 +295,7 @@
       viewRow(rowData) {
         try {
           console.log('Selected row data:', rowData);
-          this.selectedRow = rowData; // Assign the entire rowData object
+          this.selectedRow = rowData; 
           console.log('SelectedRow:', this.selectedRow); 
           this.isModalOpen = true; 
         } catch (error) {

@@ -271,14 +271,22 @@ export default {
             }
         },
       
-        updateProcessingFee() {
-            const selectedService = this.services.find(service => service.service_type === this.input.req_type);
-            if (selectedService) {
-                const copies = parseInt(this.input.copies_req) || 0;
-                const processingFee = selectedService.processing_fee || 0;
-                this.input.total_processing_fee = (copies * processingFee).toFixed(2);
+    
+        async updateProcessingFee() {
+            if (this.input.req_type && this.input.copies_req) {
+                try {
+                    const response = await this.$axios.post('/calculate-total-fee', {
+                        req_type: this.input.req_type,
+                        copies_req: this.input.copies_req
+                    });
+                    this.input.total_processing_fee = response.data.total_processing_fee;
+                } catch (error) {
+                    console.error('Error fetching processing fee:', error);
+                }
+            } else {
+                this.input.total_processing_fee = 0;
             }
-        },
+          },
         clickSave() {
             this.$emit("onSave", this.input);
             
@@ -314,6 +322,7 @@ export default {
             this.input.status= data.status;
             this.input.req_type = data.req_type;
             this.input.or_number = data.or_number;
+            this.input.total_processing_fee = data.total_processing_fee;
             this.input.is_verified = data.is_verified
             this.input.is_active = data.is_active
             this.fetchTableData(1);
