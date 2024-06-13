@@ -21,9 +21,11 @@
             </div> -->
             <div v-if="!isInitialLoad" class="bg-white overflow-auto shadow-xl sm:rounded-lg mb-4">
                 <table class="table-auto w-full items-center text-center rounded-full">
-                    <thead>
+                    <thead class="w-full border-green-800 h-11 bg-green-800 text-white border-8 rounded-2xl">
+                   
                         <tr class="font-bold">
                             <td v-for="(header, headerIndex) in tableHeaders" :key="headerIndex" scope="col" class="px-6 py-3" @click="sort(header)">
+                                
                                 <div class="flex content-start justify-center">
                                     {{header.label}}
                                     <svg
@@ -48,16 +50,6 @@
                     <tbody>
                         <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
                             <td v-for="(header, headerIndex) in tableHeaders" :key="headerIndex" class="px-2 py-3">
-                                <!-- <div v-if="header == 'roles' || header == 'permissions'">
-                                    <div v-if="row[header].length > 0" class="flex justify-center flex-wrap">
-                                        <div v-for="(item, itemIndex) in row[header]" :key="itemIndex" class="m-1 p-1 bg-blue-200 rounded shadow hover:bg-blue-400 hover:text-white">
-                                            {{item}}
-                                        </div>
-                                    </div>
-                                    <div v-else>
-                                        -- Empty --
-                                    </div>
-                                </div> -->
                                 <div v-if="row[header.name]">
                                     {{row[header.name]}}
                                 </div>
@@ -238,10 +230,10 @@ export default {
 }
 
 /* table headers design */
-.table-auto thead tr {
+/* .table-auto thead tr {
     background-color: #8d1436;
     color: white;
-}
+} */
 
 /* table rows */
 .table-auto tbody tr {

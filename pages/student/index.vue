@@ -16,11 +16,6 @@
             </button>
             </div> -->
 
-
-
-            
-
-
             <div class="flex justify-end my-2">
               <button 
               class="bg-blue-700 hover:bg-grey text-small  text-grey-darkest text-white font-bold py-2 px-4 rounded inline-flex items-center"
@@ -114,27 +109,61 @@
       </Drawer>
 
 
-  <Modal :isOpen="isModalOpen" iconType="warning">
-  <template #title>
-    <h1 class="text-lg font-bold">{{ modal.title }}</h1> 
-  </template>
+
+<template>
+ 
+  <Modal :isOpen="isModalOpen" iconType="info">
+    <template #title>
+    
+      <h1 class="text-lg font-bold">{{ modal.title }}</h1>
+     
+      <button @click="closeModal" class="absolute top-2 right-2 text-white hover:text-gray-600">
+  <i class="fas fa-times"></i>
+</button>
+
   
-  <template #content v-if="selectedRow && selectedRow.index">
-    <div>
-  
-      <p class="mt-4"><strong class="font-bold text-maroon text-lg">Requested Document:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.req_type }}</span></p>
-      <p class="mt-1"><strong class="font-bold text-maroon text-lg">Status:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.status }}</span></p>
-      <p class="mt-1"><strong class="font-bold text-maroon text-lg">Transaction No:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.transaction_no }}</span></p>
-      <p class="mt-1"><strong class="font-bold text-maroon text-lg">Date Created:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.date_created }}</span></p>
-      <p class="mt-1"><strong class="font-bold text-maroon text-lg">Processing Fee:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.processing_fee }}</span></p>
-      <p class="mt-1"><strong class="font-bold text-maroon text-lg">Committed by:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.committed_by }}</span></p>
-    </div>
-  </template>
-  
-  <template #footer>
-    <button @click="closeModal">Close</button>
-  </template>
-</Modal>
+    </template>
+    
+    <template #content v-if="selectedRow && selectedRow.index">
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          
+          <div class="flex flex-col">
+            <p class="font-semibold text-black text-lg">Requested Document:</p>
+            <p class="text-lg text-gray-800">{{ selectedRow.index.req_type }}</p>
+          </div>
+          <div class="flex flex-col">
+            <p class="font-semibold text-black text-lg pl-6">Status:</p>
+            <p class="text-lg text-gray-800 pl-6">{{ selectedRow.index.status }}</p>
+          </div>
+
+          
+          <div class="flex flex-col">
+            <p class="font-semibold text-black text-lg">Transaction No:</p>
+            <p class="text-lg text-gray-800">{{ selectedRow.index.transaction_no }}</p>
+          </div>
+          <div class="flex flex-col">
+            <p class="font-semibold text-black text-lg pl-6">Date Created:</p>
+            <p class="text-lg text-gray-800 pl-6">{{ selectedRow.index.date_created }}</p>
+          </div>
+
+          
+          <div class="flex flex-col">
+            <p class="font-semibold text-black text-lg">Processing Fee:</p>
+            <p class="text-lg text-gray-800">Php {{ selectedRow.index.processing_fee }}</p>
+          </div>
+          <div class="flex flex-col">
+            <p class="font-semibold text-black text-lg pl-6">Committed by:</p>
+            <p class="text-lg text-gray-800">{{ selectedRow.index.committed_by }}</p>
+          </div>
+        </div>
+      
+    </template>
+  </Modal>
+</template>
+
+
+
+
 
 
   </div>
@@ -163,7 +192,7 @@
         isModalOpen: false,
         searchQuery: '',
         modal:{
-          title:'REQUEST DETAILS ',
+          title:'',
           content:'',
           description:''
         },

@@ -64,7 +64,7 @@
         <label class="block text-gray-700 text-sm font-bold mb-2" for="req_type">
           Select Service:
         </label>
-        <select v-model="input.req_type" @change="updateProcessingFee" class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" :disabled="!editable">
+        <select v-model="input.req_type" @change="updateProcessingFee" class="shadow appearance-none border-green-700 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" :disabled="!editable">
           <option value="">Please select</option>
           <option v-for="service in services" :key="service.id" :value="service.service_type">{{ service.service_type }}</option>
         </select>
@@ -76,7 +76,7 @@
           Number of Copies:
         </label>
         <div class="flex items-center">
-          <input v-model="input.copies_req" @input="updateProcessingFee" class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full w-16 py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline text-center" :disabled="!editable" type="number">
+          <input v-model="input.copies_req" @input="updateProcessingFee" class="shadow appearance-none border-green-700 border-solid border-2 rounded w-full w-16 py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline text-center" :disabled="!editable" type="number">
         </div>
       </div>
 
@@ -86,7 +86,7 @@
           Total Processing Fee:
         </label>
         <div class="flex items-center">
-          <input v-model="input.total_processing_fee" class="shadow appearance-none border-green-500 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline text-center" type="text" readonly>
+          <input v-model="input.total_processing_fee" class="shadow appearance-none border-green-700 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline text-center" type="text" readonly>
         </div>
       </div>
 

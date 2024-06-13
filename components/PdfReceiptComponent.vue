@@ -25,6 +25,7 @@
   <h3 style="text-align: center; margin-top: 40px;"><strong>OFFICIAL RECEIPT</strong></h3>
 
   
+ 
     <div class="flex justify-between" style="display: flex; justify-content: space-between;">
     <div>
       <p>Fund: <span class="underline underline-offset-4">{{ selectedRow.index.fund_code_id }}</span></p>
@@ -54,7 +55,7 @@
       <tr style="height: 150px;"></tr>
       <tr>
         <td colspan="2" style="text-align: right; font-weight: bold;  padding-right: 60px;">TOTAL AMOUNT:</td>
-        <td style="text-align: center; text-decoration: underline;">{{ selectedRow.index.processing_fee }}</td>
+        <td style="text-align: center; text-decoration: underline;">{{ selectedRow.index.total_processing_fee }}</td>
       </tr>
 
       
@@ -62,7 +63,12 @@
   </table>
 
   
-  <p><strong>Amount in words:</strong> <span style="text-decoration: underline;">{{ amountInWords(selectedRow.index.processing_fee) }}</span></p>
+  <p><strong>Amount in words:</strong> <span style="text-decoration: underline;">{{ amountInWords(selectedRow.index.total_processing_fee) }}</span></p>
+
+   <!-- Centered Image -->
+   <div class="image-overlay" >
+            <img src="https://i0.wp.com/cfa.upd.edu.ph/wp-content/uploads/2021/09/Black-UP-Logo.png?ssl=1" alt="Overlay Image" class="overlay-image" />
+          </div>
 
 
 <div class="mt-8 flex items-center">
@@ -175,7 +181,7 @@ generatePdf() {
           margin: 0.5,
           filename: 'receipt.pdf',
           image: { type: 'jpeg', quality: 1.0 },
-          html2canvas: { scale: 5 },
+          html2canvas: { scale: 5 , useCORS: true},
           jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
         };
         html2pdf()
@@ -205,5 +211,29 @@ generatePdf() {
 .pdf-content {
   font-family: Arial, sans-serif;
   margin: 20px;
+  position: relative;
+    z-index: 1;
 }
+
+
+
+.image-overlay {
+    /* Position the image behind the content */
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1; 
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .overlay-image {
+    width: 90%;
+    height: auto;
+    object-fit: contain;
+  }
 </style>

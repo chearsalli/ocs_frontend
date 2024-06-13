@@ -121,7 +121,7 @@
 
     
      <!-- Modal for Paid button -->
-  <Modal :isOpen="isPaidModalOpen" iconType="warning" :lastORNumber="lastORNumber" >
+  <ModalConfirmation :isOpen="isPaidModalOpen" iconType="warning" :lastORNumber="lastORNumber" >
     <template #title>
       <h1 class="text-lg font-bold">Confirm Payment</h1> 
       
@@ -157,41 +157,58 @@
         Cancel
       </button>
     </template>
-  </Modal>
+  </ModalConfirmation>
 
      <Modal :isOpen="isModalOpen" iconType="warning">
 <template #title>
-  <h1 class="text-lg font-bold">Request</h1> 
+  <h1 class="text-lg font-bold"></h1> 
+  <button @click="closeViewModal" class="absolute top-2 right-2 text-white hover:text-gray-600">
+  <i class="fas fa-times"></i>
+</button>
 </template>
 
       
-    
+
+ 
 <template #content v-if="selectedRow && selectedRow.index">
-  <div>
-    <!-- Receipt content -->
-    <div class="receipt-container max-w-md mx-auto p-4 border border-gray-300">
-      <div class="text-center mb-4">
-        
-      </div>
-      <div class="receipt-details">
-        
-          <p class="mt-4"><strong class="font-bold text-maroon text-lg">Requested Document:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.req_type }}</span></p>
-          <p class="mt-1"><strong class="font-bold text-maroon text-lg">Status:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.status }}</span></p>
-          <p class="mt-1"><strong class="font-bold text-maroon text-lg">Transaction No:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.transaction_no }}</span></p>
-          <p class="mt-1"><strong class="font-bold text-maroon text-lg">Date Created:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.date_created }}</span></p>
-          <p class="mt-1"><strong class="font-bold text-maroon text-lg">Requestor:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.name }}</span></p>
-          <p class="mt-1"><strong class="font-bold text-maroon text-lg">Fund Code:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.fund_code_id }}</span></p>
-          <p class="mt-1"><strong class="font-bold text-maroon text-lg">Committed by:</strong> <span class="text-lg text-gray-800">{{ selectedRow.index.committed_by }}</span></p>
-            
-      </div>
-    </div>
-  </div>
-</template>
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          
+          <div class="flex flex-col">
+            <p class="font-semibold text-black text-lg">Requested Document:</p>
+            <p class="text-lg text-gray-800">{{ selectedRow.index.req_type }}</p>
+          </div>
+          <div class="flex flex-col">
+            <p class="font-semibold text-black text-lg pl-6">Status:</p>
+            <p class="text-lg text-gray-800 pl-6">{{ selectedRow.index.status }}</p>
+          </div>
+
+          
+          <div class="flex flex-col">
+            <p class="font-semibold text-black text-lg">Transaction No:</p>
+            <p class="text-lg text-gray-800">{{ selectedRow.index.transaction_no }}</p>
+          </div>
+          <div class="flex flex-col">
+            <p class="font-semibold text-black text-lg pl-6">Date Created:</p>
+            <p class="text-lg text-gray-800 pl-6">{{ selectedRow.index.date_created }}</p>
+          </div>
+
+          
+          <div class="flex flex-col">
+            <p class="font-semibold text-black text-lg">Requestor</p>
+            <p class="text-lg text-gray-800">{{ selectedRow.index.name }}</p>
+          </div>
+          <div class="flex flex-col">
+            <p class="font-semibold text-black text-lg pl-6">Fund Code:</p>
+            <p class="text-lg text-gray-800 pl-6">{{ selectedRow.index.fund_code_id }}</p>
+          </div>
+        </div>
+      
+    </template>
 
 <template #footer>
-  <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="closeViewModal">
+  <!-- <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="closeViewModal">
     Close
-  </button>
+  </button> -->
   <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="generatePdf">
     Print
   </button>

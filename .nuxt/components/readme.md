@@ -13,6 +13,7 @@ You can directly use them in pages and other components without the need to impo
 - `<Filters>` | `<filters>` (components/Filters.vue)
 - `<Loader>` | `<loader>` (components/Loader.vue)
 - `<Modal>` | `<modal>` (components/Modal.vue)
+- `<ModalConfirmation>` | `<modal-confirmation>` (components/ModalConfirmation.vue)
 - `<NavBar>` | `<nav-bar>` (components/NavBar.vue)
 - `<NuxtLogo>` | `<nuxt-logo>` (components/NuxtLogo.vue)
 - `<PdfReceiptComponent>` | `<pdf-receipt-component>` (components/PdfReceiptComponent.vue)
