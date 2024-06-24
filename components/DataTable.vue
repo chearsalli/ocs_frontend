@@ -21,7 +21,7 @@
             </div> -->
             <div v-if="!isInitialLoad" class="bg-white overflow-auto shadow-xl sm:rounded-lg mb-4">
                 <table class="table-auto w-full items-center text-center rounded-full">
-                    <thead class="w-full border-green-800 h-11 bg-green-800 text-white border-8 rounded-2xl">
+                    <thead class="w-full border-red-900 h-11 bg-red-900 text-white border-8 rounded-2xl">
                    
                         <tr class="font-bold">
                             <td v-for="(header, headerIndex) in tableHeaders" :key="headerIndex" scope="col" class="px-6 py-3" @click="sort(header)">
@@ -48,7 +48,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
+                        <tr v-for="(row, rowIndex) in tableData" :key="rowIndex" class="border-b-2 border-gray-200">
                             <td v-for="(header, headerIndex) in tableHeaders" :key="headerIndex" class="px-2 py-3">
                                 <div v-if="row[header.name]">
                                     {{row[header.name]}}
