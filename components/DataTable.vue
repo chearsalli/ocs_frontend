@@ -1,68 +1,62 @@
 
 <template>
-    <div>
-
-
-        <div class="my-8">
-            <!-- <div class="flex items-center">
-                <div class="w-full flex justify-between items-center mb-2">
-                    <div class="flex items-center">
-                        <Filters :isLoading="isInitialLoad" :filter_headers="tableFilters" :filters="tableFilterData" @applyFilter="filterAction"/>
-                    </div>
-
+    <div class="bg-white rounded-lg p-8 mt-2">
+    <div class="my-8">
+      <!-- Loading indicator -->
+      <div v-if="!isInitialLoad && isLoading" class="rounded flex top-1/2 left-1/2 bg-white fixed border px-3 items-center shadow-md content-start justify-center">
+        <CircSpinner :isLoading="isLoading" :size="'large'" />
+        <div class="font-bold text-gray-500">Loading...</div>
+      </div>
+  
+      <!-- Main content -->
+      <div v-if="!isInitialLoad" class="bg-red-900 overflow-auto shadow-xl sm:rounded-lg mb-4 p-4">
+        <!-- Table -->
+        <table class="table-auto w-full text-center bg-white rounded-lg">
+          <!-- Table headers -->
+          <thead class="border-red-900 h-11 bg-red-900 text-white border-8 rounded-lg">
+            <tr class="font-bold">
+              <td v-for="(header, headerIndex) in tableHeaders" :key="headerIndex" scope="col" class="px-6 py-3 cursor-pointer" @click="sort(header)">
+                <div class="flex justify-center">
+                  {{header.label}}
+                  <svg
+                    aria-hidden="true"
+                    focusable="false"
+                    data-prefix="fas"
+                    class="my-2 w-3 h-3 transform ml-2"
+                    :class="[isSort(header.name), header.name === order.order_field ? '' : 'invisible']"
+                    role="img"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512">
+                    <path
+                      fill="currentColor"
+                      d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
+                  </svg>
                 </div>
-            </div> -->
-            <div v-if="!isInitialLoad && isLoading" class="rounded flex top-1/2  left-1/2  bg-white fixed border px-3 items-center shadow-md content-start justify-center">
-                <CircSpinner :isLoading="isLoading" :size="'large'"/><div class="font-bold text-gray-500">Loading...</div>
-            </div>
-            <!-- <div  class="rounded flex top-1/2  left-1/2  bg-white fixed border py-1 px-3 items-center shadow-md content-start justify-center">
-                <CircSpinner :isLoading=true :size="'large'"/>
-                <div class="font-bold">Loading...</div>
-            </div> -->
-            <div v-if="!isInitialLoad" class="bg-white overflow-auto shadow-xl sm:rounded-lg mb-4">
-                <table class="table-auto w-full items-center text-center rounded-full">
-                    <thead class="w-full border-red-900 h-11 bg-red-900 text-white border-8 rounded-2xl">
-                   
-                        <tr class="font-bold">
-                            <td v-for="(header, headerIndex) in tableHeaders" :key="headerIndex" scope="col" class="px-6 py-3" @click="sort(header)">
-                                
-                                <div class="flex content-start justify-center">
-                                    {{header.label}}
-                                    <svg
-                                        aria-hidden="true"
-                                        focusable="false"
-                                        data-prefix="fas"
-                                        class="my-2 w-3 h-3 transform ml-2"
-                                        :class="[isSort(header.name), header.name===order.order_field ? '': 'invisible']"
-                                        role="img"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 448 512">
-                                        <path
-                                            fill="currentColor"
-                                            d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
-                                    </svg>
-                                     
-                                </div>
-                                
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(row, rowIndex) in tableData" :key="rowIndex" class="border-b-2 border-gray-200">
-                            <td v-for="(header, headerIndex) in tableHeaders" :key="headerIndex" class="px-2 py-3">
-                                <div v-if="row[header.name]">
-                                    {{row[header.name]}}
-                                </div>
-                                <div v-else>
-                                    <slot :name="header.name" :index="row">
+              </td>
+            </tr>
+          </thead>
+          <!-- Table body -->
+          <tbody>
+            <tr v-for="(row, rowIndex) in tableData" :key="rowIndex" 
+                :class="[
+                  'bg-white  h-11',
+                  rowIndex === 0 ? 'rounded-t-lg' : '',
+                  rowIndex === tableData.length - 1 ? 'rounded-b-lg' : ''
+                ]">
+              <td v-for="(header, headerIndex) in tableHeaders" :key="headerIndex" class="px-2 py-3">
+                <div v-if="row[header.name]"> 
+                  {{row[header.name]}}
+                </div>
+                <div v-else>
+                  <slot :name="header.name" :index="row"></slot>
+                </div>
+              </td>
+            </tr>    
+          </tbody>
+        </table>
+      </div>
 
-                                    </slot>
-                                </div>
-                            </td>
-                        </tr>    
-                    </tbody>
-                </table>
-                <div class="flex content-end justify-between">
+        <div class="flex content-end justify-between">
                     <vs-pagination 
                         :total-pages="pagination.last_page" 
                         :current-page="pagination.current_page"
@@ -79,12 +73,20 @@
                             </select>
                     </div>
                 </div>
-
             </div>
-            <Loader v-if="isInitialLoad && isLoading" :loaderType="'table'" :columnNum="4"/>
-        </div>
+      <!-- Loader -->
+      <Loader v-if="isInitialLoad && isLoading" :loaderType="'table'" :columnNum="4"/>
     </div>
-</template>
+
+    
+  </template>
+
+
+       
+
+
+
+
 
 <script>
 export default {
@@ -147,6 +149,8 @@ export default {
     //     Filters,
     //     GenericDrawer,
     // },
+
+    
     computed: {
         numOfItems: {
             get() {
@@ -170,8 +174,7 @@ export default {
         }
     },
     methods: {
-   
-    
+     
         filterAction(data) { // apply the filter from the filters component
             this.options.filters = data
             this.watcherValue++
@@ -211,7 +214,7 @@ export default {
 </script>
 
 <style scoped>
-.search-bar {
+/* .search-bar {
   margin-bottom: 20px;
 }
 
@@ -227,7 +230,7 @@ export default {
   color: maroon;
   opacity: 0.5;
   font-size: 18px;
-}
+} */
 
 /* table headers design */
 /* .table-auto thead tr {

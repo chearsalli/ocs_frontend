@@ -95,19 +95,19 @@
       <div class="flex content-end">
         <button 
             v-if="editable"
-            class="mr-1 bg-yellow-500 text-black mr-2 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+            class="mr-1 bg-blue-700 text-white mr-2 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
             type="button"
             @click="clickSave()"
           >
-          REQUEST
+          Confirm
         </button>
         <button 
           v-if="editable"
-          class="bg-red-500  text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+          class=" bg-white border border-gray-300  text-red-700 mr-6 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-100 " 
           type="button"
           @click="resetData()"
         >
-          CANCEL
+          Cancel
         </button>
       </div>
     </div>
@@ -263,7 +263,7 @@ export default {
     methods: {
       async fetchServices() {
             try {
-                const response = await fetch('http://localhost/api/services');
+                const response = await fetch(`${process.env.API_BASE_URL}/services`);
                 const data = await response.json();
                 this.services = data;
             } catch (error) {

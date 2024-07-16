@@ -22,14 +22,14 @@
               @click="openRequestAddDrawer()"
               >
               <svg xmlns="http://www.w3.org/2000/svg" width="11" hei  ght="11" viewBox="0 0 24 24" class="mr-2 fill-blue-500" fill="#fffff"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill="#ffffff"/></svg>
-              <span>Add Request</span>
+              <span>Add New</span>
             </button>
             </div>
 
-            <!-- Search-bar -->
-            <!-- <div class="search-bar">
-              <input type="text" class="border bg-gray-100 p-3" v-model="searchQuery" @change="search()" placeholder="Search">
-            </div> -->
+          
+         
+         
+            
             <DataTable 
               :isLoading="dataLoading" 
               :isInitialLoad="initialLoad" 
@@ -45,10 +45,11 @@
               
             >
             
+         
             
             <template #action="index">
     <div class="flex">
-        <button class="bg-green-500 text-white p-2 rounded mr-2 flex items-center justify-center w-8 h-8" @click="viewRow(index)">
+        <button class="bg-green-700 text-white p-2 rounded mr-2 flex items-center justify-center w-8 h-8" @click="viewRow(index)">
             <i class="fas fa-eye text-xl"></i> 
         </button>
         <button class="bg-red-500 text-white p-2 rounded flex items-center justify-center w-8 h-8 " @click="handleDelete(index.id)">
@@ -57,6 +58,9 @@
     </div>
 </template>
 
+
+
+      
              
               <template #active="index">
                 <font-awesome-icon v-if="index.index.is_active" :icon="['fas', 'check']"  class="icon alt text-green-500"/>
@@ -117,7 +121,7 @@
     
       <h1 class="text-lg font-bold">{{ modal.title }}</h1>
      
-      <button @click="closeModal" class="absolute top-2 right-2 text-white hover:text-gray-600">
+      <button @click="closeModal" class="absolute top-2 right-2 text-white hover:text-white-600">
   <i class="fas fa-times"></i>
 </button>
 
