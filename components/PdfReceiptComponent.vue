@@ -28,7 +28,7 @@
  
     <div class="flex justify-between" style="display: flex; justify-content: space-between;">
     <div>
-      <p>Fund: <span class="underline underline-offset-4">{{ selectedRow.index.fund_code_id }}</span></p>
+      <p>Fund: <span class="underline underline-offset-4"></span></p>
       <p>Payor: <span class="underline underline-offset-4">{{  selectedRow.index.name }}</span></p>
     </div>
     <div>
@@ -47,8 +47,8 @@
     </thead>
     <tbody>
       <tr>
-        <td style="text-align: center;">Nature 1</td>
-        <td style="text-align: center;">Code 1</td>
+        <td style="text-align: center;">{{ selectedRow.index.req_type }}</td>
+        <td style="text-align: center;">{{ selectedRow.index.fund_code_id }}</td>
         <td style="text-align: center;">{{ selectedRow.index.processing_fee }}</td>
       </tr>
 
@@ -63,12 +63,12 @@
   </table>
 
   
-  <p><strong>Amount in words:</strong> <span style="text-decoration: underline;">{{ amountInWords(selectedRow.index.total_processing_fee) }}</span></p>
+  <p><strong>Amount in words:</strong> <span style="text-decoration: underline;">{{ amountInWords(selectedRow.index.total_processing_fee) }} Pesos only</span></p>
 
    <!-- Centered Image -->
    <div class="image-overlay" >
-            <img src="https://i0.wp.com/cfa.upd.edu.ph/wp-content/uploads/2021/09/Black-UP-Logo.png?ssl=1" alt="Overlay Image" class="overlay-image" />
-          </div>
+    <img src="https://i0.wp.com/cfa.upd.edu.ph/wp-content/uploads/2021/09/Black-UP-Logo.png?ssl=1" alt="Overlay Image" class="overlay-image" />
+   </div>
 
 
 <div class="mt-8 flex items-center">

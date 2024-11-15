@@ -66,7 +66,7 @@
         </label>
         <select v-model="input.req_type" @change="updateProcessingFee" class="shadow appearance-none border-green-700 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" :disabled="!editable">
           <option value="">Please select</option>
-          <option v-for="service in services" :key="service.id" :value="service.service_type">{{ service.service_type }}</option>
+          <option v-for="service in serviceList" :key="service.id" :value="service.service_type">{{ service.service_type }}</option>
         </select>
       </div>
 
@@ -129,6 +129,7 @@
         :activityLogData="tableData" 
       /> -->
     </div>
+    {{ serviceList }}
 <div class="mb-5 p-5"></div>
   </div>
 </template>
@@ -209,6 +210,8 @@ export default {
 
     },
     async fetch() {
+      console.log('test')
+        await this.getServiceList(); 
         await this.updateFilterValues({}); // set the filter values to nothing every time a txn history is rendered
         await this.fetchTableData(this.options.page);
         await this.filters.forEach(filter => {
@@ -234,6 +237,7 @@ export default {
             initialLoad: state => state.activitylogs.initialLoad,
             coursesData: state => state.activitylogs.data,
             tableFilterValues: state => state.activitylogs.filterValues,
+            serviceList: state => state.ocsServices.list
         }),
         ...mapGetters({
             getTableData: "activitylogs/getTableData",
@@ -257,7 +261,7 @@ export default {
     },
 
     created() {
-        this.fetchServices(); 
+        this.getServiceList(); 
     },
    
     methods: {
@@ -344,7 +348,8 @@ export default {
             getData: "activitylogs/getDataList",
             createData: "activitylogs/create",
             updateData: "activitylogs/update",
-            getFilters: "activitylogs/getFilters"
+            getFilters: "activitylogs/getFilters",
+            getServiceList: 'ocsServices/getServicesList'
         }),
         openDrawer(data) {
             this.showDrawer = true;

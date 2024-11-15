@@ -23,6 +23,7 @@ let store = {};
   resolveStoreModules(require('../store/alert.js'), 'alert.js')
   resolveStoreModules(require('../store/cashier.js'), 'cashier.js')
   resolveStoreModules(require('../store/ocs_staff.js'), 'ocs_staff.js')
+  resolveStoreModules(require('../store/ocsServices.js'), 'ocsServices.js')
   resolveStoreModules(require('../store/request.js'), 'request.js')
 
   // If the environment supports hot reloading...
@@ -35,6 +36,7 @@ let store = {};
       '../store/cashier.js',
       '../store/index.js',
       '../store/ocs_staff.js',
+      '../store/ocsServices.js',
       '../store/request.js',
     ], () => {
       // Update `root.modules` with the latest definitions.

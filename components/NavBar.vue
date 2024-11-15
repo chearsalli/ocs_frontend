@@ -38,8 +38,8 @@
               <template v-if="$route.path === '/ocs_staff' ">
                 <span style="color: #08543c; font-size: 1.2em;">OCS STAFF</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $auth.user.name }}
               </template>
-              <template v-else-if="$route.path === '/student'">
-              <span style="color: #08543c; font-size: 1.2em;">CLIENT</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $auth.user.name }}
+              <template v-else-if="$route.path === '/my-requests'">
+              <span style="color: #08543c; font-size: 1.2em;">My Requests</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $auth.user.name }}
               </template>
               <template v-else-if="$route.path === '/cashier'">
               <span style="color: #08543c; font-size: 1.2em;">CASHIER</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $auth.user.name }}
@@ -117,7 +117,7 @@
               <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
             </svg>
           </span>
-          <NuxtLink to="/student">Client</NuxtLink>
+          <NuxtLink to="/my-requests">My Requests</NuxtLink>
         </span>
       </aside>
         
