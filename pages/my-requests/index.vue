@@ -29,11 +29,11 @@
           
          
          
-            
+            <!-- :tableFilterData="tableFilter"  -->
             <DataTable 
               :isLoading="dataLoading" 
               :isInitialLoad="initialLoad" 
-              :tableFilterData="tableFilter" 
+              
               :tableHeaders="headers" 
               :tableData="tableData.data" 
               :tableOptions="options" 
@@ -274,17 +274,17 @@
       await this.getServiceList()
       await this.updateFilterValues({}) // set the filter values to nothing every time a txn history is rendered
       await this.fetchTableData(this.options.page)
-      await this.filters.forEach(filter => { // create the filter values that will be used for this txn history instance
-          this.getFilters({ 
-            link: this.module,
-            data: {
-                column_name: filter.field,
-                distinct: 'true',
-                order_type: 'ASC',
-                order_field: filter.field
-            }
-          })
-      });
+      // await this.filters.forEach(filter => { // create the filter values that will be used for this txn history instance
+      //     this.getFilters({ 
+      //       link: this.module,
+      //       data: {
+      //           column_name: filter.field,
+      //           distinct: 'true',
+      //           order_type: 'ASC',
+      //           order_field: filter.field
+      //       }
+      //     })
+      // });
     },
     computed: {
       ...mapState({
@@ -352,7 +352,7 @@
         createData: 'request/create',
         updateData: 'request/update',
         getFilters: 'request/getFilters',
-        getServiceList: 'ocsService/getServicesList'
+        getServiceList: 'ocsServices/getServicesList'
       }),
       openDrawer(data) {
         this.showDrawer = true

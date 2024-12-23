@@ -12,6 +12,7 @@ export const state = () => ({
     filterValues: [],
     order:{},
     lastORNumber: null,
+    or_data: []
     // order_field: '',
     // order_type: ''
 })
@@ -24,6 +25,30 @@ export const actions = {
             tableParams = Object.assign(tableParams, state.order)
             const data = await this.$axios.$get(`/cashier`, {params: tableParams})
             await commit('GET_DATA_LIST_SUCCESS', data.request)
+        } catch (error) {
+            if(error.response.status===422){  
+                let errList = ``;
+                const fields = Object.keys(error.response.data.errors)
+                fields.forEach((field) => {
+                const errorArr = error.response.data.errors[field]
+                errorArr.forEach((errMess) => {
+                    errList += `<li>${errMess}</li>`
+                })
+            })
+                const errMessage = `Validation Error: ${errList}`
+                await commit('alert/ERROR', errMessage, { root: true })
+            }else{
+                const errMessage = `Something went wrong while performing your request. Please contact administrator`
+                await commit('alert/ERROR', errMessage, { root: true })
+            }
+            commit('GET_DATA_FAILED', error)
+        }
+    },
+    async getDataByORNumber ({ state, commit }, payload) {
+        commit('GET_DATA_LIST_REQUEST')
+        try {
+            const data = await this.$axios.$get(`/cashier`, {params: payload})
+            await commit('GET_DATA_BY_OR_SUCCESS', data.request)
         } catch (error) {
             if(error.response.status===422){  
                 let errList = ``;
@@ -137,7 +162,21 @@ export const actions = {
             throw error;
         }
     },
-    
+    async batchMarkAsPaid({ commit }, requestData) {
+        commit('MARK_AS_PAID_REQUEST');
+        
+        try {
+            
+            await this.$axios.$put(`/batch-mark-as-paid`, {
+                ids: requestData.ids,
+                or_number: requestData.or_number
+            });
+            commit('MARK_AS_PAID_SUCCESS', requestData);
+        } catch (error) {
+            commit('MARK_AS_PAID_FAILURE', error);
+            throw error;
+        }
+    },
    
 
     async fetchLastORNumber({ commit }) {
@@ -193,6 +232,11 @@ export const mutations = {
     },
     GET_DATA_LIST_SUCCESS(state, data) {
         state.data = data
+        state.loading = false
+        state.initialLoad = false
+    },
+    GET_DATA_BY_OR_SUCCESS(state, data){
+        state.or_data = data
         state.loading = false
         state.initialLoad = false
     },
@@ -318,5 +362,47 @@ export const getters = {
 
             return coursesData
         }
-    }
+    },
+    mergedPaymentDetails(state) {
+        // Check if state.or_data is an array and contains items
+        if (!Array.isArray(state.or_data) || state.or_data.length === 0) {
+          return {}; // Return an empty object if no or_data is present
+        }
+    
+        // Use reduce to merge the data
+        const merged = state.or_data.reduce((acc, transaction) => {
+          // Merge the paymentDetails: add the current transaction's details
+          acc.paymentDetails.push({
+            // or_number: transaction.or_number,
+            // collecting_officer: transaction.collecting_officer,
+            // name: transaction.name
+            fund_code_id: transaction.fund_code_id,
+            req_type: transaction.req_type,
+            processing_fee: transaction.total_processing_fee
+          });
+    
+          // Ensure that fund_code, req_type, total_processing_fee are added only once
+        //   if (!acc.fund_code) acc.fund_code = transaction.fund_code_id;
+        //   if (!acc.req_type) acc.req_type = transaction.req_type;
+        //   if (!acc.total_processing_fee) acc.total_processing_fee = transaction.total_processing_fee;
+             if (!acc.name) acc.name = transaction.name;
+             if (!acc.collecting_officer) acc.collecting_officer = transaction.collecting_officer;
+             if (!acc.or_number) acc.or_number = transaction.or_number;
+          // Accumulate the number of copies requested (sum across all transactions)
+          acc.copies_req += transaction.copies_req;
+          if(transaction.total_processing_fee) acc.total += Number(transaction.total_processing_fee);
+          return acc;
+        }, {
+          paymentDetails: [],  // Initialize an empty array for paymentDetails
+          fund_code: null,     // Initialize fund_code to null
+          req_type: null,      // Initialize req_type to null
+          total_processing_fee: null,  // Initialize total_processing_fee to null
+          copies_req: 0,      
+          total: 0  // Initialize copies_req to 0
+        });
+    
+        // Return the merged result as a JSON object (not an array)
+        return merged;
+      }
+  
 }

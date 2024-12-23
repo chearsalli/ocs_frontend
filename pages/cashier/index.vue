@@ -5,57 +5,20 @@
     <div class="py-12 px-14">
       
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
-          <!-- <div class="flex justify-end my-2">
-            <button
-            class="bg-blue-700 hover:bg-grey text-small  text-grey-darkest text-white font-bold py-2 px-4 rounded inline-flex items-center"
-            >
-            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" class="mr-2 fill-blue-500" fill="#fffff"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill="#ffffff"/></svg>
-            <span>Filter</span>
-          </button>
-          </div> -->
-       
-          <!-- <div class="flex justify-end my-2">
-            <button 
-            class="bg-blue-700 hover:bg-grey text-small  text-grey-darkest text-white font-bold py-2 px-4 rounded inline-flex items-center"
-            @click="openRequestAddDrawer()"
-            >
-            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" class="mr-2 fill-blue-500" fill="#fffff"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" fill="#ffffff"/></svg>
-            <span>Add</span>
-          </button>
-          </div> -->
-          <!-- Search-bar -->
-          <!-- <div class="search-bar">
-            
-            <input type="text" class="border-8 border-green-800 bg-gray-100 p-3 pl-10 " v-model="searchQuery" @change="search()" placeholder="Transaction No./Name">
-            
-          </div> -->
           
           <br>
-          <!-- Search-bar -->
-          <div class="search-bar relative">
-          <svg class="absolute inset-y-0 left-0 w-8 h-8 text-gray-500 ml-3 mt-3 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-          </svg>
-          <input type="text" class="border-8 border-green-800 bg-gray-100 p-3 pl-10 rounded-xl" v-model="searchQuery" @change="search()" placeholder="Transaction No./Name">
+          <div class="flex justify-between">
+            <div class="search-bar relative">
+              <svg class="absolute inset-y-0 left-0 w-8 h-8 text-gray-500 ml-3 mt-3 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <input type="text" class="border-8 border-green-800 bg-gray-100 p-3 pl-10 rounded-xl" v-model="searchQuery" @change="search()" placeholder="Transaction No./Name">
+            </div>
+            <button  v-if="selectedRows.length>0" class="bg-blue-600 px-4 py-2 text-white rounded" @click="batchUpdateSelected">
+              Mark Selected as PAID
+            </button>
           </div>
-          
-          
-          <!-- <DataTable 
-            :isLoading="dataLoading" 
-            :isInitialLoad="initialLoad" 
-            :tableFilterData="tableFilter" 
-            :tableHeaders="headers" 
-            :tableData="tableData.data" 
-            :tableOptions="options" 
-            :pagination=pagination
-            :showSearchbar="true"
-            @onUpdateOptions="handleOptionsUpdate" 
-            @onUpdatePage="handlePagination"
-            @onUpdateSorting="handleSortingUpdate"
-            @updateSearchQuery="handleSearchQueryUpdate"
-            
-          > -->
-
+          <!-- Search-bar -->
           <DataTable 
             :isLoading="dataLoading" 
             :isInitialLoad="initialLoad" 
@@ -64,24 +27,26 @@
             :tableData="tableData.data" 
             :tableOptions="options" 
             :pagination=pagination
+            :showCheckbox="true"
+            :disabledList="disabledList"
             @onUpdateOptions="handleOptionsUpdate" 
             @onUpdatePage="handlePagination"
             @onUpdateSorting="handleSortingUpdate"
-            
+            @updateSelectedRows="handleSelectedRows"
           >
 
           
           <template #action="index">
-  <div class="flex">
-      <button v-if="index.index.status === 'For Payment'" class="bg-green-900 text-yellow-400  font-semibold mr-2 py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="Paymentaccept(index)">
-        PAID
-        </button>
-      <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="viewRow(index)">
-        VIEW
-      </button>
+      <div class="flex">
+          <button v-if="index.index.status === 'For Payment'" class="bg-green-900 text-yellow-400  font-semibold mr-2 py-2 px-4 rounded flex items-center justify-center overflow-hidden whitespace-nowrap" style="width: 80px;" @click="Paymentaccept(index)">
+            PAID
+            </button>
+          <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="viewRow(index)">
+            VIEW
+          </button>
 
-      
-  </div>
+          
+      </div>
 </template>   
             
             <template #active="index">
@@ -144,10 +109,30 @@
     <template #content>
       <h1 class="text-base">Are you sure you want to mark this request as paid?</h1>
       <br>
-  
+      <table v-if="batchMode" class="w-full bordered">
+        <thead>
+          <tr>
+            <th>Transaction No.</th>
+            <th>Name</th>
+            <th>Request</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr  
+            v-for="(row, rowIndex) in selectedRows" :key="rowIndex" scope="col" 
+            class="px-6 py-3 cursor-pointer" 
+          >
+            <td>{{ row.transaction_no }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.req_type }}</td>
+            <td>{{ row.total_processing_fee }}</td>
+          </tr>
+        </tbody>
+      </table>
        <!-- Add the input field for OR Number -->
        <div class="mt-4 flex justify-between items-center">
-    <label for="orNumber" class="block text-sm font-medium text-gray-700"> OR Number: {{ lastORNumber }}</label>
+    <label for="orNumber" class="block text-sm font-medium text-gray-700"> OR Number: </label>
     <div class="relative">
     <input
   type="text"
@@ -182,6 +167,7 @@
 </template>
 
       
+{{mergedPaymentDetails}}
 
  
 <template #content v-if="selectedRow && selectedRow.index">
@@ -218,16 +204,17 @@
         </div>
       
     </template>
-
 <template #footer>
   <!-- <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="closeViewModal">
     Close
   </button> -->
-  <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="generatePdf">
+  <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="generatePdf(true)">
     Print
   </button>
-
-  <PdfReceiptComponent ref="pdfComponent" :selectedRow="selectedRow" @generatePdf="generatePdf" />
+  <button class="bg-green-900 text-yellow-400 font-semibold mr-2 py-2 px-4  rounded flex items-center justify-center overflow-hidden whitespace-nowrap" @click="generatePdf(false)">
+    Preview
+  </button>
+  <PdfReceiptComponent ref="pdfComponent" :selectedRow="mergedPaymentDetails" @generatePdf="generatePdf" :isPreview="isPreview"/>
   <!-- <PdfReceiptComponent ref="pdfComponent" :selectedRow="selectedRow"></PdfReceiptComponent> -->
 
 
@@ -278,10 +265,13 @@ export default {
       cashierInput: '',
       currentORNumber: '',
       selectedRow: {},
+      selectedRows:[],
+      batchMode: false,
       actionconfirm: '',
+      isPreview: false,
       // lastORNumber: '',
       cashierORNumbers: {}, // Object to store OR Numbers for each cashier
-    loggedInCashier: '', // Currently logged-in cashier
+      loggedInCashier: '', // Currently logged-in cashier
       searchQuery: '',
       modal:{
         title:'',
@@ -360,17 +350,17 @@ export default {
   async fetch () {
     await this.updateFilterValues({}) // set the filter values to nothing every time a txn history is rendered
     await this.fetchTableData(this.options.page)
-    await this.filters.forEach(filter => { // create the filter values that will be used for this txn history instance
-        this.getFilters({ 
-          link: this.module,
-          data: {
-              column_name: filter.field,
-              distinct: 'true',
-              order_type: 'ASC',
-              order_field: filter.field
-          }
-        })
-    });
+    // await this.filters.forEach(filter => { // create the filter values that will be used for this txn history instance
+    //     this.getFilters({ 
+    //       link: this.module,
+    //       data: {
+    //           column_name: filter.field,
+    //           distinct: 'true',
+    //           order_type: 'ASC',
+    //           order_field: filter.field
+    //       }
+    //     })
+    // });
   },
   computed: {
 
@@ -384,23 +374,52 @@ export default {
       tableFilterValues: state => state.cashier.filterValues,
       lastORNumber: state => state.cashier.lastORNumber,
       saveLastORNumber: state => state.cashier.saveLastORNumber,
-      
-  
+      orData: state => state.cashier.or_data
     }),
 
 
-nextORNumber() {
-  if (this.cashierInput === '') {
-    const nextNumber = parseInt(this.lastORNumber) + 1; 
-    return this.formatNumber(nextNumber, 7);
-  } else {
-    return this.cashierInput;
-  }
+    nextORNumber() {
+      if (this.cashierInput === '') {
+        const nextNumber = parseInt(this.lastORNumber) + 1; 
+        return this.formatNumber(nextNumber, 7);
+      } else {
+        return this.cashierInput;
+      }
+    },
+    disabledList() {
+      if (!this.tableData?.data) return []; // Early exit if data is missing
+
+      if (this.selectedRows.length >= 4) {
+        // Disable all rows except those already selected
+        const selectedIds = this.selectedRows.map(row => row.id);
+        return this.tableData.data
+          .filter(row => !selectedIds.includes(row.id)) // Disable only unselected rows
+          .map(row => row.id);
+      }
+
+      if (this.selectedRows.length > 0) {
+        const { fund_code_id: fundCode, user_id: userId } = this.selectedRows[0];
+
+        // Disable rows that don't match criteria
+        return this.tableData.data
+          .filter(row =>
+            row.status !== 'For Payment' || 
+            row.user_id !== userId || 
+            row.fund_code_id !== fundCode 
+          )
+          .map(row => row.id);
+      }
+
+  // If no rows are selected, disable all non-'For Payment' rows
+  return this.tableData.data
+    .filter(row => row.status !== 'For Payment')
+    .map(row => row.id);
 },
-
     ...mapGetters({
-      getTableData: "cashier/getTableData"
+      getTableData: "cashier/getTableData",
+      mergedPaymentDetails: "cashier/mergedPaymentDetails"
     }),
+
   },
 
  
@@ -420,6 +439,11 @@ nextORNumber() {
       return number.toString().padStart(length, '0');
     },
 
+    batchUpdateSelected(){
+      this.batchMode = true
+      this.isPaidModalOpen = true;
+      this.cashierInput = this.nextORNumber;
+    },
     // async ORNumber() {
 
       
@@ -440,14 +464,35 @@ nextORNumber() {
     //   }
     // },
     
-
+    handleSelectedRows(selectedRows) {
+      this.selectedRows = selectedRows
+    },
 
     
 
-    generatePdf() {
-      
-        this.$refs.pdfComponent.generatePdf();
-     
+    async generatePdf(isPreview) {
+        await this.getDataByORNumber({
+          with_parent_name: true,
+            with_collecting_officer: true,
+            with_user: true,
+            with_fund_codes: true,
+            or_number: this.selectedRow.index.or_number,
+            
+            fields:[
+              'id',
+              'transaction_no',
+              'name',
+              'request',
+              'fund_code_id',
+              'or_number',
+              'last_action',
+              'status',
+              'is_active',
+              'user_id'
+            ]
+        });
+        this.isPreview = isPreview
+        await this.$refs.pdfComponent.generatePdf();
     },
     openPaidModal() {
       this.isPaidModalOpen = true;
@@ -479,6 +524,7 @@ async Paymentaccept(index) {
     return;
   }
   this.isPaidModalOpen = await true;
+  this.batchMode = await false;
   this.modal.title = await 'Confirm Payment';
   this.modal.content = await 'Are you sure you want to mark this request as paid?';
   this.selectedIndex = await index;
@@ -489,10 +535,11 @@ async Paymentaccept(index) {
 
 confirmAction() {
   this.isPaidModalOpen = false;
-  const requestId = this.selectedIndex.index.id;
   
- 
-  this.markAsPaid( {request_id: requestId, or_number: this.cashierInput})
+  
+  if(this.batchMode){
+    // console.log('ids: ',this.selectedRows.map(row => row.id))
+    this.batchMarkAsPaid( {ids: this.selectedRows.map(row => row.id), or_number: this.cashierInput})
     .then(() => {
       console.log('Request marked as paid successfully');
       this.cashierInput = '';
@@ -503,6 +550,21 @@ confirmAction() {
     .catch(error => {
       console.error('Error marking request as paid:', error);
     });
+  }else{
+    const requestId = this.selectedIndex.index.id;
+    this.markAsPaid( {request_id: requestId, or_number: this.cashierInput})
+    .then(() => {
+      console.log('Request marked as paid successfully');
+      this.cashierInput = '';
+      // this.ORNumber();
+      this.isModalOpen = false;
+      this.fetchTableData(1);
+    })
+    .catch(error => {
+      console.error('Error marking request as paid:', error);
+    });
+  }
+
 
   
 },
@@ -541,8 +603,10 @@ viewRow(rowData) {
       acceptPayment: 'cashier/acceptPayment',
       denyPayment: 'cashier/denyPayment',
       markAsPaid: 'cashier/markAsPaid',
+      batchMarkAsPaid: 'cashier/batchMarkAsPaid',
       fetchLastORNumber: 'cashier/fetchLastORNumber',
       saveORNumber: 'cashier/saveORNumber',
+      getDataByORNumber: 'cashier/getDataByORNumber'
     }),
     openDrawer(data) {
       this.showDrawer = true
@@ -560,6 +624,7 @@ viewRow(rowData) {
             page,
             items: this.options.numOfItems,
             with_parent_name: true,
+            with_collecting_officer: true,
             with_user: true,
             with_fund_codes: true,
             // with_calculation: true,
@@ -573,12 +638,14 @@ viewRow(rowData) {
               'or_number',
               'last_action',
               'status',
-              'is_active'
+              'is_active',
+              'user_id'
             ]
         }
       })
     
     },
+    
     // confirmAction(){
     //   this.$refs.viewRequest.clickSave()
     //   this.isModalOpen = false

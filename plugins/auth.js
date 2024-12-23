@@ -3,7 +3,6 @@ export default ({ app, store, redirect }) => {
     app.router.afterEach((to, from) => {
       
       
-        console.log(to)
       const urlList = [
           // {
           //     name: 'request',
@@ -109,17 +108,19 @@ export default ({ app, store, redirect }) => {
             return
           }
           const pagePermission =  urlList.filter(o => o.name === to.name)
+          if(pagePermission[0]){
+            return
+          }
           if(pagePermission[0].permissionType === 'role'){
              if(checkRole(pagePermission[0].permission) === 0){
               window.location.href = "/error";
              } 
           }else if(checkPermission(pagePermission[0].permission) === 0){
-                window.location.href = "/error"
-            
+            window.location.href = "/error"
           }
       }else if(to.path === "/login"){
-            window.location.href = "/auth/login";
-        }
+        window.location.href = "/auth/login";
+      }
         
       
   

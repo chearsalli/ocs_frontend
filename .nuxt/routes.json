@@ -2,43 +2,43 @@
   {
     "name": "cashier",
     "path": "/cashier",
-    "component": "/home/nad/frontend-template/pages/cashier/index.vue",
+    "component": "/home/raabrera/ocs_frontend/pages/cashier/index.vue",
     "chunkName": "pages/cashier/index"
   },
   {
     "name": "my-requests",
     "path": "/my-requests",
-    "component": "/home/nad/frontend-template/pages/my-requests/index.vue",
+    "component": "/home/raabrera/ocs_frontend/pages/my-requests/index.vue",
     "chunkName": "pages/my-requests/index"
   },
   {
     "name": "ocs_staff",
     "path": "/ocs_staff",
-    "component": "/home/nad/frontend-template/pages/ocs_staff/index.vue",
+    "component": "/home/raabrera/ocs_frontend/pages/ocs_staff/index.vue",
     "chunkName": "pages/ocs_staff/index"
   },
   {
     "name": "personal-info",
     "path": "/personal-info",
-    "component": "/home/nad/frontend-template/pages/personal-info/index.vue",
+    "component": "/home/raabrera/ocs_frontend/pages/personal-info/index.vue",
     "chunkName": "pages/personal-info/index"
   },
   {
     "name": "auth-callback",
     "path": "/auth/callback",
-    "component": "/home/nad/frontend-template/pages/auth/callback.vue",
+    "component": "/home/raabrera/ocs_frontend/pages/auth/callback.vue",
     "chunkName": "pages/auth/callback"
   },
   {
     "name": "auth-login",
     "path": "/auth/login",
-    "component": "/home/nad/frontend-template/pages/auth/login.vue",
+    "component": "/home/raabrera/ocs_frontend/pages/auth/login.vue",
     "chunkName": "pages/auth/login"
   },
   {
     "name": "index",
     "path": "/",
-    "component": "/home/nad/frontend-template/pages/index.vue",
+    "component": "/home/raabrera/ocs_frontend/pages/index.vue",
     "chunkName": "pages/index"
   }
 ]

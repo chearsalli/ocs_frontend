@@ -55,19 +55,44 @@
         <svg id="Capa_1" fill="gray" height="15px" width="15px" version="1.1"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 460.775 460.775" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M285.08,230.397L456.218,59.27c6.076-6.077,6.076-15.911,0-21.986L423.511,4.565c-2.913-2.911-6.866-4.55-10.992-4.55 c-4.127,0-8.08,1.639-10.993,4.55l-171.138,171.14L59.25,4.565c-2.913-2.911-6.866-4.55-10.993-4.55 c-4.126,0-8.08,1.639-10.992,4.55L4.558,37.284c-6.077,6.075-6.077,15.909,0,21.986l171.138,171.128L4.575,401.505 c-6.074,6.077-6.074,15.911,0,21.986l32.709,32.719c2.911,2.911,6.865,4.55,10.992,4.55c4.127,0,8.08-1.639,10.994-4.55 l171.117-171.12l171.118,171.12c2.913,2.911,6.866,4.55,10.993,4.55c4.128,0,8.081-1.639,10.992-4.55l32.709-32.719 c6.074-6.075,6.074-15.909,0-21.986L285.08,230.397z"></path> </g></svg>
       </button>
     </div>
-
-    <div class="max-w-xs mt-2"> 
-      
-      
-<!-- Select Service -->
-<div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="req_type">
-          Select Service:
-        </label>
-        <select v-model="input.req_type" @change="updateProcessingFee" class="shadow appearance-none border-green-700 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" :disabled="!editable">
-          <option value="">Please select</option>
-          <option v-for="service in serviceList" :key="service.id" :value="service.service_type">{{ service.service_type }}</option>
-        </select>
+<form @submit.prevent="clickSave">
+    <!-- <div class="max-w-xs mt-2">  -->
+    
+      <!-- Select Office -->
+      <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="req_type">
+                Office:
+              </label>
+              <select 
+                v-model="input.unit_name" 
+                name="office"
+                class="shadow appearance-none border-green-700 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
+                :disabled="!editable"
+                v-validate="'required'"
+                @change="updateUnit" 
+              >
+                <option value="">Please select</option>
+                <option v-for="unit in distinctUnitNames" :key="unit" :value="unit">{{ unit }}</option>
+              </select>
+              <span v-if="errors.has('office')" class="text-red-700">{{ errors.first('office') }}</span>
+      </div>
+      <!-- Select Service -->
+      <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="req_type">
+                Select Service:
+              </label>
+              <select 
+                v-model="input.req_type" 
+                v-validate="'required'"
+                name="Service"
+                class="shadow appearance-none border-green-700 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
+                :disabled="!editable"
+                @change="updateProcessingFee" 
+              >
+                <option value="">Please select</option>
+                <option v-for="service in serviceByUnit" :key="service.id" :value="service.service_type">{{ service.service_type }}</option>
+              </select>
+              <span v-if="errors.has('Service')" class="text-red-700">{{ errors.first('Service') }}</span>
       </div>
 
       <!-- Number of Copies -->
@@ -76,8 +101,9 @@
           Number of Copies:
         </label>
         <div class="flex items-center">
-          <input v-model="input.copies_req" @input="updateProcessingFee" class="shadow appearance-none border-green-700 border-solid border-2 rounded w-full w-16 py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline text-center" :disabled="!editable" type="number">
+          <input v-model="input.copies_req" name="Number of Copies" v-validate="'required|numeric'" @input="updateProcessingFee" class="shadow appearance-none border-green-700 border-solid border-2 rounded w-full w-16 py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline text-center" :disabled="!editable" type="number" min="0">
         </div>
+        <span v-if="errors.has('Number of Copies')" class="text-red-700">{{ errors.first('Number of Copies') }}</span>
       </div>
 
       <!-- Total Processing Fee -->
@@ -86,12 +112,18 @@
           Total Processing Fee:
         </label>
         <div class="flex items-center">
-          <input v-model="input.total_processing_fee" class="shadow appearance-none border-green-700 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline text-center" type="text" readonly>
+          <input 
+          
+            v-model="input.total_processing_fee" 
+            class="shadow appearance-none border-green-700 border-solid border-2 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline text-center" 
+            type="number" 
+            name="Total Processing Fee"
+            min="0"
+            :readonly="isProcessFeeFixed"
+          >
         </div>
+        <span v-if="errors.has('Total Processing Fee')" class="text-red-700">{{ errors.first('Total Processing Fee') }}</span>
       </div>
-
-
-
       <div class="flex content-end">
         <button 
             v-if="editable"
@@ -110,8 +142,8 @@
           Cancel
         </button>
       </div>
-    </div>
-
+    <!-- </div> -->
+</form>
     <div v-if="!editable">
       <svg height="30" width="600" class="w-full">
         <g fill="none" stroke="grey">
@@ -129,13 +161,13 @@
         :activityLogData="tableData" 
       /> -->
     </div>
-    {{ serviceList }}
 <div class="mb-5 p-5"></div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
+// import { Validator } from 'vee-validate';
 // import axios from 'axios';
 export default {
     props: {
@@ -155,6 +187,8 @@ export default {
             //     copies_req: '',
             //     total_processing_fee: '',
       },
+            email: '',
+      password: '',
       services: [],
       
     
@@ -210,21 +244,20 @@ export default {
 
     },
     async fetch() {
-      console.log('test')
         await this.getServiceList(); 
         await this.updateFilterValues({}); // set the filter values to nothing every time a txn history is rendered
         await this.fetchTableData(this.options.page);
-        await this.filters.forEach(filter => {
-            this.getFilters({
-                link: this.module,
-                data: {
-                    column_name: filter.field,
-                    distinct: "true",
-                    order_type: "ASC",
-                    order_field: filter.field
-                }
-            });
-        });
+        // await this.filters.forEach(filter => {
+        //     this.getFilters({
+        //         link: this.module,
+        //         data: {
+        //             column_name: filter.field,
+        //             distinct: "true",
+        //             order_type: "ASC",
+        //             order_field: filter.field
+        //         }
+        //     });
+        // });
     },
 
     
@@ -242,7 +275,27 @@ export default {
         ...mapGetters({
             getTableData: "activitylogs/getTableData",
             getRequestByID: "request/getDataById"
-        })
+        }),
+        isProcessFeeFixed() {
+          const selectedService = this.serviceList.find(item => item.service_type === this.input.req_type);
+          if(selectedService){
+            return selectedService.is_fixed; 
+          }else{
+            return ''
+          }
+        },
+        distinctUnitNames() {
+          const unitNames = this.serviceList.map(item => item.unit_name); // Extract unit names
+          return [...new Set(unitNames)]; // Use Set to filter distinct values
+        },
+        serviceByUnit() {
+          const selectedService = this.serviceList.filter(item => item.unit_name === this.input.unit_name);
+          if(selectedService){
+            return selectedService; 
+          }else{
+            return []
+          }
+        },
     },
 
     watch: {
@@ -261,40 +314,46 @@ export default {
     },
 
     created() {
-        this.getServiceList(); 
+        this.getServiceList();
+        // Validator.extend('isNumber', {
+        //   getMessage: field => `${field} must contain the word "nuxt".`,
+        //   validate: value => value.includes('nuxt')
+        // });
     },
    
     methods: {
-      async fetchServices() {
-            try {
-                const response = await fetch(`${process.env.API_BASE_URL}/services`);
-                const data = await response.json();
-                this.services = data;
-            } catch (error) {
-                console.error('Error fetching services:', error);
-            }
+      // async fetchServices() {
+      //       try {
+      //           const response = await fetch(`${process.env.API_BASE_URL}/services`);
+      //           const data = await response.json();
+      //           this.services = data;
+      //       } catch (error) {
+      //           console.error('Error fetching services:', error);
+      //       }
+      //   },
+        updateUnit(){
+          this.input.req_type =''
+          this.input.copies_req =0
+          this.input.total_processing_fee = 0
         },
-      
-    
-        async updateProcessingFee() {
-            if (this.input.req_type && this.input.copies_req) {
-                try {
-                    const response = await this.$axios.post('/calculate-total-fee', {
-                        req_type: this.input.req_type,
-                        copies_req: this.input.copies_req
-                    });
-                    this.input.total_processing_fee = response.data.total_processing_fee;
-                } catch (error) {
-                    console.error('Error fetching processing fee:', error);
-                }
+        updateProcessingFee() {
+            if(this.input.copies_req && (!Number(this.input.copies_req)  || this.input.copies_req < 0) ){
+              this.input.copies_req = 0
+            }
+            if (this.input.req_type && this.input.copies_req && this.isProcessFeeFixed === true) {
+                const selectedService = this.serviceList.find(item => item.service_type === this.input.req_type);
+                this.input.total_processing_fee = this.input.copies_req*selectedService.processing_fee
             } else {
                 this.input.total_processing_fee = 0;
             }
-          },
-        clickSave() {
-            this.$emit("onSave", this.input);
-            
 
+        },
+        clickSave() {
+          this.$validator.validateAll().then(valid => {
+            if (valid) {
+              this.$emit("onSave", this.input);
+            } 
+          });
         },
         closeDrawer() {
             this.$emit("onCancel", "");
@@ -303,7 +362,6 @@ export default {
         resetData() {
           const data = this.getRequestByID(this.input.id) 
           if(data){
-          
             this.input.ocs_service_id = data.ocs_service_id;
             this.input.transaction_no = data.transaction_no;
             this.input.copies_req= data.copies_req;
@@ -318,6 +376,7 @@ export default {
           }
         },
         setDefault(data) {
+          this.$validator.reset();
             this.input.id = data.id;
             this.input.ocs_service_id = data.ocs_service_id;
             this.input.transaction_no = data.transaction_no;

@@ -4,13 +4,13 @@ import { normalizeURL, decode } from 'ufo'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _5ffa7464 = () => interopDefault(import('../pages/cashier/index.vue' /* webpackChunkName: "pages/cashier/index" */))
-const _0b0b52e6 = () => interopDefault(import('../pages/my-requests/index.vue' /* webpackChunkName: "pages/my-requests/index" */))
-const _049077a1 = () => interopDefault(import('../pages/ocs_staff/index.vue' /* webpackChunkName: "pages/ocs_staff/index" */))
-const _d2b99188 = () => interopDefault(import('../pages/personal-info/index.vue' /* webpackChunkName: "pages/personal-info/index" */))
-const _2c9067aa = () => interopDefault(import('../pages/auth/callback.vue' /* webpackChunkName: "pages/auth/callback" */))
-const _565b9154 = () => interopDefault(import('../pages/auth/login.vue' /* webpackChunkName: "pages/auth/login" */))
-const _8ec77aa0 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
+const _4d0825fc = () => interopDefault(import('../pages/cashier/index.vue' /* webpackChunkName: "pages/cashier/index" */))
+const _7036787e = () => interopDefault(import('../pages/my-requests/index.vue' /* webpackChunkName: "pages/my-requests/index" */))
+const _360fb98e = () => interopDefault(import('../pages/ocs_staff/index.vue' /* webpackChunkName: "pages/ocs_staff/index" */))
+const _5d9b56d4 = () => interopDefault(import('../pages/personal-info/index.vue' /* webpackChunkName: "pages/personal-info/index" */))
+const _199e1942 = () => interopDefault(import('../pages/auth/callback.vue' /* webpackChunkName: "pages/auth/callback" */))
+const _550d06bc = () => interopDefault(import('../pages/auth/login.vue' /* webpackChunkName: "pages/auth/login" */))
+const _65e10c48 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
 
 const emptyFn = () => {}
 
@@ -25,31 +25,31 @@ export const routerOptions = {
 
   routes: [{
     path: "/cashier",
-    component: _5ffa7464,
+    component: _4d0825fc,
     name: "cashier"
   }, {
     path: "/my-requests",
-    component: _0b0b52e6,
+    component: _7036787e,
     name: "my-requests"
   }, {
     path: "/ocs_staff",
-    component: _049077a1,
+    component: _360fb98e,
     name: "ocs_staff"
   }, {
     path: "/personal-info",
-    component: _d2b99188,
+    component: _5d9b56d4,
     name: "personal-info"
   }, {
     path: "/auth/callback",
-    component: _2c9067aa,
+    component: _199e1942,
     name: "auth-callback"
   }, {
     path: "/auth/login",
-    component: _565b9154,
+    component: _550d06bc,
     name: "auth-login"
   }, {
     path: "/",
-    component: _8ec77aa0,
+    component: _65e10c48,
     name: "index"
   }],
 

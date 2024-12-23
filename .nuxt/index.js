@@ -13,14 +13,15 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_plugin_8ec70850 from 'nuxt_plugin_plugin_8ec70850' // Source: ./components/plugin.js (mode: 'all')
-import nuxt_plugin_axios_5077aaee from 'nuxt_plugin_axios_5077aaee' // Source: ./axios.js (mode: 'all')
-import nuxt_plugin_fontawesome_4e5dd8a0 from 'nuxt_plugin_fontawesome_4e5dd8a0' // Source: ./fontawesome.js (mode: 'all')
-import nuxt_plugin_moment_65ad772c from 'nuxt_plugin_moment_65ad772c' // Source: ./moment.js (mode: 'all')
+import nuxt_plugin_plugin_35ab7980 from 'nuxt_plugin_plugin_35ab7980' // Source: ./components/plugin.js (mode: 'all')
+import nuxt_plugin_axios_8db16354 from 'nuxt_plugin_axios_8db16354' // Source: ./axios.js (mode: 'all')
+import nuxt_plugin_fontawesome_50faedd0 from 'nuxt_plugin_fontawesome_50faedd0' // Source: ./fontawesome.js (mode: 'all')
+import nuxt_plugin_moment_7a6e0e02 from 'nuxt_plugin_moment_7a6e0e02' // Source: ./moment.js (mode: 'all')
 import nuxt_plugin_vspagination_6c72be18 from 'nuxt_plugin_vspagination_6c72be18' // Source: ../plugins/vs-pagination (mode: 'all')
 import nuxt_plugin_auth_6a7e4e1e from 'nuxt_plugin_auth_6a7e4e1e' // Source: ../plugins/auth (mode: 'all')
 import nuxt_plugin_vuehtml2pdf_c51f8722 from 'nuxt_plugin_vuehtml2pdf_c51f8722' // Source: ../plugins/vue-html2pdf.js (mode: 'all')
-import nuxt_plugin_auth_eb182efc from 'nuxt_plugin_auth_eb182efc' // Source: ./auth.js (mode: 'all')
+import nuxt_plugin_veevalidate_647094c1 from 'nuxt_plugin_veevalidate_647094c1' // Source: ../plugins/veevalidate.js (mode: 'all')
+import nuxt_plugin_auth_750e381a from 'nuxt_plugin_auth_750e381a' // Source: ./auth.js (mode: 'all')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -111,6 +112,7 @@ async function createApp(ssrContext, config = {}) {
       },
 
       err: null,
+      errPageReady: false,
       dateErr: null,
       error (err) {
         err = err || null
@@ -122,6 +124,7 @@ async function createApp(ssrContext, config = {}) {
         }
         nuxt.dateErr = Date.now()
         nuxt.err = err
+        nuxt.errPageReady = false
         // Used in src/server.js
         if (ssrContext) {
           ssrContext.nuxt.error = err
@@ -215,20 +218,20 @@ async function createApp(ssrContext, config = {}) {
   }
   // Plugin execution
 
-  if (typeof nuxt_plugin_plugin_8ec70850 === 'function') {
-    await nuxt_plugin_plugin_8ec70850(app.context, inject)
+  if (typeof nuxt_plugin_plugin_35ab7980 === 'function') {
+    await nuxt_plugin_plugin_35ab7980(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_axios_5077aaee === 'function') {
-    await nuxt_plugin_axios_5077aaee(app.context, inject)
+  if (typeof nuxt_plugin_axios_8db16354 === 'function') {
+    await nuxt_plugin_axios_8db16354(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_fontawesome_4e5dd8a0 === 'function') {
-    await nuxt_plugin_fontawesome_4e5dd8a0(app.context, inject)
+  if (typeof nuxt_plugin_fontawesome_50faedd0 === 'function') {
+    await nuxt_plugin_fontawesome_50faedd0(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_moment_65ad772c === 'function') {
-    await nuxt_plugin_moment_65ad772c(app.context, inject)
+  if (typeof nuxt_plugin_moment_7a6e0e02 === 'function') {
+    await nuxt_plugin_moment_7a6e0e02(app.context, inject)
   }
 
   if (typeof nuxt_plugin_vspagination_6c72be18 === 'function') {
@@ -243,8 +246,12 @@ async function createApp(ssrContext, config = {}) {
     await nuxt_plugin_vuehtml2pdf_c51f8722(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_auth_eb182efc === 'function') {
-    await nuxt_plugin_auth_eb182efc(app.context, inject)
+  if (typeof nuxt_plugin_veevalidate_647094c1 === 'function') {
+    await nuxt_plugin_veevalidate_647094c1(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_auth_750e381a === 'function') {
+    await nuxt_plugin_auth_750e381a(app.context, inject)
   }
 
   // Lock enablePreview in context

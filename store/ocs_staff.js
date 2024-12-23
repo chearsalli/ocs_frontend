@@ -246,7 +246,7 @@ export const getters = {
                     request: item.request,
                     target_date: item.target_date,
                     date_created: item.date_created,
-                    remaining_days: item.remaining_days + " " + 'Business' + " " + 'days',
+                    remaining_days: item.remaining_days,
                     committed_by: item.committed_by,
                     status: item.status,
                     processing_fee: "PhP" + " " + item.processing_fee + ".00",
